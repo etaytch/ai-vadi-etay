@@ -1,23 +1,25 @@
-package simulator;
+package searchAlgorithms;
 
-import searchAlgorithms.AtpDecisionNode;
-import searchAlgorithms.Problem;
+import agents.Agent;
+import simulator.Car;
+import simulator.Simulator;
+import simulator.Vertex;
 
 public class atpProblem implements Problem {
 	
 	private Simulator _sim;
 	private Vertex _init;
-	private Vertex _current;
 	private Vertex _goal;
 	private Car _initCar;
+	private Agent _agent; 
 	
 	
 
-	public atpProblem(Simulator sim, Vertex init, Vertex current, Vertex goal, Car initCar) {
+	public atpProblem(Simulator sim, Vertex init, Vertex current, Vertex goal, Car initCar, Agent agent) {
 		super();
+		_agent = agent;
 		_sim = sim;
 		_init = init;
-		_current = current;
 		_goal = goal;
 		_initCar = initCar;
 	}
@@ -43,14 +45,6 @@ public class atpProblem implements Problem {
 	}
 
 
-	public Vertex get_current() {
-		return _current;
-	}
-
-
-	public void set_current(Vertex current) {
-		_current = current;
-	}
 
 
 	public Vertex get_goal() {
@@ -64,13 +58,19 @@ public class atpProblem implements Problem {
 
 
 	@Override
-	public boolean goalTest() {
-		return _current.get_number()==_goal.get_number();
+	public boolean goalTest(DecisionNode d) {
+		return d.get_goal_evaluation()==_goal.get_number();
 	}
 
 
 	@Override
 	public AtpDecisionNode getInitNode() {
-		return new AtpDecisionNode(_current, _initCar, null, null);
+		return _agent.getInitNode();
+	}
+
+
+	@Override
+	public Agent getAgent() {
+		return _agent;
 	}
 }

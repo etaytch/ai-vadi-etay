@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import tools.ATPLogger;
-
 import agents.Agent;
 import agents.HumanAgent;
 import agents.SimpleGreedyAgent;
@@ -24,7 +23,7 @@ import agents.SpeedNutAutomationAgent;
 
 
 public class Simulator {
-	private final int TSWITCH = 5; 
+	public final double TSWITCH = 0.12; 
 	private Map<Integer,Vertex> _vertexes;
 	private Vector<Road> _edges;
 	private Map<Agent,Chart> _agents;
@@ -301,8 +300,10 @@ public class Simulator {
 		ATPLogger.log("Starting Simulation:");
 		
 		for (Agent agent: get_agents().keySet()){
-			ATPLogger.log("Agent: "+agent.get_name()+", start node: "+agent.get_initPosition().get_number()+", goal node: "+agent.get_goalPosition().get_number());	
+			ATPLogger.log("Agent: "+agent.get_name()+", start node: "+agent.get_initPosition().get_number()+", goal node: "+agent.get_goalPosition().get_number());
+			agent.search(this);
 		}
+				
 		while (!finished()){
 			ATPLogger.log("\n<<<<<<<< Start of Round #"+(round++)+" >>>>>>>>");
 			for (Agent agent: get_agents().keySet()){
@@ -348,7 +349,7 @@ public class Simulator {
 		return null;
 	}
 	
-	public int calcPath(int fromVertex, int toVertex,ArrayList<Node> result){
+	public double calcPath(int fromVertex, int toVertex,ArrayList<Node> result){
 		Graph _graph = getGraph(true);
 		Node from = _graph.get_node_by_ID(fromVertex);
 		Node to = _graph.get_node_by_ID(toVertex);
@@ -365,15 +366,13 @@ public class Simulator {
 		}		
 		
 		Vector<Edge> edgesVector = new Vector<Edge>(); 
-		//Edge[] edges = new Edge[this._edges.size()];
-		int i=0;
+		//Edge[] edges = new Edge[this._edges.size()];		
 		for(Road e:_edges){
 			if(e.is_flooded()&&clearOnly){
 				continue;
 			}
 			int from = e.get_from().get_number();
-			int target = e.get_to().get_number();			
-			//edges[i++] = new Edge(nodes[from],nodes[target],e.get_weight());			
+			int target = e.get_to().get_number();						
 			edgesVector.add(new Edge(nodes[from],nodes[target],e.get_weight()));
 		}
 		

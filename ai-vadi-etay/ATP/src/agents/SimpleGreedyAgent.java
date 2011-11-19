@@ -1,15 +1,16 @@
 package agents;
 
+import graph.searchGraph.Node;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 
-import graph.searchAlgorithms.Dijkstra;
-import graph.searchGraph.Graph;
-import graph.searchGraph.Node;
+import searchAlgorithms.AtpDecisionNode;
+import searchAlgorithms.DecisionNode;
 import simulator.Car;
 import simulator.MoveAction;
-import simulator.Road;
 import simulator.Simulator;
 import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
@@ -69,4 +70,9 @@ public class SimpleGreedyAgent extends Agent {
 			}
 		}			
 	}
+	@Override
+	public AtpDecisionNode getInitNode() {
+		return null;
+	}
+
 }

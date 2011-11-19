@@ -10,7 +10,7 @@ public class AtpDecisionNode implements  DecisionNode  {
 	protected  Car _car;
 	protected  Road _road;
 	protected  AtpDecisionNode _parent;
-	protected  Vector<AtpDecisionNode> _children;
+	protected  Vector<DecisionNode> _children;
 	protected  double _H;
 	
 	public AtpDecisionNode(Vertex vertex, Car car, Road road, AtpDecisionNode parent) {
@@ -42,13 +42,13 @@ public class AtpDecisionNode implements  DecisionNode  {
 	}
 	
 	
-	public Vector<AtpDecisionNode> get_children() {
+	public Vector<DecisionNode> get_children() {
 		return _children;
 	}
 	
 	
 	public void expand(Problem problem){
-		_children = new Vector<AtpDecisionNode>();
+		_children = new Vector<DecisionNode>();
 		for(Vertex v : _vertex.get_neighbours().keySet()){
 			_children.add(new AtpDecisionNode(v, _car, _vertex.get_neighbours().get(v), this));
 		}
@@ -76,6 +76,13 @@ public class AtpDecisionNode implements  DecisionNode  {
 		_car = car;
 	}
 
-	
+	@Override
+	public int get_goal_evaluation() {
+		return _vertex.get_number();
+	}
+
+	public int compareTo(DecisionNode o) {
+		return 0;
+	}
 	
 }
