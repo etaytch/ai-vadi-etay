@@ -117,6 +117,13 @@ public abstract class Agent {
 	
 	public abstract void chooseBestAction(Simulator env);	// place an action in the queue 
 	
+	public void search(Simulator env) {
+		// TODO Auto-generated method stub
+	}
 	
 	
 }
+
+
+
+	
