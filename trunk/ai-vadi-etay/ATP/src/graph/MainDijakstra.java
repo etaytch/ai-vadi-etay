@@ -7,7 +7,7 @@ import graph.searchGraph.Edge;
 import graph.searchGraph.Graph;
 import graph.searchGraph.Node;
 
-public class main {
+public class MainDijakstra {
 
 	/**
 	 * @param args

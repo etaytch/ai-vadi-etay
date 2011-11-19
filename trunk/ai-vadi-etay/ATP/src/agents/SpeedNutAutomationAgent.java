@@ -1,14 +1,14 @@
 package agents;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.Vector;
 
+import searchAlgorithms.AtpDecisionNode;
+import searchAlgorithms.DecisionNode;
 import simulator.Car;
 import simulator.MoveAction;
 import simulator.Road;
@@ -31,7 +31,6 @@ public class SpeedNutAutomationAgent extends Agent {
 
 	public Vertex getHeavyRoad(Vector<Vertex> vertics,Map<Vertex,Road> neib){
 		Vertex maxVer=null;
-		Road maxEdge=null;
 		int maxWeight = 0;		
 		Vector<Vertex> tobeRemoved = new Vector<Vertex>();
 		
@@ -48,7 +47,6 @@ public class SpeedNutAutomationAgent extends Agent {
 					continue;					
 				}
 				maxVer = v;
-				maxEdge = e;
 				maxWeight = e.get_weight();								
 			}
 		}
@@ -63,10 +61,8 @@ public class SpeedNutAutomationAgent extends Agent {
 	
 	@Override
 	public void chooseBestAction(Simulator sim) {
-		Vertex maxVer=null;
-		Road maxEdge=null;
-		String maxCarName=null;
-		int maxWeight = 0;		
+		Vertex maxVer=null;		
+		String maxCarName=null;		
 						
 		if((_amountOfVisits.get(get_vertex())!=null)&&(_amountOfVisits.get(get_vertex())>=3)){
 			set_state("stuck","got 3 times to the same vertex!");
@@ -144,6 +140,9 @@ public class SpeedNutAutomationAgent extends Agent {
 			_amountOfVisits.put(get_vertex(),(i+1));
 		}		
 	}
-	
 
+	@Override
+	public AtpDecisionNode getInitNode() {
+		return null;
+	}
 }

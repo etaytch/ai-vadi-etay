@@ -4,8 +4,9 @@ package agents;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
+
+import searchAlgorithms.AtpDecisionNode;
 import simulator.Action;
 import simulator.Car;
 import simulator.Simulator;
@@ -13,13 +14,13 @@ import simulator.Vertex;
 
 public abstract class Agent {
 	
-	private String  _name;
-	private Car _car;
+	protected String  _name;
+	protected Car _car;
 	protected Queue<Action> _actions;
-	private Vertex _vertex;
-	private Vertex _initPosition;
-	private Vertex _goalPosition;
-	private Map<String,String> _state;				// "finished", "stuck"s
+	protected Vertex _vertex;
+	protected Vertex _initPosition;
+	protected Vertex _goalPosition;
+	protected Map<String,String> _state;				// "finished", "stuck"s
 	
 		
 	public String get_state(String key) {
@@ -120,8 +121,8 @@ public abstract class Agent {
 	public void search(Simulator env) {
 		// TODO Auto-generated method stub
 	}
-	
-	
+
+	public abstract AtpDecisionNode getInitNode();
 }
 
 

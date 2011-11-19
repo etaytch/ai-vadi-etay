@@ -11,49 +11,55 @@ import simulator.Car;
 import simulator.Road;
 import simulator.Simulator;
 import simulator.Vertex;
-import simulator.atpProblem;
 
 public class GreedyDecisionNode extends AtpDecisionNode {
 
-
-	
 	public GreedyDecisionNode(Vertex vertex, Car car, Road road,
 			AtpDecisionNode parent) {
 		super(vertex, car, road, parent);
-		// TODO Auto-generated constructor stub
 	}
 
-	public int compareTo(AtpDecisionNode o) {
-		if (get_H()>o.get_H()) return 1;
-		if (get_H()<o.get_H()) return -1;
+	@Override
+	public int compareTo(DecisionNode o) {
+		if (get_H()>((GreedyDecisionNode)o).get_H()) return 1;	
+		if (get_H()<((GreedyDecisionNode)o).get_H()) return -1;  // heavy road is poorer
 		return 0;
 	}
 	
 	
 	@Override
 	public void expand(Problem problem){
-		_children = new Vector<AtpDecisionNode>();
+		_children = new Vector<DecisionNode>();
 		for(Vertex v : _vertex.get_neighbours().keySet()){
-			_children.add(new GreedyDecisionNode(v, _car, _vertex.get_neighbours().get(v), this));
+			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;
+			GreedyDecisionNode newNode = new GreedyDecisionNode(v, _car, _vertex.get_neighbours().get(v), this);
+			newNode._H = clacHuristic(_car,((atpProblem) problem).get_sim(), 
+										v, 
+										((atpProblem)problem).get_goal());
+			_children.add(newNode);
 		}
 		for (Car c : _vertex.get_cars().values()){
 			for(Vertex v : _vertex.get_neighbours().keySet()){
 				if (_vertex.get_neighbours().get(v).is_flooded() && c.get_coff()==0) continue; 
 				GreedyDecisionNode newNode = new GreedyDecisionNode(v, c, _vertex.get_neighbours().get(v), this);
 				newNode._H = clacHuristic(c,((atpProblem) problem).get_sim(), 
-											((atpProblem)problem).get_current(), 
+											v, 
 											((atpProblem)problem).get_goal());
 				_children.add(newNode);
 			}
 		}	
 	}
-	private double clacHuristic(Car c , Simulator sim, Vertex vFrom, Vertex vTo) {
+	
+	public double clacHuristic(Car c , Simulator sim, Vertex vFrom, Vertex vTo) {
 		Graph g = getDijkstraHuristicGraph(c,sim);
 		ArrayList<Node> result = new ArrayList<Node>();
 		Node from = g.get_node_by_ID(vFrom.get_number());
 		Node to = g.get_node_by_ID(vTo.get_number());
-		_H = Dijkstra.findShortestPath(g,from, to, result );
-		return 0;
+		double switchCarTime = 0.0;
+		if((_parent!=null) && (!c.equals(_parent._car))){
+			switchCarTime = sim.TSWITCH;
+		}
+		return switchCarTime+(calcWeight(_road, c))+Dijkstra.findShortestPath(g,from, to, result );
 	}
 
 	public Graph getDijkstraHuristicGraph(Car car,Simulator sim){
@@ -72,11 +78,18 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 			if (weight!=null){
 				edges.add(new Edge(nodes[from],nodes[target],weight));
 			}
-		}		
-		return new Graph(nodes,(Edge[])edges.toArray());	
+		}	
+		Edge[] edgesArr = new Edge[edges.size()];
+		for(int k=0;k<edges.size();k++){
+			edgesArr[k] = edges.get(k);			
+		}
+		return new Graph(nodes,edgesArr);	
 	}
 	
-	private Double calcWeight(Road e, Car car) {
+	public Double calcWeight(Road e, Car car) {
+		if(e==null){
+			return 0.0;
+		}
 		double coff = car.get_coff();
 		int speed = car.get_speed();
 		double weight = e.get_weight();
@@ -89,7 +102,7 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 			return (weight/speed*coff);
 		}
 		
-		return (weight/coff);
+		return (weight/speed);
 	}
 	
 }

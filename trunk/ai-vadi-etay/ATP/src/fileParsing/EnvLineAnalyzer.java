@@ -1,5 +1,6 @@
 package fileParsing;
 
+import agents.GreedyAgent;
 import agents.SimpleGreedyAgent;
 import agents.HumanAgent;
 import agents.SpeedNutAutomationAgent;
@@ -63,6 +64,13 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 			
 		case 3:
 			env.addAgent(new SimpleGreedyAgent(line[2], 
+					env.getVertex(Integer.parseInt(line[3])),
+					env.getVertex(Integer.parseInt(line[4])),
+					env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
+			env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			break;
+		case 4:
+			env.addAgent(new GreedyAgent(line[2], 
 					env.getVertex(Integer.parseInt(line[3])),
 					env.getVertex(Integer.parseInt(line[4])),
 					env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));

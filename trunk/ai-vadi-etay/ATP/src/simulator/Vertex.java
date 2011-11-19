@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Vertex implements Comparable<Vertex>{
+public class Vertex implements Comparable<Vertex> {
 	
 	private int _number;
 	private Map<String,Car> _cars;

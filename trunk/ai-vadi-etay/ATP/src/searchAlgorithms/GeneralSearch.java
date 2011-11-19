@@ -8,17 +8,17 @@ import java.util.Vector;
 
 public class GeneralSearch {
 
-	public static Vector<AtpDecisionNode> search(Problem problem)
+	public static Vector<DecisionNode> search(Problem problem)
 	{
-		PriorityQueue<AtpDecisionNode> queue = new PriorityQueue<AtpDecisionNode>();
+		PriorityQueue<DecisionNode> queue = new PriorityQueue<DecisionNode>();
 		queue.add(problem.getInitNode());
 		
 		while(true){
-			AtpDecisionNode currentNode = queue.poll();
+			DecisionNode currentNode = queue.remove();
 			if (currentNode==null){
 				return null;	
 			}
-			if (problem.goalTest()){
+			if (problem.goalTest(currentNode)){
 				return generateSolution(currentNode); 
 			}
 			else{
@@ -28,8 +28,8 @@ public class GeneralSearch {
 		}
 	}
 
-	private static  Vector<AtpDecisionNode> generateSolution( AtpDecisionNode dnode) {
-		Vector<AtpDecisionNode> solution = new Vector<AtpDecisionNode>();
+	private static  Vector<DecisionNode> generateSolution( DecisionNode dnode) {
+		Vector<DecisionNode> solution = new Vector<DecisionNode>();
 		
 		while(dnode != null){
 			

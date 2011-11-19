@@ -1,19 +1,18 @@
 package agents;
 
+
 import java.util.Vector;
-
-import javax.management.AttributeValueExp;
-import javax.swing.plaf.basic.BasicSliderUI.ActionScroller;
-
 import searchAlgorithms.AtpDecisionNode;
+import searchAlgorithms.DecisionNode;
 import searchAlgorithms.GeneralSearch;
+import searchAlgorithms.GreedyDecisionNode;
 import searchAlgorithms.Problem;
+import searchAlgorithms.atpProblem;
 import simulator.Action;
 import simulator.Car;
 import simulator.Simulator;
 import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
-import simulator.atpProblem;
 
 public class GreedyAgent extends Agent {
 
@@ -27,20 +26,19 @@ public class GreedyAgent extends Agent {
 	
 	@Override
 	public void search(Simulator env)
-	{
-		_actions =  new Vector<Action>();
-		Problem problem = new atpProblem(env, _initPosition, _initPosition, _goalPosition,_car);
-		Vector<AtpDecisionNode> vec = GeneralSearch.search(problem);
+	{		
+		Problem problem = new atpProblem(env, _initPosition, _initPosition, _goalPosition,_car,this);
+		Vector<DecisionNode> vec = GeneralSearch.search(problem);
 		_actions = translateNodeToAction(vec);
 	}
 
-	private Vector<Action> translateNodeToAction(Vector<AtpDecisionNode> vec) {
+	private Vector<Action> translateNodeToAction(Vector<DecisionNode> vec) {
 		Vector<Action> res = new Vector<Action>(); 
-		for(AtpDecisionNode atpdn : vec){
-			res.add(new SwitchCarAndMoveAction(this,atpdn.get_car().get_name(),atpdn.get_vertex()));
+		for(DecisionNode atpdn : vec){
+			res.add(new SwitchCarAndMoveAction(this,((AtpDecisionNode)atpdn).get_car().get_name(),((AtpDecisionNode)atpdn).get_vertex()));
 		}
-		if(res==null){
-			System.out.println("STUCK");			
+		if(res.size()==0){
+			set_state("stuck","Unable to find path to goal");	
 		}
 		return res;	
 	}
@@ -51,6 +49,11 @@ public class GreedyAgent extends Agent {
 			Action action = _actions.remove(0);
 			get_actions().offer(action);
 		}		
+	}
+
+	@Override
+	public AtpDecisionNode getInitNode() {
+		return new GreedyDecisionNode(_initPosition, _car, null, null);
 	}
 
 }

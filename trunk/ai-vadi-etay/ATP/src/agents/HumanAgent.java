@@ -3,7 +3,10 @@ package agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Comparator;
 
+import searchAlgorithms.AtpDecisionNode;
+import searchAlgorithms.DecisionNode;
 import simulator.Car;
 import simulator.MoveAction;
 import simulator.Simulator;
@@ -81,5 +84,12 @@ public class HumanAgent extends Agent {
 	      
 	      return futurePosition;
 	}
+
+	@Override
+	public AtpDecisionNode getInitNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
