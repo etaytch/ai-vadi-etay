@@ -21,17 +21,16 @@ public class main {
 		Node n5 = new Node(5);
 		Node n6 = new Node(6);
 							
-		Node[] nodes = new Node[4];
+		Node[] nodes = new Node[7];
 		nodes[0] = n0;
 		nodes[1] = n1;
 		nodes[2] = n2;
 		nodes[3] = n3;
-		//nodes[4] = n4;
-		//nodes[5] = n5;
-		//nodes[6] = n6;
+		nodes[4] = n4;
+		nodes[5] = n5;
+		nodes[6] = n6;
 		
-		Edge[] edges = new Edge[4];
-		/*
+		Edge[] edges = new Edge[8];
 		Edge e0 = new Edge(n0, n2, 1);
 		Edge e1 = new Edge(n0, n3, 1);
 		Edge e2 = new Edge(n1, n4, 1);
@@ -49,23 +48,11 @@ public class main {
 		edges[5] = e5;
 		edges[6] = e6;
 		edges[7] = e7;
-		*/
-		
-		Edge e0 = new Edge(n0, n1, 1);
-		Edge e1 = new Edge(n1, n0, 1);		
-		Edge e2 = new Edge(n1, n3, 1);
-		Edge e3 = new Edge(n3, n1, 1);
-		
-		edges[0] = e0;
-		edges[1] = e1;
-		edges[2] = e2;
-		edges[3] = e3;
-		
 		
 		Graph graph = new Graph(nodes, edges);
 		
 		ArrayList<Node> result  = new ArrayList<Node>();
-		int  res = Dijkstra.findShortestPath(graph,n1, n2,result);
+		double  res = Dijkstra.findShortestPath(graph,n2, n6,result);
 		
 		System.out.println("the Minimal path weight is: "+res);		
 		for(Node n :result){
