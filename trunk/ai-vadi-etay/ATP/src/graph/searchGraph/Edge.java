@@ -3,10 +3,10 @@ package graph.searchGraph;
 public class Edge {
 	private Node _from;
 	private Node _to;
-	private int _weigth;
+	private double _weigth;
 	
 	
-	public Edge(Node _from, Node _to, int _weigth) {		
+	public Edge(Node _from, Node _to, double _weigth) {		
 		this._from = _from;
 		this._to = _to;
 		this._weigth = _weigth;
@@ -28,7 +28,7 @@ public class Edge {
 	public void setTo(Node _to) {
 		this._to = _to;
 	}
-	public int getWeigth() {
+	public double getWeigth() {
 		return _weigth;
 	}
 	public void setWeigth(int _weigth) {
