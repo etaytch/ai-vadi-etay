@@ -31,7 +31,8 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 	public void expand(Problem problem){
 		_children = new Vector<DecisionNode>();
 		for(Vertex v : _vertex.get_neighbours().keySet()){
-			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;
+			if((_parent!=null)&&(_parent._vertex.equals(v))) continue;		// don't calc parent
+			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;	// don't calc flooded road with regular car
 			GreedyDecisionNode newNode = new GreedyDecisionNode(v, _car, _vertex.get_neighbours().get(v), this);
 			newNode._H = clacHuristic(_car,((atpProblem) problem).get_sim(), 
 										v, 
