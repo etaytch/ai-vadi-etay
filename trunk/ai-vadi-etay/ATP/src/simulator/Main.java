@@ -10,16 +10,10 @@ import fileParsing.LineAnalyzerInterface;
 
 
 //TODO
-//PART I
-//1. add user interface for pre run agents configuration - and loading pre run agents configuration from file
-//2.add human agent
-//3.add speed nut agent
-//4.add greedy agent
-
 //PART II
-//5.add greedy2 agent
-//6.add A* agent
-//7.add A*RT agent
+//1. Javadoc
+//2. Logger
+//3. Calc equation !
 
 public class Main {
 
@@ -28,7 +22,6 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		System.out.println();
 		System.out.println("	*********************************");
 		System.out.println("	******** Welcome To The *********");
@@ -78,7 +71,7 @@ public class Main {
 					tStr = br.readLine();
 					int toVertex = Integer.parseInt(tStr);
 														
-					sim.addAgent(typeAsNum,agentName,fromVertex,toVertex);					
+					sim.get_env().addAgent(typeAsNum,agentName,fromVertex,toVertex);					
     	    	
 			}	    
 	    	

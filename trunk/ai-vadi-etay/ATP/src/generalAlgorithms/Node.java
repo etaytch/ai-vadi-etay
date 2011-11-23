@@ -1,4 +1,4 @@
-package graph.searchGraph;
+package generalAlgorithms;
 
 public class Node {
 	private int _id;

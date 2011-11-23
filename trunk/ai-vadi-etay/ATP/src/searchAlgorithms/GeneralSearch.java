@@ -1,6 +1,5 @@
 package searchAlgorithms;
 
-
 import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Vector;
@@ -8,8 +7,9 @@ import java.util.Vector;
 
 public class GeneralSearch {
 
-	public static Vector<DecisionNode> search(Problem problem)
+	public static Vector<DecisionNode> search(Problem problem, boolean memoization)
 	{
+		Vector<DecisionNode> lookUpTable = new Vector<DecisionNode>();
 		PriorityQueue<DecisionNode> queue = new PriorityQueue<DecisionNode>();
 		queue.add(problem.getInitNode());
 		
@@ -23,7 +23,18 @@ public class GeneralSearch {
 			}
 			else{
 				currentNode.expand(problem);
-				queue.addAll(currentNode.get_children());
+				if (memoization){
+					for(DecisionNode dn : currentNode.get_children())
+					{
+						if (!lookUpTable.contains(dn))
+						{
+							queue.add(dn);
+						}
+					}
+				}
+				else{
+				queue.addAll(currentNode.get_children()); //no memoization
+				}
 			}
 		}
 	}

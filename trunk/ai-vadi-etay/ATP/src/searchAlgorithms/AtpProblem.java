@@ -2,36 +2,38 @@ package searchAlgorithms;
 
 import agents.Agent;
 import simulator.Car;
-import simulator.Simulator;
+import simulator.Enviornment;
 import simulator.Vertex;
 
-public class atpProblem implements Problem {
+public class AtpProblem implements Problem {
 	
-	private Simulator _sim;
+	private Enviornment _env;
 	private Vertex _init;
 	private Vertex _goal;
-	private Car _initCar;
 	private Agent _agent; 
 	
 	
 
-	public atpProblem(Simulator sim, Vertex init, Vertex current, Vertex goal, Car initCar, Agent agent) {
+	public AtpProblem(Enviornment env, Vertex init, Vertex goal, Car initCar, Agent agent) {
 		super();
 		_agent = agent;
-		_sim = sim;
+		_env = env;
 		_init = init;
 		_goal = goal;
-		_initCar = initCar;
 	}
 
 	
-	public Simulator get_sim() {
-		return _sim;
+	public Enviornment get_env() {
+		return _env;
+	}
+
+	public void set_agent(Agent agent) {
+		_agent = agent;
 	}
 
 
-	public void set_sim(Simulator sim) {
-		_sim = sim;
+	public void set_sim(Enviornment env) {
+		_env = env;
 	}
 
 

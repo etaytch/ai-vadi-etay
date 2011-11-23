@@ -1,18 +1,16 @@
 package agents;
 
+
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import searchAlgorithms.AtpDecisionNode;
-import searchAlgorithms.DecisionNode;
 import simulator.Car;
+import simulator.Enviornment;
 import simulator.MoveAction;
 import simulator.Road;
-import simulator.Simulator;
 import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
 import tools.ATPLogger;
@@ -60,7 +58,7 @@ public class SpeedNutAutomationAgent extends Agent {
 	}
 	
 	@Override
-	public void chooseBestAction(Simulator sim) {
+	public void chooseBestAction(Enviornment env) {
 		Vertex maxVer=null;		
 		String maxCarName=null;		
 						

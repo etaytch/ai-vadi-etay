@@ -1,9 +1,6 @@
-package graph.searchAlgorithms;
+package generalAlgorithms;
 
 
-import graph.searchGraph.Edge;
-import graph.searchGraph.Graph;
-import graph.searchGraph.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
