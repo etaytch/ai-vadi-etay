@@ -13,7 +13,7 @@ import fileParsing.LineAnalyzerInterface;
 //PART II
 //1. Javadoc
 //2. Logger
-//3. Calc equation !
+//3. Calc equation !    Agent Score = f*S+T where T-Number of expansiones (nesting level), S-agents score, and f= 1 / 10 / 10000 (already in Defs.java)
 
 public class Main {
 
