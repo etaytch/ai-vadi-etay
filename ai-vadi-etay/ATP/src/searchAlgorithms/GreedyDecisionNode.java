@@ -3,21 +3,25 @@ package searchAlgorithms;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import graph.searchAlgorithms.Dijkstra;
-import graph.searchGraph.Edge;
-import graph.searchGraph.Graph;
-import graph.searchGraph.Node;
+import generalAlgorithms.Dijkstra;
+import generalAlgorithms.Edge;
+import generalAlgorithms.Graph;
+import generalAlgorithms.Node;
 import simulator.Car;
+import simulator.Defs;
+import simulator.Enviornment;
 import simulator.Road;
-import simulator.Simulator;
 import simulator.Vertex;
 
 public class GreedyDecisionNode extends AtpDecisionNode {
 
+	
+
 	public GreedyDecisionNode(Vertex vertex, Car car, Road road,
-			AtpDecisionNode parent) {
-		super(vertex, car, road, parent);
+			AtpDecisionNode parent, int nestingLevel) {
+		super(vertex, car, road, parent, nestingLevel);
 	}
+
 
 	@Override
 	public int compareTo(DecisionNode o) {
@@ -29,50 +33,53 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 	
 	@Override
 	public void expand(Problem problem){
+		if (_nestingLevel==Defs.NESTING_LEVEL) return;
 		_children = new Vector<DecisionNode>();
 		for(Vertex v : _vertex.get_neighbours().keySet()){
 			if((_parent!=null)&&(_parent._vertex.equals(v))) continue;		// don't calc parent
 			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;	// don't calc flooded road with regular car
-			GreedyDecisionNode newNode = new GreedyDecisionNode(v, _car, _vertex.get_neighbours().get(v), this);
-			newNode._H = clacHuristic(_car,((atpProblem) problem).get_sim(), 
+			GreedyDecisionNode newNode = new GreedyDecisionNode(v, _car, _vertex.get_neighbours().get(v),this, _nestingLevel++);
+			newNode._H = clacHuristic(_car,((AtpProblem) problem).get_env(), 
 										v, 
-										((atpProblem)problem).get_goal());
+										((AtpProblem)problem).get_goal(),_vertex.get_neighbours().get(v));
 			_children.add(newNode);
 		}
 		for (Car c : _vertex.get_cars().values()){
 			for(Vertex v : _vertex.get_neighbours().keySet()){
+				if((_parent!=null)&&(_parent._vertex.equals(v))) continue;
 				if (_vertex.get_neighbours().get(v).is_flooded() && c.get_coff()==0) continue; 
-				GreedyDecisionNode newNode = new GreedyDecisionNode(v, c, _vertex.get_neighbours().get(v), this);
-				newNode._H = clacHuristic(c,((atpProblem) problem).get_sim(), 
+				GreedyDecisionNode newNode = new GreedyDecisionNode(v, c, _vertex.get_neighbours().get(v), this,_nestingLevel++);
+				newNode._H = clacHuristic(c,((AtpProblem) problem).get_env(), 
 											v, 
-											((atpProblem)problem).get_goal());
+											((AtpProblem)problem).get_goal(),_vertex.get_neighbours().get(v));
 				_children.add(newNode);
 			}
 		}	
 	}
 	
-	public double clacHuristic(Car c , Simulator sim, Vertex vFrom, Vertex vTo) {
-		Graph g = getDijkstraHuristicGraph(c,sim);
+	public double clacHuristic(Car c , Enviornment env, Vertex vFrom, Vertex vTo, Road road) {
+		Graph g = getDijkstraHuristicGraph(c,env);
 		ArrayList<Node> result = new ArrayList<Node>();
 		Node from = g.get_node_by_ID(vFrom.get_number());
 		Node to = g.get_node_by_ID(vTo.get_number());
 		double switchCarTime = 0.0;
-		if((_parent!=null) && (!c.equals(_parent._car))){
-			switchCarTime = sim.TSWITCH;
+		if((_parent!=null) && (!c.get_name().equals(_parent._car.get_name()))){
+			switchCarTime = Defs.TSWITCH;
 		}
-		return switchCarTime+(calcWeight(_road, c))+Dijkstra.findShortestPath(g,from, to, result );
+		double ans = switchCarTime+(calcWeight(road, c))+ Dijkstra.findShortestPath(g,from, to, result );
+		return ans;
 	}
 
-	public Graph getDijkstraHuristicGraph(Car car,Simulator sim){
-		Node[] nodes = new Node[sim.get_vertexes().size()];
+	public Graph getDijkstraHuristicGraph(Car car,Enviornment env){
+		Node[] nodes = new Node[env.get_vertexes().size()];
 		int i=0;
-		for(Integer v:sim.get_vertexes().keySet()){
+		for(Integer v:env.get_vertexes().keySet()){
 			nodes[i++]=new Node(v.intValue());			
 		}		
 		
 		Vector <Edge> edges = new Vector<Edge>();
 		i=0;
-		for(Road e:sim.get_edges()){
+		for(Road e:env.get_edges()){
 			int from = e.get_from().get_number();
 			int target = e.get_to().get_number();
 			Double weight = calcWeight(e,car);

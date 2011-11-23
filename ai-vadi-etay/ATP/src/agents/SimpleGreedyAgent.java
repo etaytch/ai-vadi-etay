@@ -1,17 +1,20 @@
 package agents;
 
-import graph.searchGraph.Node;
+import generalAlgorithms.Dijkstra;
+import generalAlgorithms.Edge;
+import generalAlgorithms.Graph;
+import generalAlgorithms.Node;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import searchAlgorithms.AtpDecisionNode;
-import searchAlgorithms.DecisionNode;
 import simulator.Car;
+import simulator.Enviornment;
 import simulator.MoveAction;
-import simulator.Simulator;
+import simulator.Road;
 import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
 import tools.ATPLogger;
@@ -25,9 +28,9 @@ public class SimpleGreedyAgent extends Agent {
 	}
 
 	@Override
-	public void chooseBestAction(Simulator env) {				
+	public void chooseBestAction(Enviornment env) {				
 		ArrayList<Node> result = new ArrayList<Node>();
-		env.calcPath(get_vertex().get_number(),get_goalPosition().get_number(),result);		
+		calcPath(get_vertex().get_number(),get_goalPosition().get_number(),result,env);		
 		//ATPLogger.log("Dijkstra result from "+get_vertex().get_number()+" to "+get_goalPosition().get_number()+":\n"+result);		
 		if(result.isEmpty()){
 			set_state("stuck","Could not find a path to goal!");
@@ -74,5 +77,38 @@ public class SimpleGreedyAgent extends Agent {
 	public AtpDecisionNode getInitNode() {
 		return null;
 	}
-
+	
+	public Graph getGraph(boolean clearOnly,Enviornment env){
+		Node[] nodes = new Node[env.get_vertexes().size()];
+		//int i=0;
+		for(Integer v:env.get_vertexes().keySet()){
+			int num = v.intValue();
+			nodes[num]=new Node(num);			
+		}		
+		
+		Vector<Edge> edgesVector = new Vector<Edge>(); 
+		//Edge[] edges = new Edge[this._edges.size()];		
+		for(Road e:env.get_edges()){
+			if(e.is_flooded()&&clearOnly){
+				continue;
+			}
+			int from = e.get_from().get_number();
+			int target = e.get_to().get_number();						
+			edgesVector.add(new Edge(nodes[from],nodes[target],e.get_weight()));
+		}
+		
+		Edge[] edges = new Edge[edgesVector.size()];
+		for(int k=0;k<edgesVector.size();k++){
+			edges[k] = edgesVector.get(k);			
+		}
+		
+		return new Graph(nodes,edges);	
+	}
+	
+	public double calcPath(int fromVertex, int toVertex,ArrayList<Node> result, Enviornment env){
+		Graph _graph = getGraph(true,env);
+		Node from = _graph.get_node_by_ID(fromVertex);
+		Node to = _graph.get_node_by_ID(toVertex);
+		return Dijkstra.findShortestPath(_graph,from, to, result);		
+	}
 }

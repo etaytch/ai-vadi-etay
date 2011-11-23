@@ -2,6 +2,7 @@ package searchAlgorithms;
 
 import java.util.Vector;
 import simulator.Car;
+import simulator.Defs;
 import simulator.Road;
 import simulator.Vertex;
 
@@ -12,14 +13,17 @@ public class AtpDecisionNode implements  DecisionNode  {
 	protected  AtpDecisionNode _parent;
 	protected  Vector<DecisionNode> _children;
 	protected  double _H;
+	protected  int _nestingLevel; 
+
 	
-	public AtpDecisionNode(Vertex vertex, Car car, Road road, AtpDecisionNode parent) {
+	public AtpDecisionNode(Vertex vertex, Car car, Road road, AtpDecisionNode parent,int nestingLevel) {
 		super();
 		_vertex = vertex;
 		_car = car;
 		_road = road;
 		_parent = parent;
 		_children = null;
+		_nestingLevel = nestingLevel;
 		set_H(0);
 	}
 	
@@ -48,14 +52,15 @@ public class AtpDecisionNode implements  DecisionNode  {
 	
 	
 	public void expand(Problem problem){
+		if (_nestingLevel==Defs.NESTING_LEVEL) return;
 		_children = new Vector<DecisionNode>();
 		for(Vertex v : _vertex.get_neighbours().keySet()){
-			_children.add(new AtpDecisionNode(v, _car, _vertex.get_neighbours().get(v), this));
+			_children.add(new AtpDecisionNode(v, _car, _vertex.get_neighbours().get(v), this,_nestingLevel++));
 		}
 		for (Car c : _vertex.get_cars().values()){
 			for(Vertex v : _vertex.get_neighbours().keySet()){
 				if (_vertex.get_neighbours().get(v).is_flooded() && c.get_coff()==0) continue; 
-				_children.add(new AtpDecisionNode(v, c, _vertex.get_neighbours().get(v), this));
+				_children.add(new AtpDecisionNode(v, c, _vertex.get_neighbours().get(v), this,_nestingLevel++));
 			}
 		}	
 	}
@@ -67,7 +72,7 @@ public class AtpDecisionNode implements  DecisionNode  {
 	public void set_vertex(Vertex vertex) {
 		_vertex = vertex;
 	}
-
+				
 	public Car get_car() {
 		return _car;
 	}
@@ -84,5 +89,20 @@ public class AtpDecisionNode implements  DecisionNode  {
 	public int compareTo(DecisionNode o) {
 		return 0;
 	}
-	
+
+	@Override
+	public int getNestingLevel() {
+		
+		return _nestingLevel;
+	}
+
+	@Override
+	public boolean equals(DecisionNode dn) {
+		if ((_vertex.equals(((AtpDecisionNode)dn)._vertex)) &&
+			(_car.equals(((AtpDecisionNode)dn)._car))) 
+		
+			return true;
+		else
+			return false;
+	}	
 }

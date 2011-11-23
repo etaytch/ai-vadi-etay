@@ -3,17 +3,18 @@ package agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-
 import searchAlgorithms.AtpDecisionNode;
-import searchAlgorithms.DecisionNode;
 import simulator.Car;
+import simulator.Enviornment;
 import simulator.MoveAction;
-import simulator.Simulator;
 import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
 import tools.ATPLogger;
 
+/**
+ * Human Agent Class - User interface Agent, Mainly for DEBUG purposes  
+ * 
+ */
 public class HumanAgent extends Agent {
 
 
@@ -24,11 +25,11 @@ public class HumanAgent extends Agent {
 	}
 
 	@Override
-	public void chooseBestAction(Simulator sim) {
+	public void chooseBestAction(Enviornment env) {
 		 Vertex futurePosition = null;
 		 String carName = null;
 		 
-		 futurePosition = whereToMove(sim);
+		 futurePosition = whereToMove(env);
 		 carName = switchCar();
 		 
 		 if (carName!=null){
@@ -63,7 +64,7 @@ public class HumanAgent extends Agent {
 	      return futureCar;
 	}
 
-	private Vertex whereToMove(Simulator sim) {
+	private Vertex whereToMove(Enviornment env) {
 		Vertex futurePosition = null;
 		System.out.print("\n"+get_name()+", it is your turn!\n" +
 		 					"you are at Vertex "+get_vertex().get_number()+
@@ -72,7 +73,7 @@ public class HumanAgent extends Agent {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		 try {
 	         int newVertexNumber = Integer.parseInt(br.readLine());
-	         futurePosition = sim.getVertex(newVertexNumber);
+	         futurePosition = env.getVertex(newVertexNumber);
 	      
 		 } catch (IOException ioe) {
 	         ATPLogger.log("IO error!");
@@ -87,7 +88,6 @@ public class HumanAgent extends Agent {
 
 	@Override
 	public AtpDecisionNode getInitNode() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

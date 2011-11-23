@@ -1,31 +1,32 @@
 package searchAlgorithms;
 
-import graph.searchAlgorithms.Dijkstra;
-import graph.searchGraph.Graph;
-import graph.searchGraph.Node;
-
+import generalAlgorithms.Dijkstra;
+import generalAlgorithms.Graph;
+import generalAlgorithms.Node;
 import java.util.ArrayList;
-
 import simulator.Car;
+import simulator.Defs;
+import simulator.Enviornment;
 import simulator.Road;
-import simulator.Simulator;
 import simulator.Vertex;
 
 public class AstarDecisionNode extends GreedyDecisionNode{
 
 	private double _accWeight;
 
+
 	public AstarDecisionNode(Vertex vertex, Car car, Road road,
-			AtpDecisionNode parent) {
-		super(vertex, car, road, parent);
+			AtpDecisionNode parent,int nestingLevel) 
+		{
+		super(vertex, car, road, parent,nestingLevel);
 		if(_parent!=null){
 			_accWeight = ((AstarDecisionNode) _parent).get_accWeight()+calcLocalWeight(road,car);
 		}
 		else{
 			_accWeight=0.0;
 		}
-		
 	}
+
 
 	private double calcLocalWeight(Road e, Car car){
 		if (e == null){
@@ -56,21 +57,22 @@ public class AstarDecisionNode extends GreedyDecisionNode{
 		_accWeight = accWeight;
 	}
 	
-	public double clacHuristic(Car c , Simulator sim, Vertex vFrom, Vertex vTo) {
-		Graph g = getDijkstraHuristicGraph(c,sim);
+	public double clacHuristic(Car c , Enviornment env, Vertex vFrom, Vertex vTo) {
+		Graph g = getDijkstraHuristicGraph(c,env);
 		ArrayList<Node> result = new ArrayList<Node>();
 		Node from = g.get_node_by_ID(vFrom.get_number());
 		Node to = g.get_node_by_ID(vTo.get_number());
 		double switchCarTime = 0.0;
 		if((_parent!=null) && (!c.equals(_parent._car))){
-			switchCarTime = sim.TSWITCH;
+			switchCarTime = Defs.TSWITCH;
 		}
 		return switchCarTime+Dijkstra.findShortestPath(g,from, to, result );
 	}
-
-	public int compareTo(AtpDecisionNode o) {
-		if (get_H()+get_accWeight()>o.get_H()+get_accWeight()) return 1;
-		if (get_H()+get_accWeight()<o.get_H()+get_accWeight()) return -1;
+	
+	@Override
+	public int compareTo(DecisionNode o) {
+		if (get_H()+get_accWeight()>((AstarDecisionNode)o).get_H()+get_accWeight()) return 1;
+		if (get_H()+get_accWeight()<((AstarDecisionNode)o).get_H()+get_accWeight()) return -1;
 		return 0;
 	}
 

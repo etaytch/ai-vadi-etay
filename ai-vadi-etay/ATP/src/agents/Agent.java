@@ -9,19 +9,20 @@ import java.util.Queue;
 import searchAlgorithms.AtpDecisionNode;
 import simulator.Action;
 import simulator.Car;
-import simulator.Simulator;
+import simulator.Enviornment;
 import simulator.Vertex;
-
+/**
+ * this is ABSTRACT  ATP agent class
+ */
 public abstract class Agent {
 	
 	protected String  _name;
 	protected Car _car;
-	protected Queue<Action> _actions;
-	protected Vertex _vertex;
+	protected Queue<Action> _actions;		
+	protected Vertex _vertex;  				//current agent position
 	protected Vertex _initPosition;
 	protected Vertex _goalPosition;
-	protected Map<String,String> _state;				// "finished", "stuck"s
-	
+	protected Map<String,String> _state;	// "finished", "stuck"s
 		
 	public String get_state(String key) {
 		return _state.get(key);
@@ -116,13 +117,31 @@ public abstract class Agent {
 		return get_actions().poll();
 	}
 	
-	public abstract void chooseBestAction(Simulator env);	// place an action in the queue 
+	/**
+	 * this method should be overridden by  all the child agents
+	 */
+	public abstract void chooseBestAction(Enviornment env);	// place an action in the queue 
 	
-	public void search(Simulator env) {
-		// TODO Auto-generated method stub
-	}
 
+	/**
+	 * this method  is mainly for creating the first DecisionNode of this agent - used by "AtpProblem"
+	 */
 	public abstract AtpDecisionNode getInitNode();
+	
+
+	
+	/**
+	 * 
+	 * this is the Search algorithm of this agent, it is empty method in simple agents  
+	 *
+	 * @param env
+	 * @param initPos
+	 * @param goalPosition
+	 * @param initCar
+	 */
+	public void search(Enviornment env, Vertex initPos, Vertex goalPosition,
+			Car initCar) {
+	}
 }
 
 

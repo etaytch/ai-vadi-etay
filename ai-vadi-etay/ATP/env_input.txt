@@ -63,5 +63,5 @@ v 7 Polo7   80 0.5
 
 ;a 2 Etay 0 4 Honda0
 ;a 2 Vadi 1 5 Polo1
-;a 2 Diana 7 3 Honda7
-a 4 Niv 0 2 Honda0
+;a 3 Diana 0 2 Honda0
+a 6 Niv 0 2 Honda0

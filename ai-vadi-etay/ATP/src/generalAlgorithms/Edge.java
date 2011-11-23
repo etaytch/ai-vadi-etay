@@ -1,4 +1,5 @@
-package graph.searchGraph;
+package generalAlgorithms;
+
 
 public class Edge {
 	private Node _from;

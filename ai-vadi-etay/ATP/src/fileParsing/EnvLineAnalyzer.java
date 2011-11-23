@@ -1,18 +1,23 @@
 package fileParsing;
 
+import agents.AstarAgent;
 import agents.GreedyAgent;
+import agents.RealTimeAstarAgent;
 import agents.SimpleGreedyAgent;
 import agents.HumanAgent;
 import agents.SpeedNutAutomationAgent;
+import simulator.Enviornment;
 import simulator.Simulator;
 
 public class EnvLineAnalyzer implements LineAnalyzerInterface {
 
-	private Simulator env;
+	private Simulator _sim;
+	private Enviornment _env;
 	
 	public EnvLineAnalyzer() {
 		super();
-		env = new Simulator();
+		_env = new Enviornment();
+		_sim = new Simulator(_env);
 	}
 
 	@Override
@@ -39,8 +44,8 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 	}
 
 	private void parseCar(String[] line) {
-		env.addVertex(Integer.parseInt(line[1]));
-		env.addCar(Integer.parseInt(line[1]) ,line[2] ,Integer.parseInt(line[3]),
+		_env.addVertex(Integer.parseInt(line[1]));
+		_env.addCar(Integer.parseInt(line[1]) ,line[2] ,Integer.parseInt(line[3]),
 					Double.parseDouble(line[4]));
 	}
 
@@ -48,33 +53,47 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 		
 		switch (Integer.parseInt(line[1])) {
 		case 1:
-			env.addAgent(new HumanAgent(line[2], 
-					env.getVertex(Integer.parseInt(line[3])),
-					env.getVertex(Integer.parseInt(line[4])),
-					env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			_env.addAgent(new HumanAgent(line[2], 
+					_env.getVertex(Integer.parseInt(line[3])),
+					_env.getVertex(Integer.parseInt(line[4])),
+					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
+			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
 			break;
 		case 2:
-			env.addAgent(new SpeedNutAutomationAgent(line[2], 
-					env.getVertex(Integer.parseInt(line[3])),
-					env.getVertex(Integer.parseInt(line[4])),
-					env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			_env.addAgent(new SpeedNutAutomationAgent(line[2], 
+					_env.getVertex(Integer.parseInt(line[3])),
+					_env.getVertex(Integer.parseInt(line[4])),
+					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
+			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
 			break;
 			
 		case 3:
-			env.addAgent(new SimpleGreedyAgent(line[2], 
-					env.getVertex(Integer.parseInt(line[3])),
-					env.getVertex(Integer.parseInt(line[4])),
-					env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			_env.addAgent(new SimpleGreedyAgent(line[2], 
+					_env.getVertex(Integer.parseInt(line[3])),
+					_env.getVertex(Integer.parseInt(line[4])),
+					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
+			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
 			break;
 		case 4:
-			env.addAgent(new GreedyAgent(line[2], 
-					env.getVertex(Integer.parseInt(line[3])),
-					env.getVertex(Integer.parseInt(line[4])),
-					env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			_env.addAgent(new GreedyAgent(line[2], 
+					_env.getVertex(Integer.parseInt(line[3])),
+					_env.getVertex(Integer.parseInt(line[4])),
+					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
+			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			break;
+		case 5:
+			_env.addAgent(new AstarAgent(line[2], 
+					_env.getVertex(Integer.parseInt(line[3])),
+					_env.getVertex(Integer.parseInt(line[4])),
+					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
+			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			break;
+		case 6:
+			_env.addAgent(new RealTimeAstarAgent(line[2], 
+					_env.getVertex(Integer.parseInt(line[3])),
+					_env.getVertex(Integer.parseInt(line[4])),
+					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
+			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
 			break;
 			
 		default:
@@ -83,7 +102,7 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 	}
 	
 	private void parseEdge(String[] line) {
-		env.addEdge(Integer.parseInt(line[1]), Integer.parseInt(line[2]),
+		_env.addEdge(Integer.parseInt(line[1]), Integer.parseInt(line[2]),
 					Integer.parseInt(line[3]), isFlooded(line[4]));
 	}
 
@@ -95,7 +114,7 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 
 	@Override
 	public Object getParsedObject() {
-		return env;
+		return _sim;
 	}
 
 }
