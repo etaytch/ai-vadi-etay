@@ -9,6 +9,11 @@ import agents.SpeedNutAutomationAgent;
 import simulator.Enviornment;
 import simulator.Simulator;
 
+/**
+ * Line parser for the ATP problem input file
+ * @author Vadi
+ *
+ */
 public class EnvLineAnalyzer implements LineAnalyzerInterface {
 
 	private Simulator _sim;
@@ -49,6 +54,18 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 					Double.parseDouble(line[4]));
 	}
 
+	
+	/**
+	 * parse agents:
+	 * 1 = Human
+	 * 2 = Speed nut
+	 * 3 = Simple Greedy
+	 * 4 = Greedy (With huristic) 
+	 * 5 = A* 
+	 * 6 = RT A*
+	 * 
+	 * @param line
+	 */
 	private void parseAgent(String[] line) {
 		
 		switch (Integer.parseInt(line[1])) {

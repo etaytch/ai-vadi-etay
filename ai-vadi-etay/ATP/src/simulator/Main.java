@@ -11,9 +11,10 @@ import fileParsing.LineAnalyzerInterface;
 
 //TODO
 //PART II
-//1. Javadoc
+//1. Javadoc - agets and fileParsing are done!
 //2. Logger
 //3. Calc equation !    Agent Score = f*S+T where T-Number of expansiones (nesting level), S-agents score, and f= 1 / 10 / 10000 (already in Defs.java)
+//4. Bonus (SpeedNut prediction)
 
 public class Main {
 
@@ -36,9 +37,26 @@ public class Main {
 		LineAnalyzerInterface la = new EnvLineAnalyzer();
 		FileParser.parseEnv("env_input.txt", la);
 		Simulator sim = (Simulator)la.getParsedObject();
-		//sim.setGreedyGraph(true);		
 		System.out.println(sim);
+		userInput(sim);
+		sim.startSimulation();
 		
+		System.out.println();
+		System.out.println();
+		System.out.println("	*********************************");
+		System.out.println("	*********** Good Bye ! **********");
+		System.out.println("	*********************************");
+		System.out.println();
+		System.in.read();
+	}
+
+	/**
+	 * this method is UI to add more user defined agents
+	 * 
+	 * @param sim
+	 * @throws IOException
+	 */
+	private static void userInput(Simulator sim) throws IOException {
 		System.out.println("How many more agents to add? (0 - read from file");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String num="";		 
@@ -76,8 +94,6 @@ public class Main {
 			}	    
 	    	
 	    }
-		sim.startSimulation();
-		
 	}
 
 }

@@ -5,9 +5,19 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
+/**
+ * 
+ * this class responsible to parse the  user input file line by line.
+ *
+ */
 public class FileParser {
 
-	
+	/**
+	 * the main parsing method
+	 * @param filename
+	 * @param la
+	 * @return
+	 */
 	public static Object parseEnv(String filename,LineAnalyzerInterface la){
 		try{
 			  FileInputStream fstream = new FileInputStream(filename);

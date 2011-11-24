@@ -18,7 +18,7 @@ public abstract class Agent {
 	
 	protected String  _name;
 	protected Car _car;
-	protected Queue<Action> _actions;		
+	private Queue<Action> _actions;		
 	protected Vertex _vertex;  				//current agent position
 	protected Vertex _initPosition;
 	protected Vertex _goalPosition;
@@ -42,38 +42,26 @@ public abstract class Agent {
 		_car = car;
 		_state=new HashMap<String, String>();
 	}
-
-	
 	
 	public Queue<Action> get_actions() {
 		return _actions;
 	}
 
-
-
 	public void set_actions(Queue<Action> actions) {
 		_actions = actions;
 	}
-
-
 
 	public String get_name() {
 		return _name;
 	}
 
-
-
 	public void set_name(String name) {
 		_name = name;
 	}
 
-
-
 	public Car get_car() {
 		return _car;
 	}
-
-
 
 	public void set_car(Car car) {
 		_car = car;
@@ -82,8 +70,6 @@ public abstract class Agent {
 	public Vertex get_vertex() {
 		return _vertex;
 	}
-
-
 
 	public void set_vertex(Vertex vertex) {
 		_vertex = vertex;
@@ -98,16 +84,13 @@ public abstract class Agent {
 		this._initPosition = _initPosition;
 	}
 
-
 	public Vertex get_initPosition() {
 		return _initPosition;
 	}
 
-
 	public void set_goalPosition(Vertex _goalPosition) {
 		this._goalPosition = _goalPosition;
 	}
-
 
 	public Vertex get_goalPosition() {
 		return _goalPosition;

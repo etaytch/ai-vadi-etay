@@ -15,8 +15,15 @@ import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
 import tools.ATPLogger;
 
+/**
+ * Speed Nut agent, peek the fastest car and the heaviest road and go there! 
+ * finish if it reaches the goal vertex or passes 3 times in the same vertex.
+ * @author Vadi
+ *
+ */
 public class SpeedNutAutomationAgent extends Agent {
 
+	
 	private Vector<Vertex> _route;	// stores agent's route
 	private Map<Vertex,Integer> _amountOfVisits;
 	

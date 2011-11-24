@@ -7,6 +7,11 @@ import simulator.Car;
 import simulator.Enviornment;
 import simulator.Vertex;
 
+/**
+ * Real Time A* Agent  - acts like A* but perform search all over again every move
+ * 
+ *
+ */
 public class RealTimeAstarAgent extends AstarAgent {
 
 	public RealTimeAstarAgent(String name, Vertex initPosition, Vertex goalPosition,
@@ -16,7 +21,7 @@ public class RealTimeAstarAgent extends AstarAgent {
 
 	@Override
 	public void chooseBestAction(Enviornment env) {
-		
+		//search from the current node.
 		this.search(env,this.get_vertex(),this.get_goalPosition(),this.get_car());
 		if(!_actions.isEmpty()){
 			Action action = _actions.remove(0);
