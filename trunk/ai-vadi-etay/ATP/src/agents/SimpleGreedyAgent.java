@@ -19,6 +19,11 @@ import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
 import tools.ATPLogger;
 
+/**
+ * Simple greedy agent - chooses the first vertex in a lighted path to the goal 
+ * @author Vadi
+ *
+ */
 public class SimpleGreedyAgent extends Agent {	
 
 	public SimpleGreedyAgent(String name, Vertex initPosition, Vertex goalPosition,
@@ -27,6 +32,9 @@ public class SimpleGreedyAgent extends Agent {
 		
 	}
 
+	/**
+	 * choose the first road in the lightest path to the goal vertex
+	 */
 	@Override
 	public void chooseBestAction(Enviornment env) {				
 		ArrayList<Node> result = new ArrayList<Node>();
@@ -78,6 +86,13 @@ public class SimpleGreedyAgent extends Agent {
 		return null;
 	}
 	
+	/**
+	 * Env graph to simple graph conversion - for using the Dijkstra algorithm
+	 * @param clearOnly  - parameter that tell the the convention algorithm to not add 
+	 * 					   flooded roads to the simple graph
+	 * @param env
+	 * @return Simple graph (Graph)
+	 */
 	public Graph getGraph(boolean clearOnly,Enviornment env){
 		Node[] nodes = new Node[env.get_vertexes().size()];
 		//int i=0;
@@ -105,6 +120,14 @@ public class SimpleGreedyAgent extends Agent {
 		return new Graph(nodes,edges);	
 	}
 	
+	/**
+	 * Calculate the lightest path (using Dijkstra algorithm to the Goal vertex from current position )
+	 * @param fromVertex
+	 * @param toVertex
+	 * @param result
+	 * @param env
+	 * @return
+	 */
 	public double calcPath(int fromVertex, int toVertex,ArrayList<Node> result, Enviornment env){
 		Graph _graph = getGraph(true,env);
 		Node from = _graph.get_node_by_ID(fromVertex);

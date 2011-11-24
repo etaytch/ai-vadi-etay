@@ -3,13 +3,14 @@
 ; = comment
 
 
-;Agents Dictionary:
+;Agents Dictionary
 ;
-;1 = human
-;2 = 
-;3 = 
-;4 = 
-;
+;1 = Human
+;2 = Speed nut
+;3 = Simple Greedy
+;4 = Greedy (With huristic) 
+;5 = A* 
+;6 = RT A*
 
 
 ;EDGES

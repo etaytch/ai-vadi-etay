@@ -40,6 +40,10 @@ public class HumanAgent extends Agent {
 		 }
 	}
 
+	/**
+	 * Manual Switch car operation
+	 * @return
+	 */
 	private String switchCar() {
 		String futureCar = null;
 		if (get_vertex().get_cars().isEmpty()) return null;
