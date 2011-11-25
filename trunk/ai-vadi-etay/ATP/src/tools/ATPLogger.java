@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 		  FileHandler fh;
 
 		try {
-			fh = new FileHandler("log_"+ft.format(dNow)+".log",true);			
+			fh = new FileHandler("Log/log_"+ft.format(dNow)+".log",true);			
 			fh.setFormatter(new Formatter() {
 		          public String format(LogRecord record) {
 		    		  Date dNow = new Date();

@@ -73,7 +73,6 @@ public class Vertex implements Comparable<Vertex> {
 	public void addNeighbour(Vertex v , Road e){
 		if (!get_neighbours().containsKey(v)){
 			get_neighbours().put(v,e);
-			System.out.println(get_neighbours().containsKey(v));
 		}
 	}
 
