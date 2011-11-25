@@ -1,4 +1,4 @@
-package searchAlgorithms;
+package searchAlgorithms.DecisionNodes;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -7,12 +7,20 @@ import generalAlgorithms.Dijkstra;
 import generalAlgorithms.Edge;
 import generalAlgorithms.Graph;
 import generalAlgorithms.Node;
+import searchAlgorithms.AtpProblem;
+import searchAlgorithms.Interfaces.DecisionNode;
+import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;
 import simulator.Defs;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.Road;
 import simulator.Vertex;
 
+/**
+ * 
+ * Greedy decision node
+ *
+ */
 public class GreedyDecisionNode extends AtpDecisionNode {
 
 	
@@ -26,7 +34,7 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 	@Override
 	public int compareTo(DecisionNode o) {
 		if (get_H()>((GreedyDecisionNode)o).get_H()) return 1;	
-		if (get_H()<((GreedyDecisionNode)o).get_H()) return -1;  // heavy road is poorer
+		if (get_H()<((GreedyDecisionNode)o).get_H()) return -1;  
 		return 0;
 	}
 	
@@ -36,7 +44,7 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 		if (_nestingLevel==Defs.NESTING_LEVEL) return;
 		_children = new Vector<DecisionNode>();
 		for(Vertex v : _vertex.get_neighbours().keySet()){
-			if((_parent!=null)&&(_parent._vertex.equals(v))) continue;		// don't calc parent
+			if((_parent!=null)&&(_parent._vertex.equals(v))) continue;							// don't calc parent
 			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;	// don't calc flooded road with regular car
 			GreedyDecisionNode newNode = new GreedyDecisionNode(v, _car, _vertex.get_neighbours().get(v),this, _nestingLevel++);
 			newNode._H = clacHuristic(_car,((AtpProblem) problem).get_env(), 
@@ -57,7 +65,7 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 		}	
 	}
 	
-	public double clacHuristic(Car c , Enviornment env, Vertex vFrom, Vertex vTo, Road road) {
+	public double clacHuristic(Car c , Environment env, Vertex vFrom, Vertex vTo, Road road) {
 		Graph g = getDijkstraHuristicGraph(c,env);
 		ArrayList<Node> result = new ArrayList<Node>();
 		Node from = g.get_node_by_ID(vFrom.get_number());
@@ -68,9 +76,15 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 		}
 		double ans = switchCarTime+(calcWeight(road, c))+ Dijkstra.findShortestPath(g,from, to, result );
 		return ans;
-	}
+	} 
 
-	public Graph getDijkstraHuristicGraph(Car car,Enviornment env){
+	/**
+	 * return Simple graph with calculated edges for the greedy agent heuristic calculation    
+	 * @param car
+	 * @param env
+	 * @return
+	 */
+	public Graph getDijkstraHuristicGraph(Car car,Environment env){
 		Node[] nodes = new Node[env.get_vertexes().size()];
 		int i=0;
 		for(Integer v:env.get_vertexes().keySet()){

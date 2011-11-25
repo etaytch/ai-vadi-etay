@@ -1,20 +1,28 @@
 package searchAlgorithms;
 
 import agents.Agent;
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
+import searchAlgorithms.Interfaces.DecisionNode;
+import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.Vertex;
 
+/**
+ * The American traveler problems Problem parameters
+ * 
+ *
+ */
 public class AtpProblem implements Problem {
 	
-	private Enviornment _env;
-	private Vertex _init;
-	private Vertex _goal;
-	private Agent _agent; 
+	private Environment _env; //the ATP world abstraction  
+	private Vertex _init; //initial vertex
+	private Vertex _goal; //goal vertex
+	private Agent _agent; //the agent who is trying to move in env
 	
 	
 
-	public AtpProblem(Enviornment env, Vertex init, Vertex goal, Car initCar, Agent agent) {
+	public AtpProblem(Environment env, Vertex init, Vertex goal, Car initCar, Agent agent) {
 		super();
 		_agent = agent;
 		_env = env;
@@ -23,7 +31,7 @@ public class AtpProblem implements Problem {
 	}
 
 	
-	public Enviornment get_env() {
+	public Environment get_env() {
 		return _env;
 	}
 
@@ -32,7 +40,7 @@ public class AtpProblem implements Problem {
 	}
 
 
-	public void set_sim(Enviornment env) {
+	public void set_sim(Environment env) {
 		_env = env;
 	}
 
@@ -41,13 +49,9 @@ public class AtpProblem implements Problem {
 		return _init;
 	}
 
-
 	public void set_init(Vertex init) {
 		_init = init;
 	}
-
-
-
 
 	public Vertex get_goal() {
 		return _goal;
@@ -59,18 +63,25 @@ public class AtpProblem implements Problem {
 	}
 
 
+	/**
+	 * return if the DecisionNode is a Goal Node
+	 */
 	@Override
 	public boolean goalTest(DecisionNode d) {
 		return d.get_goal_evaluation()==_goal.get_number();
 	}
 
-
+	/**
+	 * return the first node to expand
+	 */
 	@Override
 	public AtpDecisionNode getInitNode() {
 		return _agent.getInitNode();
 	}
 
-
+	/**
+	 * return the agent of this problem
+	 */
 	@Override
 	public Agent getAgent() {
 		return _agent;

@@ -2,18 +2,18 @@ package agents;
 
 
 import java.util.Vector;
-import searchAlgorithms.AtpDecisionNode;
-import searchAlgorithms.DecisionNode;
 import searchAlgorithms.GeneralSearch;
-import searchAlgorithms.GreedyDecisionNode;
-import searchAlgorithms.Problem;
 import searchAlgorithms.AtpProblem;
-import simulator.Action;
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
+import searchAlgorithms.DecisionNodes.GreedyDecisionNode;
+import searchAlgorithms.Interfaces.DecisionNode;
+import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.MoveAction;
 import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
+import simulator.Interfaces.Action;
 
 /**
  * Greedy agent implementation, the Expand algorithm is implemented in the GreedyDecisionNode class
@@ -34,7 +34,7 @@ public class GreedyAgent extends Agent {
 	 * on it, then translate the resulted chain of DecisionNodes to Actions
 	 */
 	@Override
-	public void search(Enviornment env, Vertex initPos,Vertex goalPosition,Car initCar )
+	public void search(Environment env, Vertex initPos,Vertex goalPosition,Car initCar )
 	{		
 		Problem problem = new AtpProblem(env, initPos, goalPosition, initCar ,this);
 		Vector<DecisionNode> vec = GeneralSearch.search(problem,true);
@@ -70,7 +70,7 @@ public class GreedyAgent extends Agent {
 	 * 
 	 */
 	@Override
-	public void chooseBestAction(Enviornment env) {
+	public void chooseBestAction(Environment env) {
 		if(!_actions.isEmpty()){
 			Action action = _actions.remove(0);  //get next predicted action
 			get_actions().offer(action);		//offer it to be the next performed action

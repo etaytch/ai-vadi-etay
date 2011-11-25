@@ -1,11 +1,11 @@
 package agents;
 
-import searchAlgorithms.AstarDecisionNode;
-import searchAlgorithms.AtpDecisionNode;
-import simulator.Action;
+import searchAlgorithms.DecisionNodes.AstarDecisionNode;
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import simulator.Car;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.Vertex;
+import simulator.Interfaces.Action;
 
 /**
  * Real Time A* Agent  - acts like A* but perform search all over again every move
@@ -20,7 +20,7 @@ public class RealTimeAstarAgent extends AstarAgent {
 	}
 
 	@Override
-	public void chooseBestAction(Enviornment env) {
+	public void chooseBestAction(Environment env) {
 		//search from the current node.
 		this.search(env,this.get_vertex(),this.get_goalPosition(),this.get_car());
 		if(!_actions.isEmpty()){

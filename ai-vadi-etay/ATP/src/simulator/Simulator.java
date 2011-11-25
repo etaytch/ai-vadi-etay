@@ -3,6 +3,8 @@ package simulator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
+import simulator.Interfaces.Action;
 import tools.ATPLogger;
 import agents.Agent;
 
@@ -11,21 +13,21 @@ import agents.Agent;
 public class Simulator {
  
 	private Map<Agent,Chart> _finishedAgents;
-	private Enviornment _env;
+	private Environment _env;
 	
 	public Simulator(Map<Integer,Vertex> vertexes, Map<Agent, Chart> agents, Vector<Road> edges) {
 		super();
-		_env = new Enviornment(vertexes,agents,edges);
+		_env = new Environment(vertexes,agents,edges);
 		_finishedAgents = new HashMap<Agent,Chart>();
 	}
 		
 	public Simulator(Map<Integer,Vertex> vertexes, Vector<Road> edges ) {
 		super();
-		_env = new Enviornment(vertexes,edges);
+		_env = new Environment(vertexes,edges);
 		_finishedAgents = new HashMap<Agent,Chart>();
 	}
 	
-	public Simulator(Enviornment env) {
+	public Simulator(Environment env) {
 		super();
 		_env = env;
 		_finishedAgents = new HashMap<Agent,Chart>();
@@ -33,15 +35,15 @@ public class Simulator {
 	
 	public Simulator() {
 		super();
-		_env = new Enviornment();
+		_env = new Environment();
 		_finishedAgents = new HashMap<Agent,Chart>();
 	}
 	
-	public Enviornment get_env() {
+	public Environment get_env() {
 		return _env;
 	}
 
-	public void set_env(Enviornment env) {
+	public void set_env(Environment env) {
 		_env = env;
 	}
 

@@ -1,5 +1,10 @@
 package simulator;
 
+/**
+ * 
+ * road (edge) in ATP Environment
+ *
+ */
 public class Road {
 	
 	private int _weight;

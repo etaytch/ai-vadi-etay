@@ -14,26 +14,30 @@ import agents.HumanAgent;
 import agents.SimpleGreedyAgent;
 import agents.SpeedNutAutomationAgent;
 
-public class Enviornment {
+/**
+ * Data object of the  ATP world graph, and agents in this world
+ * 
+ */
+public class Environment {
 	private Map<Integer,Vertex> _vertexes;
 	private Vector<Road> _edges;
 	private Map<Agent,Chart> _agents;
 	
-	public Enviornment(Map<Integer,Vertex> vertexes, Map<Agent, Chart> agents, Vector<Road> edges) {
+	public Environment(Map<Integer,Vertex> vertexes, Map<Agent, Chart> agents, Vector<Road> edges) {
 		super();
 		_vertexes = vertexes;
 		_agents = agents;
 		_edges = edges;
 	}
 		
-	public Enviornment(Map<Integer,Vertex> vertexes, Vector<Road> edges ) {
+	public Environment(Map<Integer,Vertex> vertexes, Vector<Road> edges ) {
 		super();
 		_vertexes = vertexes;
 		_edges = edges;
 		_agents = new HashMap<Agent, Chart>();
 	}
 	
-	public Enviornment() {
+	public Environment() {
 		super();
 		_vertexes = new HashMap<Integer,Vertex>();
 		_edges = new Vector<Road>();

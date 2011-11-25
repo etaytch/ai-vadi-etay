@@ -1,11 +1,14 @@
 package tools;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
 
   public class ATPLogger {
 	  
@@ -15,13 +18,17 @@ import java.util.logging.Logger;
 	      logger = Logger.getLogger("ATPLogger");	
 	      lm.addLogger(logger);
 	      logger.setLevel(Level.INFO);	      
-
+		  Date dNow = new Date();
+	      SimpleDateFormat ft = new SimpleDateFormat ("dd_mm_yyyy_hhmmss");
 		  FileHandler fh;
+
 		try {
-			fh = new FileHandler("logger.log",true);			
+			fh = new FileHandler("log_"+ft.format(dNow)+".log",true);			
 			fh.setFormatter(new Formatter() {
-		          public String format(LogRecord record) {	              	        	  
-		        	  return record.getMessage() + "\n";
+		          public String format(LogRecord record) {
+		    		  Date dNow = new Date();
+		    	      SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss	");
+		        	  return ft.format(dNow)+record.getMessage() + "\r\n";
 		          }
 		    });
 			logger.addHandler(fh);
@@ -32,8 +39,5 @@ import java.util.logging.Logger;
 		}
 		catch (Exception e) { e.printStackTrace(); }
 			
-	  }
-	  public static void main(String args[]) {		  
-		  
 	  }
   }

@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import searchAlgorithms.AtpDecisionNode;
-import simulator.Action;
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import simulator.Car;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.Vertex;
+import simulator.Interfaces.Action;
 /**
  * this is ABSTRACT  ATP agent class
  */
@@ -103,7 +103,7 @@ public abstract class Agent {
 	/**
 	 * this method should be overridden by  all the child agents
 	 */
-	public abstract void chooseBestAction(Enviornment env);	// place an action in the queue 
+	public abstract void chooseBestAction(Environment env);	// place an action in the queue 
 	
 
 	/**
@@ -122,7 +122,7 @@ public abstract class Agent {
 	 * @param goalPosition
 	 * @param initCar
 	 */
-	public void search(Enviornment env, Vertex initPos, Vertex goalPosition,
+	public void search(Environment env, Vertex initPos, Vertex goalPosition,
 			Car initCar) {
 	}
 }

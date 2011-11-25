@@ -5,8 +5,21 @@ package generalAlgorithms;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * 
+ * This is Dijkstra find shortest path general algorithm
+ *
+ */
 public class Dijkstra {
 	
+	/**
+	 * 
+	 * @param graph simple graph stracture
+	 * @param start start Node
+	 * @param target goal Node
+	 * @param C  the shortest path future array
+	 * @return the weight of the shortest path
+	 */
 	public static double findShortestPath(Graph graph, Node start,Node target,ArrayList<Node> C) {
 		   Node[] nodes = graph.get_nodes();
 		   Edge[] edges = graph.get_edges();
@@ -73,6 +86,12 @@ public class Dijkstra {
 	       return D[target.getId()];
 	   }
 
+		/**
+		 * Init step in Dijkstra algorithm
+		 * @param nodes
+		 * @param edges
+		 * @return weight matrix  initialized to infinity
+		 */
 	   private static double[][] initializeWeight(Node[] nodes, Edge[] edges){
 	       double[][] Weight = new double[nodes.length][nodes.length];
 	       for(int i=0; i<nodes.length; i++){

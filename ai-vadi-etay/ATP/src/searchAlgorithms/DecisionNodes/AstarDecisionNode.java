@@ -1,17 +1,27 @@
-package searchAlgorithms;
+package searchAlgorithms.DecisionNodes;
 
 import generalAlgorithms.Dijkstra;
 import generalAlgorithms.Graph;
 import generalAlgorithms.Node;
 import java.util.ArrayList;
+
+import searchAlgorithms.Interfaces.DecisionNode;
 import simulator.Car;
 import simulator.Defs;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.Road;
 import simulator.Vertex;
 
+/**
+ * A* decision node
+ * 
+ *
+ */
 public class AstarDecisionNode extends GreedyDecisionNode{
 
+	/**
+	 * Accumulated weight from the first decision node
+	 */
 	private double _accWeight;
 
 
@@ -57,7 +67,7 @@ public class AstarDecisionNode extends GreedyDecisionNode{
 		_accWeight = accWeight;
 	}
 	
-	public double clacHuristic(Car c , Enviornment env, Vertex vFrom, Vertex vTo) {
+	public double clacHuristic(Car c , Environment env, Vertex vFrom, Vertex vTo) {
 		Graph g = getDijkstraHuristicGraph(c,env);
 		ArrayList<Node> result = new ArrayList<Node>();
 		Node from = g.get_node_by_ID(vFrom.get_number());
@@ -69,6 +79,9 @@ public class AstarDecisionNode extends GreedyDecisionNode{
 		return switchCarTime+Dijkstra.findShortestPath(g,from, to, result );
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public int compareTo(DecisionNode o) {
 		if (get_H()+get_accWeight()>((AstarDecisionNode)o).get_H()+get_accWeight()) return 1;

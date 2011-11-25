@@ -1,18 +1,26 @@
-package searchAlgorithms;
+package searchAlgorithms.DecisionNodes;
 
 import java.util.Vector;
+
+import searchAlgorithms.Interfaces.DecisionNode;
+import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;
 import simulator.Defs;
 import simulator.Road;
 import simulator.Vertex;
 
+/**
+ * 
+ * the American traveler problem Decision node 
+ *
+ */
 public class AtpDecisionNode implements  DecisionNode  {
 	protected  Vertex _vertex;
 	protected  Car _car;
 	protected  Road _road;
 	protected  AtpDecisionNode _parent;
 	protected  Vector<DecisionNode> _children;
-	protected  double _H;
+	protected  double _H;  //Heuristic calculation for this decision node
 	protected  int _nestingLevel; 
 
 	
@@ -50,7 +58,9 @@ public class AtpDecisionNode implements  DecisionNode  {
 		return _children;
 	}
 	
-	
+	/**
+	 * expansion method. the algorithm to expand this decision node to all possible decisions 
+	 */
 	public void expand(Problem problem){
 		if (_nestingLevel==Defs.NESTING_LEVEL) return;
 		_children = new Vector<DecisionNode>();
@@ -86,6 +96,9 @@ public class AtpDecisionNode implements  DecisionNode  {
 		return _vertex.get_number();
 	}
 
+	/**
+	 * compare to method for the priority queue
+	 */
 	public int compareTo(DecisionNode o) {
 		return 0;
 	}
@@ -96,6 +109,9 @@ public class AtpDecisionNode implements  DecisionNode  {
 		return _nestingLevel;
 	}
 
+	/**
+	 * equals method for the memoization mechanism
+	 */
 	@Override
 	public boolean equals(DecisionNode dn) {
 		if ((_vertex.equals(((AtpDecisionNode)dn)._vertex)) &&

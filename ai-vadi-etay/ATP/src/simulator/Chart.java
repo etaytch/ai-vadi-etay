@@ -1,5 +1,9 @@
 package simulator;
 
+/**
+ * Agent score chart
+ * 
+ */
 public class Chart {
 	int _actionsNumber;
 	double _totalTime;

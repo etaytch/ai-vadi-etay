@@ -3,9 +3,10 @@ package agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import searchAlgorithms.AtpDecisionNode;
+
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import simulator.Car;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.MoveAction;
 import simulator.SwitchCarAndMoveAction;
 import simulator.Vertex;
@@ -25,7 +26,7 @@ public class HumanAgent extends Agent {
 	}
 
 	@Override
-	public void chooseBestAction(Enviornment env) {
+	public void chooseBestAction(Environment env) {
 		 Vertex futurePosition = null;
 		 String carName = null;
 		 
@@ -68,7 +69,7 @@ public class HumanAgent extends Agent {
 	      return futureCar;
 	}
 
-	private Vertex whereToMove(Enviornment env) {
+	private Vertex whereToMove(Environment env) {
 		Vertex futurePosition = null;
 		System.out.print("\n"+get_name()+", it is your turn!\n" +
 		 					"you are at Vertex "+get_vertex().get_number()+
