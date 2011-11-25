@@ -14,23 +14,26 @@ import java.util.logging.Logger;
 	      LogManager lm = LogManager.getLogManager();	      	  	
 	      logger = Logger.getLogger("ATPLogger");	
 	      lm.addLogger(logger);
-	      logger.setLevel(Level.ALL);	      
+	      logger.setLevel(Level.INFO);	      
+
 		  FileHandler fh;
-		  
 		try {
-			fh = new FileHandler("logger.log");
+			fh = new FileHandler("logger.log",true);			
 			fh.setFormatter(new Formatter() {
 		          public String format(LogRecord record) {	              	        	  
 		        	  return record.getMessage() + "\n";
 		          }
 		    });
 			logger.addHandler(fh);
-			System.out.println(msg);
+			//System.out.println(msg);
 			
 			logger.info(msg);
 			fh.close();
 		}
 		catch (Exception e) { e.printStackTrace(); }
 			
+	  }
+	  public static void main(String args[]) {		  
+		  
 	  }
   }
