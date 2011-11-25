@@ -1,6 +1,7 @@
 package simulator;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -23,6 +24,10 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
+		File file = new File("logger.log");
+		file.delete();
+		file.createNewFile();
+		
 		System.out.println();
 		System.out.println("	*********************************");
 		System.out.println("	******** Welcome To The *********");
