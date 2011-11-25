@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import searchAlgorithms.AtpDecisionNode;
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import simulator.Car;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.MoveAction;
 import simulator.Road;
 import simulator.SwitchCarAndMoveAction;
@@ -36,7 +36,7 @@ public class SimpleGreedyAgent extends Agent {
 	 * choose the first road in the lightest path to the goal vertex
 	 */
 	@Override
-	public void chooseBestAction(Enviornment env) {				
+	public void chooseBestAction(Environment env) {				
 		ArrayList<Node> result = new ArrayList<Node>();
 		calcPath(get_vertex().get_number(),get_goalPosition().get_number(),result,env);		
 		//ATPLogger.log("Dijkstra result from "+get_vertex().get_number()+" to "+get_goalPosition().get_number()+":\n"+result);		
@@ -93,7 +93,7 @@ public class SimpleGreedyAgent extends Agent {
 	 * @param env
 	 * @return Simple graph (Graph)
 	 */
-	public Graph getGraph(boolean clearOnly,Enviornment env){
+	public Graph getGraph(boolean clearOnly,Environment env){
 		Node[] nodes = new Node[env.get_vertexes().size()];
 		//int i=0;
 		for(Integer v:env.get_vertexes().keySet()){
@@ -128,7 +128,7 @@ public class SimpleGreedyAgent extends Agent {
 	 * @param env
 	 * @return
 	 */
-	public double calcPath(int fromVertex, int toVertex,ArrayList<Node> result, Enviornment env){
+	public double calcPath(int fromVertex, int toVertex,ArrayList<Node> result, Environment env){
 		Graph _graph = getGraph(true,env);
 		Node from = _graph.get_node_by_ID(fromVertex);
 		Node to = _graph.get_node_by_ID(toVertex);

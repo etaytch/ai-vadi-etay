@@ -6,7 +6,7 @@ import agents.RealTimeAstarAgent;
 import agents.SimpleGreedyAgent;
 import agents.HumanAgent;
 import agents.SpeedNutAutomationAgent;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.Simulator;
 
 /**
@@ -17,11 +17,11 @@ import simulator.Simulator;
 public class EnvLineAnalyzer implements LineAnalyzerInterface {
 
 	private Simulator _sim;
-	private Enviornment _env;
+	private Environment _env;
 	
 	public EnvLineAnalyzer() {
 		super();
-		_env = new Enviornment();
+		_env = new Environment();
 		_sim = new Simulator(_env);
 	}
 

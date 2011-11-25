@@ -1,9 +1,14 @@
-package searchAlgorithms;
+package searchAlgorithms.Interfaces;
 
 
 import java.util.Vector;
 
 
+/**
+ * 
+ * Decision node interface
+ *
+ */
 public interface DecisionNode extends Comparable<DecisionNode> {
 	public void expand(Problem problem);
 	public DecisionNode get_parent();

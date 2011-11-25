@@ -1,5 +1,6 @@
 package simulator;
 
+import simulator.Interfaces.Action;
 import agents.Agent;
 
 public class SwitchCarAndMoveAction implements Action {

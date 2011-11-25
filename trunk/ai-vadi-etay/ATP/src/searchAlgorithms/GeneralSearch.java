@@ -4,7 +4,14 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
+import searchAlgorithms.Interfaces.DecisionNode;
+import searchAlgorithms.Interfaces.Problem;
 
+/**
+ * 
+ * General Search Algorithm implementation 
+ *
+ */
 public class GeneralSearch {
 
 	public static Vector<DecisionNode> search(Problem problem, boolean memoization)
@@ -39,6 +46,11 @@ public class GeneralSearch {
 		}
 	}
 
+	/**
+	 * transformation of goal DesicionNode to chain of DesicionNodes by collecting all the Nodes grade parents 
+	 * @param dnode
+	 * @return
+	 */
 	private static  Vector<DecisionNode> generateSolution( DecisionNode dnode) {
 		Vector<DecisionNode> solution = new Vector<DecisionNode>();
 		

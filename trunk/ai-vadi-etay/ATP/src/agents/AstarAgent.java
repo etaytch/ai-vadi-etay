@@ -1,7 +1,7 @@
 package agents;
 
-import searchAlgorithms.AstarDecisionNode;
-import searchAlgorithms.AtpDecisionNode;
+import searchAlgorithms.DecisionNodes.AstarDecisionNode;
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import simulator.Car;
 import simulator.Vertex;
 
@@ -9,8 +9,6 @@ import simulator.Vertex;
  * this is the A* Agent it uses the greedy agent huristic,
  * The only change is the getInitNode() method witch returns A*Decision Node
  * 
- * @author Vadi
- *
  */
 public class AstarAgent  extends GreedyAgent{
 	

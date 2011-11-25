@@ -6,9 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-import searchAlgorithms.AtpDecisionNode;
+
+import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import simulator.Car;
-import simulator.Enviornment;
+import simulator.Environment;
 import simulator.MoveAction;
 import simulator.Road;
 import simulator.SwitchCarAndMoveAction;
@@ -65,7 +66,7 @@ public class SpeedNutAutomationAgent extends Agent {
 	}
 	
 	@Override
-	public void chooseBestAction(Enviornment env) {
+	public void chooseBestAction(Environment env) {
 		Vertex maxVer=null;		
 		String maxCarName=null;		
 						

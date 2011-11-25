@@ -1,5 +1,10 @@
 package simulator;
 
+/**
+ * Car in the ATP world 
+ * @author Vadi
+ *
+ */
 public class Car {
 	
 	private double _coff;

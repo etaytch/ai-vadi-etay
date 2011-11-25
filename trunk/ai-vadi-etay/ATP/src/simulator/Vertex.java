@@ -4,7 +4,11 @@ package simulator;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 
+ * vertex in ATP env class 
+ *
+ */
 public class Vertex implements Comparable<Vertex> {
 	
 	private int _number;
