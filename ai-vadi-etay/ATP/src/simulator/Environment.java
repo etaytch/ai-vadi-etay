@@ -1,6 +1,7 @@
 package simulator;
 
 
+import java.awt.dnd.Autoscroll;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -212,6 +213,16 @@ public class Environment {
 			removeCarOfVertex(fromVertex, car.get_name());
 		}
 		else return;				
+	}
+
+
+	public Agent getAgentByName(String name) {
+		for(Agent a:get_agents().keySet()){
+			if (a.get_name().equals(name)){
+				return a;
+			}
+		}
+		return null;
 	}	
 
 }
