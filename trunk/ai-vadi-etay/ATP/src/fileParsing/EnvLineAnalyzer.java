@@ -6,6 +6,7 @@ import agents.RealTimeAstarAgent;
 import agents.SimpleGreedyAgent;
 import agents.HumanAgent;
 import agents.SpeedNutAutomationAgent;
+import agents.SpeedNutPredictionAgent;
 import simulator.Environment;
 import simulator.Simulator;
 
@@ -63,7 +64,7 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 	 * 4 = Greedy (With huristic) 
 	 * 5 = A* 
 	 * 6 = RT A*
-	 * 
+	 * 7 = A* with speed nut automaton presence 
 	 * @param line
 	 */
 	private void parseAgent(String[] line) {
@@ -112,7 +113,14 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
 			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
 			break;
-			
+		case 7:
+			_env.addAgent(new SpeedNutPredictionAgent(line[2], 
+					_env.getVertex(Integer.parseInt(line[3])),
+					_env.getVertex(Integer.parseInt(line[4])),
+					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5])),
+					(SpeedNutAutomationAgent)_env.getAgentByName(line[6])));
+			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
+			break;	
 		default:
 			break;
 		}

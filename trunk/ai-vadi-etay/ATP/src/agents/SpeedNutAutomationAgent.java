@@ -28,6 +28,7 @@ public class SpeedNutAutomationAgent extends Agent {
 	private Vector<Vertex> _route;	// stores agent's route
 	private Map<Vertex,Integer> _amountOfVisits;
 	
+	
 	public SpeedNutAutomationAgent(String name, Vertex initPosition,
 			Vertex goalPosition, Car car) {
 		super(name, initPosition, goalPosition, car);
@@ -135,6 +136,7 @@ public class SpeedNutAutomationAgent extends Agent {
 			set_state("stuck","Unable to select road");
 		}
 	}
+	
 
 	private void updateRoute(Vertex v) {
 		_route.add(get_vertex());
@@ -151,4 +153,6 @@ public class SpeedNutAutomationAgent extends Agent {
 	public AtpDecisionNode getInitNode() {
 		return null;
 	}
+	
+
 }

@@ -11,6 +11,7 @@
 ;4 = Greedy (With huristic) 
 ;5 = A* 
 ;6 = RT A*
+;7 = A* with speed nut
 
 
 ;EDGES
@@ -64,5 +65,7 @@ v 7 Polo7   80 0.5
 
 ;a 2 Etay 0 4 Honda0
 ;a 2 Vadi 1 5 Polo1
-;a 3 Diana 0 2 Honda0
-a 6 Niv 0 2 Honda0
+;a 6 Niv 0 2 Honda0
+
+a 2 Diana 1 5 Polo1
+a 7 Vadi 0 2 Honda0 Diana
