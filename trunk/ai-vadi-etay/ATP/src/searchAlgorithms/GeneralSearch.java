@@ -23,7 +23,6 @@ public class GeneralSearch {
 		while(true){
 			DecisionNode currentNode = queue.remove();
 			expend_steps[0]++;
-			System.out.println(expend_steps[0]);
 			if (currentNode==null){
 				return null;	
 			}
@@ -31,17 +30,15 @@ public class GeneralSearch {
 				return generateSolution(currentNode); 
 			}
 			else{
-				currentNode.expand(problem);
-				
+				currentNode.expand(problem);				
 				if (memoization){
-					if(currentNode.get_children()==null){
-						System.out.println("nn");
-					}
-					for(DecisionNode dn : currentNode.get_children())
-					{
-						if (!lookUpTable.contains(dn))
+					if(currentNode.get_children()!=null){											
+						for(DecisionNode dn : currentNode.get_children())
 						{
-							queue.add(dn);
+							if (!lookUpTable.contains(dn))
+							{
+								queue.add(dn);
+							}
 						}
 					}
 				}				
