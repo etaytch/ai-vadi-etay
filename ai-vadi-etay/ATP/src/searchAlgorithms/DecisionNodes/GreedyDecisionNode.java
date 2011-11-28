@@ -41,8 +41,8 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 	
 	@Override
 	public void expand(Problem problem){
-		if (_nestingLevel==Defs.NESTING_LEVEL) return;
 		_children = new Vector<DecisionNode>();
+		if (_nestingLevel==Defs.NESTING_LEVEL) return;		
 		for(Vertex v : _vertex.get_neighbours().keySet()){
 			if((_parent!=null)&&(_parent._vertex.equals(v))) continue;							// don't calc parent
 			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;	// don't calc flooded road with regular car

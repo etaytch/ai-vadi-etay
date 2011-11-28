@@ -37,7 +37,7 @@ public class GreedyAgent extends Agent {
 	public void search(Environment env, Vertex initPos,Vertex goalPosition,Car initCar )
 	{		
 		Problem problem = new AtpProblem(env, initPos, goalPosition, initCar ,this);
-		Vector<DecisionNode> vec = GeneralSearch.search(problem,true);
+		Vector<DecisionNode> vec = GeneralSearch.search(problem,true,_expend_steps);
 		_actions = translateNodeToAction(vec);
 	}
 

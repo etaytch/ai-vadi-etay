@@ -24,15 +24,12 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		
-		System.out.println();
-		System.out.println("	*********************************");
+
+		System.out.println("\n	*********************************");
 		System.out.println("	******** Welcome To The *********");
 		System.out.println("	*** American Traveler Problem ***");
 		System.out.println("	***** Simulation Environment ****");
-		System.out.println("	*********************************");
-		System.out.println();
-		System.out.println();
-		System.out.println();
+		System.out.println("	*********************************\n\n\n");
 		
 		
 		LineAnalyzerInterface la = new EnvLineAnalyzer();
@@ -42,15 +39,13 @@ public class Main {
 		userInput(sim);
 		sim.startSimulation();
 		
-		System.out.println();
-		System.out.println();
-		System.out.println("	*********************************");
-		System.out.println("	*********** Good Bye ! **********");
-		System.out.println("	*********************************");
-		System.out.println();
-		System.in.read();
-	}
 
+		System.out.println("\n\n	*********************************");
+		System.out.println("	*********** Good Bye ! **********");
+		System.out.println("	*********************************\n");		
+		//System.in.read();
+	}	
+	
 	/**
 	 * this method is UI to add more user defined agents
 	 * 
@@ -58,7 +53,7 @@ public class Main {
 	 * @throws IOException
 	 */
 	private static void userInput(Simulator sim) throws IOException {
-		System.out.println("How many more agents to add? (Enter - read from file");
+		System.out.println("How many more agents to add? (Press Enter to read from file)");		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String num="";		 
 		num = br.readLine();
@@ -66,12 +61,11 @@ public class Main {
 			return;
 		}
 	    String tStr="";	    	 
-	    try{
-	    	
+	    try{	    	
 		    if(Integer.parseInt(num)!=0){	    	
 	    		for (int i=1;i<=Integer.parseInt(num);i++){
 	    			int typeAsNum;
-	    	    	
+	    	   	
 						System.out.println("Agent #"+i+":");
 						System.out.println("-------------\n");
 						System.out.println("Please enter Agent's type:");
@@ -103,7 +97,7 @@ public class Main {
 		    }//if
 	    }//try
 	    catch (java.lang.NumberFormatException ex) {
-			System.out.println("You antered illeagal input! reading from file... ");
+			System.out.println("You've entered an illegal input! Reading from file... ");
 		}
 	}//method
 }//class

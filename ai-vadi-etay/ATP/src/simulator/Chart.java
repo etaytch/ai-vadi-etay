@@ -6,6 +6,7 @@ package simulator;
  */
 public class Chart {
 	int _actionsNumber;
+	int _expend_steps;
 	double _totalTime;
 	
 	
@@ -13,6 +14,7 @@ public class Chart {
 		super();
 		_actionsNumber = 0;
 		_totalTime = 0;
+		_expend_steps = 0;
 	}
 
 
@@ -22,6 +24,9 @@ public class Chart {
 		_totalTime = totalTime;
 	}
 
+	public void set_expend_steps(int steps){
+		this._expend_steps = steps;		
+	}
 
 	public int get_actionsNumber() {
 		return _actionsNumber;
@@ -44,8 +49,8 @@ public class Chart {
 	
 	@Override
 	public String toString() {
-		return "Chart: _actionsNumber=" + _actionsNumber + ", _totalTime="
-				+ _totalTime;
+		return "Chart: Amount of Actions = " + _actionsNumber + ", Score = "
+				+ _totalTime + ", Expansion Steps = "+_expend_steps;
 	}
 
 

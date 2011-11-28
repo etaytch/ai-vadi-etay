@@ -14,7 +14,7 @@ import searchAlgorithms.Interfaces.Problem;
  */
 public class GeneralSearch {
 
-	public static Vector<DecisionNode> search(Problem problem, boolean memoization)
+	public static Vector<DecisionNode> search(Problem problem, boolean memoization, int[] expend_steps)
 	{
 		Vector<DecisionNode> lookUpTable = new Vector<DecisionNode>();
 		PriorityQueue<DecisionNode> queue = new PriorityQueue<DecisionNode>();
@@ -22,6 +22,8 @@ public class GeneralSearch {
 		
 		while(true){
 			DecisionNode currentNode = queue.remove();
+			expend_steps[0]++;
+			System.out.println(expend_steps[0]);
 			if (currentNode==null){
 				return null;	
 			}
@@ -30,7 +32,11 @@ public class GeneralSearch {
 			}
 			else{
 				currentNode.expand(problem);
+				
 				if (memoization){
+					if(currentNode.get_children()==null){
+						System.out.println("nn");
+					}
 					for(DecisionNode dn : currentNode.get_children())
 					{
 						if (!lookUpTable.contains(dn))
@@ -38,9 +44,9 @@ public class GeneralSearch {
 							queue.add(dn);
 						}
 					}
-				}
-				else{
-				queue.addAll(currentNode.get_children()); //no memoization
+				}				
+				else{				
+					queue.addAll(currentNode.get_children()); //no memoization
 				}
 			}
 		}
