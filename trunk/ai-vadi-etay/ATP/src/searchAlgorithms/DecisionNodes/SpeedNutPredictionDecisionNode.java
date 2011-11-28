@@ -55,11 +55,12 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 	
 	@Override
 	public void expand(Problem problem){
-		if (_parent!=null)
+		//if (_parent!=null)
 			PredictAotomatonBestAction(((AtpProblem)problem).get_env()); // Prediction of automaton move is done first thing! except for the root father decision!
 
-		if (_nestingLevel==Defs.NESTING_LEVEL) return;
 		_children = new Vector<DecisionNode>();
+		if (_nestingLevel==Defs.NESTING_LEVEL) return;
+		
 		for(Vertex v : _vertex.get_neighbours().keySet()){
 			if((_parent!=null)&&(_parent._vertex.equals(v))) continue;							// don't calc parent
 			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;	// don't calc flooded road with regular car
@@ -71,7 +72,10 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 		}
 		for (Car c : _vertex.get_cars().values()){
 			for(Vertex v : _vertex.get_neighbours().keySet()){
-				if (c.get_name().equals(_snaAgentCar.get_name())) continue; // the automaton have this car!
+				if (c.get_name().equals(_snaAgentCar.get_name())) {
+					System.out.println("_snaAgent has this car!");
+					continue; // the automaton have this car!
+				}
 				if((_parent!=null)&&(_parent._vertex.equals(v))) continue;
 				if (_vertex.get_neighbours().get(v).is_flooded() && c.get_coff()==0) continue; 
 				SpeedNutPredictionDecisionNode newNode = new SpeedNutPredictionDecisionNode(v, c, _vertex.get_neighbours().get(v), this,_nestingLevel++,_snaAgentVertex,_snaAgentCar);

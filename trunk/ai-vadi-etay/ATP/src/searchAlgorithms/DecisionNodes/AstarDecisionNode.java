@@ -55,7 +55,7 @@ public class AstarDecisionNode extends GreedyDecisionNode{
 			return (weight/speed*coff);
 		}
 		
-		return (weight/coff);
+		return (weight/speed);
 	}
 
 	public double get_accWeight() {

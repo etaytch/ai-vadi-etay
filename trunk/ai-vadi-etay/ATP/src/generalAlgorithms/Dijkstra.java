@@ -77,7 +77,7 @@ public class Dijkstra {
 	       while(P[loc] != nodes[start.getId()]){
 	           if(P[loc] == null){
 	               // looks like there's no path from source to target
-	               return -1;
+	               return Double.MAX_VALUE;
 	           }
 	           C.add(0, P[loc]);
 	           loc = P[loc].getId();

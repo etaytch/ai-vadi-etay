@@ -183,7 +183,8 @@ public class Simulator {
 			}			
 		}
 		for(Agent agent:toBeRemoved){
-			_env.get_agents().remove(agent);
+			_env.get_agents().get(agent).set_expend_steps(agent.get_steps());
+			_env.get_agents().remove(agent);			
 		}
 		if(answer){
 			ATPLogger.log("All agents Finished!");
@@ -214,7 +215,17 @@ public class Simulator {
 		}
 		ATPLogger.log("\nFinal Stats:");
 		for (Agent agent: get_finishedAgents().keySet()){
-			ATPLogger.log("Agent: "+agent.get_name()+": "+get_finishedAgents().get(agent));	
+			Chart c = get_finishedAgents().get(agent);
+			c.set_totalTime((double)Math.round(c.get_totalTime() * 100) / 100);
+			ATPLogger.log("\nAgent: "+agent.get_name()+": "+c);
+			ATPLogger.log("For f="+Defs.F1_LEVEL+":       P = f * S + T =    "+Defs.F1_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F1_LEVEL*c._totalTime + c._expend_steps));
+			ATPLogger.log("For f="+Defs.F100_LEVEL+":     P = f * S + T =    "+Defs.F100_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F100_LEVEL*c._totalTime + c._expend_steps));
+			ATPLogger.log("For f="+Defs.F10000_LEVEL+":   P = f * S + T =    "+Defs.F10000_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F10000_LEVEL*c._totalTime + c._expend_steps));
+			
+			//ATPLogger.log("For f="+Defs.F1_LEVEL+":       P = f * T + S = "+Defs.F1_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F1_LEVEL*c._expend_steps + c._totalTime));
+			//ATPLogger.log("For f="+Defs.F100_LEVEL+":     P = f * T + S = "+Defs.F100_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F100_LEVEL*c._expend_steps + c._totalTime));
+			//ATPLogger.log("For f="+Defs.F10000_LEVEL+":   P = f * T + S = "+Defs.F10000_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F10000_LEVEL*c._expend_steps + c._totalTime));
+
 		}
 	}
 }

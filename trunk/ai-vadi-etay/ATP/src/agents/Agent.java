@@ -23,6 +23,7 @@ public abstract class Agent {
 	protected Vertex _initPosition;
 	protected Vertex _goalPosition;
 	protected Map<String,String> _state;	// "finished", "stuck"s
+	protected int[] _expend_steps;
 		
 	public String get_state(String key) {
 		return _state.get(key);
@@ -32,6 +33,10 @@ public abstract class Agent {
 		this._state.put(key, val);
 	}
 
+	public int get_steps(){
+		return _expend_steps[0];
+	}
+	
 	public Agent(String name, Vertex initPosition, Vertex goalPosition, Car car) {
 		super();
 		_name = name;
@@ -41,6 +46,8 @@ public abstract class Agent {
 		_actions = new LinkedList<Action>();
 		_car = car;
 		_state=new HashMap<String, String>();
+		_expend_steps = new int[1];
+		_expend_steps[0]=0;
 	}
 	
 	public Queue<Action> get_actions() {

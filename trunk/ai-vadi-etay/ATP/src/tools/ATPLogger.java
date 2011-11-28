@@ -32,9 +32,9 @@ import java.util.logging.Logger;
 		          }
 		    });
 			logger.addHandler(fh);
-			//System.out.println(msg);
+			System.out.println(msg);
 			
-			logger.info(msg);
+			//logger.info(msg);
 			fh.close();
 		}
 		catch (Exception e) { e.printStackTrace(); }
