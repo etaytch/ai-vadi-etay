@@ -72,8 +72,7 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 		}
 		for (Car c : _vertex.get_cars().values()){
 			for(Vertex v : _vertex.get_neighbours().keySet()){
-				if (c.get_name().equals(_snaAgentCar.get_name())) {
-					System.out.println("_snaAgent has this car!");
+				if (c.get_name().equals(_snaAgentCar.get_name())) {					
 					continue; // the automaton have this car!
 				}
 				if((_parent!=null)&&(_parent._vertex.equals(v))) continue;
