@@ -1,10 +1,5 @@
 package searchAlgorithms.DecisionNodes;
 
-import generalAlgorithms.Dijkstra;
-import generalAlgorithms.Edge;
-import generalAlgorithms.Graph;
-import generalAlgorithms.Node;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -41,17 +36,6 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 		_route = new Vector<Vertex>();
 		}
 	
-	public double clacHuristic(Car c , Environment env, Vertex vFrom, Vertex vTo) {
-		Graph g = getDijkstraHuristicGraph(c,env);
-		ArrayList<Node> result = new ArrayList<Node>();
-		Node from = g.get_node_by_ID(vFrom.get_number());
-		Node to = g.get_node_by_ID(vTo.get_number());
-		double switchCarTime = 0.0;
-		if((_parent!=null) && (!c.equals(_parent._car))){
-			switchCarTime = Defs.TSWITCH;
-		}
-		return switchCarTime+Dijkstra.findShortestPath(g,from, to, result );
-	}
 	
 	@Override
 	public void expand(Problem problem){
@@ -87,54 +71,6 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 	}
 	
 	
-	/**
-	 * return Simple graph with calculated edges for the greedy agent heuristic calculation    
-	 * @param car
-	 * @param env
-	 * @return
-	 */
-	public Graph getDijkstraHuristicGraph(Car car,Environment env){
-		Node[] nodes = new Node[env.get_vertexes().size()];
-		int i=0;
-		for(Integer v:env.get_vertexes().keySet()){
-			nodes[i++]=new Node(v.intValue());			
-		}		
-		
-		Vector <Edge> edges = new Vector<Edge>();
-		i=0;
-		for(Road e:env.get_edges()){
-			int from = e.get_from().get_number();
-			int target = e.get_to().get_number();
-			Double weight = calcWeight(e,car);
-			if (weight!=null){
-				edges.add(new Edge(nodes[from],nodes[target],weight));
-			}
-		}	
-		Edge[] edgesArr = new Edge[edges.size()];
-		for(int k=0;k<edges.size();k++){
-			edgesArr[k] = edges.get(k);			
-		}
-		return new Graph(nodes,edgesArr);	
-	}
-	
-	public Double calcWeight(Road e, Car car) {
-		if(e==null){
-			return 0.0;
-		}
-		double coff = car.get_coff();
-		int speed = car.get_speed();
-		double weight = e.get_weight();
-		boolean flooded = e.is_flooded();
-		
-		if ((flooded) && (coff==0)){
-			return null;  
-		}
-		if ((flooded) && (coff>0)){
-			return (weight/speed*coff);
-		}
-		
-		return (weight/speed);
-	}
 	
 	public void PredictAotomatonBestAction(Environment env) {
 		Vertex maxVer=null;		

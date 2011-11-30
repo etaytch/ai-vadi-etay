@@ -1,7 +1,6 @@
 package simulator;
 
 
-import java.awt.dnd.Autoscroll;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,6 +22,7 @@ public class Environment {
 	private Map<Integer,Vertex> _vertexes;
 	private Vector<Road> _edges;
 	private Map<Agent,Chart> _agents;
+	private Vector<Car> _cars;
 	
 	public Environment(Map<Integer,Vertex> vertexes, Map<Agent, Chart> agents, Vector<Road> edges) {
 		super();
@@ -43,6 +43,7 @@ public class Environment {
 		_vertexes = new HashMap<Integer,Vertex>();
 		_edges = new Vector<Road>();
 		_agents = new HashMap<Agent, Chart>();
+		_cars = new Vector<Car>();
 	}
 	
 	public Vector<Road> get_edges() {
@@ -142,7 +143,9 @@ public class Environment {
 	}
 	
 	public void addCar(int vertexNum,String carName, int carSpeed, double carCoff) {
-		get_vertexes().get(vertexNum).addCar(carName ,carSpeed , carCoff);
+		Car tmp = new Car(carName ,carSpeed , carCoff);
+		get_vertexes().get(vertexNum).addCar(tmp);
+		_cars.add(tmp);
 	}
 	
 	public void addAgent(Agent agent){
@@ -223,6 +226,14 @@ public class Environment {
 			}
 		}
 		return null;
+	}
+
+	public void set_cars(Vector<Car> _cars) {
+		this._cars = _cars;
+	}
+
+	public Vector<Car> get_cars() {
+		return _cars;
 	}	
 
 }
