@@ -81,6 +81,11 @@ public class Vertex implements Comparable<Vertex> {
 		get_cars().put(carName , new Car(carName, carSpeed, carCoff));
 		
 	}
+	
+	public void addCar(Car car) {
+		get_cars().put(car.get_name() , car);
+	}
+	
 
 
 	@Override

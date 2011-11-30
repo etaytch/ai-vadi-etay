@@ -64,8 +64,40 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 			}
 		}	
 	}
+
 	
 	public double clacHuristic(Car c , Environment env, Vertex vFrom, Vertex vTo, Road road) {
+		Graph g = getDijkstraHuristicGraph(constractBestCar(env),env);
+		ArrayList<Node> result = new ArrayList<Node>();
+		Node from = g.get_node_by_ID(vFrom.get_number());
+		Node to = g.get_node_by_ID(vTo.get_number());
+		double switchCarTime = 0.0;
+		if((_parent!=null) && (!c.get_name().equals(_parent._car.get_name()))){
+			switchCarTime = Defs.TSWITCH;
+		}
+		double ans = switchCarTime+(calcWeight(road, c))+ Dijkstra.findShortestPath(g,from, to, result );
+		return ans;
+	} 
+
+	private Car constractBestCar(Environment env) {
+		double bcoff = 0;
+		int bspeed = 0;
+		for(Car c: env.get_cars())
+		{
+			if (c.get_coff()>bcoff)
+			{
+				bcoff = c.get_coff();
+			}
+			if (c.get_speed()>bspeed)
+			{
+				bspeed =c.get_speed(); 
+			}
+		}		
+		return new Car("superCar",bspeed,bcoff);
+	}
+
+
+	public double clacHuristic2(Car c , Environment env, Vertex vFrom, Vertex vTo, Road road) {
 		Graph g = getDijkstraHuristicGraph(c,env);
 		ArrayList<Node> result = new ArrayList<Node>();
 		Node from = g.get_node_by_ID(vFrom.get_number());
