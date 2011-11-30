@@ -67,18 +67,6 @@ public class AstarDecisionNode extends GreedyDecisionNode{
 		_accWeight = accWeight;
 	}
 	
-	public double clacHuristic(Car c , Environment env, Vertex vFrom, Vertex vTo) {
-		Graph g = getDijkstraHuristicGraph(c,env);
-		ArrayList<Node> result = new ArrayList<Node>();
-		Node from = g.get_node_by_ID(vFrom.get_number());
-		Node to = g.get_node_by_ID(vTo.get_number());
-		double switchCarTime = 0.0;
-		if((_parent!=null) && (!c.equals(_parent._car))){
-			switchCarTime = Defs.TSWITCH;
-		}
-		return switchCarTime+Dijkstra.findShortestPath(g,from, to, result );
-	}
-	
 	/**
 	 * 
 	 */
