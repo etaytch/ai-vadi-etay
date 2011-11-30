@@ -71,11 +71,7 @@ public class GreedyDecisionNode extends AtpDecisionNode {
 		ArrayList<Node> result = new ArrayList<Node>();
 		Node from = g.get_node_by_ID(vFrom.get_number());
 		Node to = g.get_node_by_ID(vTo.get_number());
-		double switchCarTime = 0.0;
-		if((_parent!=null) && (!c.get_name().equals(_parent._car.get_name()))){
-			switchCarTime = Defs.TSWITCH;
-		}
-		double ans = switchCarTime+(calcWeight(road, c))+ Dijkstra.findShortestPath(g,from, to, result );
+		double ans = Dijkstra.findShortestPath(g,from, to, result );
 		return ans;
 	} 
 
