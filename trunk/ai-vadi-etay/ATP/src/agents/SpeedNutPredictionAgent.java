@@ -1,5 +1,7 @@
 package agents;
 
+import java.util.HashMap;
+
 import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import searchAlgorithms.DecisionNodes.SpeedNutPredictionDecisionNode;
 import simulator.Car;
@@ -17,6 +19,6 @@ public class SpeedNutPredictionAgent extends AstarAgent {
 	
 	@Override
 	public AtpDecisionNode getInitNode() {
-		return new SpeedNutPredictionDecisionNode(_initPosition, _car, null, null,0,_SNAagent.get_vertex(),_SNAagent.get_car());
+		return new SpeedNutPredictionDecisionNode(_initPosition, _car, null, null,0,_SNAagent.get_vertex(),_SNAagent.get_car(),new HashMap<Car,Vertex>());
 	}
 }
