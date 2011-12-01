@@ -141,7 +141,11 @@ public class SpeedNutAutomationAgent extends Agent {
 				Road r = neib.get(maxVer);
 				Map<String,Car> cars = get_vertex().get_cars();
 				Set<String> carsNames = cars.keySet();
-				Car c;
+				Car c = get_car();
+				if(!(r.is_flooded() && c.get_coff()==0)){
+					found = true;
+					maxCarName = c.get_name();
+				}
 				for(String cName:carsNames){
 					if(found) break;
 					c = cars.get(cName);

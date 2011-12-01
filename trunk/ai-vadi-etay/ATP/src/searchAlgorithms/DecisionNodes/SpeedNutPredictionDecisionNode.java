@@ -158,7 +158,13 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 				Road r = neib.get(maxVer);
 				Map<String,Car> cars = get_vertex().get_cars();
 				Set<String> carsNames = cars.keySet();
-				Car c=null;
+
+	
+				Car c = _snaAgentCar;
+	
+				if(!(r.is_flooded() && c.get_coff()==0)){
+					found = true;					
+				}
 				for(String cName:carsNames){
 					if(found) break;
 					c = cars.get(cName);
@@ -167,7 +173,6 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 						found = true;					
 					}										
 				}
-				maxCar=c; 
 				for(Car ctmp : _aotomatonCarsPos.keySet()){
 					if(found) break;
 					//maxCarName = c.get_name();
