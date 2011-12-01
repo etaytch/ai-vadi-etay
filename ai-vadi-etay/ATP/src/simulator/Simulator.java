@@ -167,6 +167,7 @@ public class Simulator {
 		for (Agent agent: _env.get_agents().keySet()){
 			if(agent.get_state("stuck")!=null){
 				get_finishedAgents().put(agent, _env.get_agents().get(agent));
+				_env.get_agents().get(agent).set_totalTime(-999);
 				//get_agents().remove(agent);
 				toBeRemoved.add(agent);
 				ATPLogger.log("Agent "+agent.get_name()+" is stuck! "+agent.get_state("stuck"));
