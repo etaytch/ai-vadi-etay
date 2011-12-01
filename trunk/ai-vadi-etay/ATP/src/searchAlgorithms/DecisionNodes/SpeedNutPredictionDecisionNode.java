@@ -104,10 +104,10 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 		}
 		Collections.sort(sortedVertics);
 		boolean found = false;		
+		
 		while((!sortedVertics.isEmpty()) && (!found)){
 			maxVer = getHeavyRoad(sortedVertics,neib);		
 			maxCar= _snaAgentCar;
-			Car c=maxCar;
 			
 			if (_snaAgentVertex.get_cars().isEmpty()) {
 			}
@@ -115,17 +115,22 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 				Map<String,Car> cars = _snaAgentVertex.get_cars();
 				Set<String> carsNames = cars.keySet();
 				int maxSpeed = this.get_car().get_speed();
-				
 				for(String cName:carsNames){
-					maxCar = cars.get(cName);
-					if(maxCar.get_speed()>maxSpeed){
-						c=maxCar;
+					Car c = cars.get(cName);
+					if(c.get_speed()>maxSpeed){
+						maxCar=c;
+						maxSpeed = maxCar.get_speed();
+					}						
+				}
+				for(Car c: _aotomatonCarsPos.keySet()){
+					if((_aotomatonCarsPos.get(c).equals(_snaAgentVertex)) && (c.get_speed()>maxSpeed)){
+						maxCar=c;
 						maxSpeed = maxCar.get_speed();
 					}						
 				}
 			}
 			Road r = neib.get(maxVer);
-			if(!(r.is_flooded() && c.get_coff()==0)){
+			if(!(r.is_flooded() && maxCar.get_coff()==0)){
 				found = true;					
 			}
 		}
@@ -141,6 +146,12 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 				_snaAgentVertex = maxVer;
 				_snaAgentCar = maxCar;
 			}
+		}//while
+		if (!found){
+			//TODO
+			//run on all the cars+ the cars in _aotomatonCarsPos.keySet() on vertexes equal to _snaAgentVertex  and put the needed car in _snaAgentCar ;
+			//after picking car, pick the max vertex by etay's method and put it to  _snaAgentVertex ;
+			
 		}
 	}
 	
