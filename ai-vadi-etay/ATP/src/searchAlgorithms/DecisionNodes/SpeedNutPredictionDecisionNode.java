@@ -147,7 +147,7 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 				_snaAgentVertex = maxVer;
 				_snaAgentCar = maxCar;
 			}
-		}//while
+		}
 		else{			
 			//TODO
 			//run on all the cars+ the cars in _aotomatonCarsPos.keySet() on vertexes equal to _snaAgentVertex  and put the needed car in _snaAgentCar ;
@@ -166,7 +166,16 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 					if(!(r.is_flooded() && c.get_coff()==0)){
 						found = true;					
 					}										
-				}	
+				}
+				maxCar=c; 
+				for(Car ctmp : _aotomatonCarsPos.keySet()){
+					if(found) break;
+					//maxCarName = c.get_name();
+					c = ctmp;
+					if((_aotomatonCarsPos.get(ctmp).equals(_snaAgentVertex))&&(!(r.is_flooded() && c.get_coff()==0))){
+						found = true;					
+					}										
+				}
 				maxCar=c;
 				if(found){
 					if(maxCar.get_name().equals(_snaAgentCar.get_name())){						
