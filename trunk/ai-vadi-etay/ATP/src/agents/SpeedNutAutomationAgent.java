@@ -84,6 +84,9 @@ public class SpeedNutAutomationAgent extends Agent {
 			sortedVertics.add(v);
 		}
 		Collections.sort(sortedVertics);
+		Vector<Vertex> backupSortedVertics = new Vector<Vertex>(sortedVertics);
+		
+		
 		boolean found = false;		
 		while((!sortedVertics.isEmpty()) && (!found)){
 			maxVer = getHeavyRoad(sortedVertics,neib);
@@ -133,7 +136,34 @@ public class SpeedNutAutomationAgent extends Agent {
 			}
 		}
 		else{
-			set_state("stuck","Unable to select road");
+			if(!backupSortedVertics.isEmpty()){
+				maxVer = getHeavyRoad(backupSortedVertics,neib);
+				Road r = neib.get(maxVer);
+				Map<String,Car> cars = get_vertex().get_cars();
+				Set<String> carsNames = cars.keySet();
+				Car c;
+				for(String cName:carsNames){
+					if(found) break;
+					c = cars.get(cName);
+					maxCarName = c.get_name();
+					if(!(r.is_flooded() && c.get_coff()==0)){
+						found = true;					
+					}										
+				}				
+			}
+			if(!found){
+				set_state("stuck","Unable to select road");
+			}
+			else{
+				updateRoute(maxVer);		
+				if(maxCarName.equals(get_car().get_name())){				
+					ATPLogger.log("Agent "+get_name()+" chose to keep original car. "+get_car());
+					get_actions().offer(new MoveAction(this, maxVer));
+				}
+				else{
+					get_actions().offer(new SwitchCarAndMoveAction(this, maxCarName, maxVer));
+				}
+			}
 		}
 	}
 	
