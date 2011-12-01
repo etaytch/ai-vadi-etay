@@ -83,7 +83,7 @@ v 7 Polo7   80 0.5
 ;a 6 Niv 0 2 Honda0
 ;a 5 Niv 0 5 Honda0
 a 2 Diana 0 5 Polo0
-a 7 Vadi 0 4 Honda0 Diana
+;a 7 Vadi 0 4 Honda0 Diana
 ;a 2 Niv 3 7 Polo3
 ;a 7 Etay 6 3 Honda6 Niv
 ;a 2 Nigi 0 3 Bimba0
