@@ -1,14 +1,8 @@
 package searchAlgorithms.DecisionNodes;
 
-import generalAlgorithms.Dijkstra;
-import generalAlgorithms.Graph;
-import generalAlgorithms.Node;
-import java.util.ArrayList;
 
 import searchAlgorithms.Interfaces.DecisionNode;
 import simulator.Car;
-import simulator.Defs;
-import simulator.Environment;
 import simulator.Road;
 import simulator.Vertex;
 
