@@ -49,8 +49,8 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 		_children = new Vector<DecisionNode>();
 		if (_nestingLevel==Defs.NESTING_LEVEL) return;
 		
-		for(Vertex v : _vertex.get_neighbours().keySet()){
-			if((_parent!=null)&&(_parent._vertex.equals(v))) continue;							// don't calc parent
+		for(Vertex v : _vertex.get_neighbours().keySet()){			
+			if((_parent!=null)&&(_parent._vertex.equals(v))&&(_car.equals(_parent.get_car()))) continue;							// don't calc parent
 			if (_vertex.get_neighbours().get(v).is_flooded() && _car.get_coff()==0) continue;	// don't calc flooded road with regular car
 			SpeedNutPredictionDecisionNode newNode = new SpeedNutPredictionDecisionNode(v, _car, _vertex.get_neighbours().get(v),this, _nestingLevel++,_snaAgentVertex,_snaAgentCar,_aotomatonCarsPos);
 			newNode._H = clacHuristic(_car,((AtpProblem) problem).get_env(), 
@@ -62,8 +62,8 @@ public class SpeedNutPredictionDecisionNode extends AstarDecisionNode {
 			for(Vertex v : _vertex.get_neighbours().keySet()){
 				if (c.get_name().equals(_snaAgentCar.get_name())) {					
 					continue; // the automaton have this car!
-				}
-				if((_parent!=null)&&(_parent._vertex.equals(v))) continue;
+				}				
+				if((_parent!=null)&&(_parent._vertex.equals(v))&&(_car.equals(_parent.get_car()))) continue;							// don't calc parent
 				if (_vertex.get_neighbours().get(v).is_flooded() && c.get_coff()==0) continue; 
 				SpeedNutPredictionDecisionNode newNode = new SpeedNutPredictionDecisionNode(v, c, _vertex.get_neighbours().get(v), this,_nestingLevel++,_snaAgentVertex,_snaAgentCar,_aotomatonCarsPos);
 				newNode._H = clacHuristic(c,((AtpProblem) problem).get_env(), 
