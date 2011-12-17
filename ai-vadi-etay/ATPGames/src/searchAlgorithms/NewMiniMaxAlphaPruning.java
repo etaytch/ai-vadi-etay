@@ -12,6 +12,8 @@ import simulator.Interfaces.Action;
 
 public class NewMiniMaxAlphaPruning {
 	public static Action MiniMaxDecision(Environment env,Agent a, Agent human,Problem problem, GameDecisionNode gdn){
+		System.out.println("Starting point:");
+		System.out.println(gdn);
 		int steps=0;
 		int turn=0;
 		GameDecisionNode ans = MaxValue(env,a,human,problem,gdn,steps,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,turn);
