@@ -131,6 +131,9 @@ public class GameDecisionNode implements DecisionNode {
 		if(turn%2==0){
 			if(_compGoal.equals(_compVertex)){
 				System.out.println("Computer has reached goal");
+				GameDecisionNode newNode = new GameDecisionNode(this);
+				newNode._parent = this;
+				_children.add(newNode);
 				return;
 			}
 			for(Vertex v : _compVertex.get_neighbours().keySet()){
@@ -160,6 +163,9 @@ public class GameDecisionNode implements DecisionNode {
 		else{
 			if(_humanGoal.equals(_humanVertex)){
 				System.out.println("Human has reached goal");
+				GameDecisionNode newNode = new GameDecisionNode(this);
+				newNode._parent = this;
+				_children.add(newNode);				
 				return;
 			}
 			for(Vertex v : _humanVertex.get_neighbours().keySet()){
@@ -256,11 +262,15 @@ public class GameDecisionNode implements DecisionNode {
 	}
 
 	public GameDecisionNode getRootParent(String agent){
-		
 		if(_parent!=null){
-			return _parent.getRootParent(agent);
-		}			
-		else return this;		
+			if(_parent._parent!=null){
+				if(_parent._parent._parent==null){
+					return this;	
+				}								
+			}	
+		}
+		
+		return _parent.getRootParent(agent);			
 	}
 	
 	public GameDecisionNode getRootParent2(String agent){
