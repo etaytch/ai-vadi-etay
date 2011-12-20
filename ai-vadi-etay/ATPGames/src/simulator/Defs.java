@@ -14,6 +14,8 @@ public class Defs {
 	public static final int HUMAN = 1;
 	public static final int GTS = 2;
 	public static final int HORIZON = 50;
+	public static final int CUTOFF = 10;
 	public static final int F_UNITS = 100;
+	public static final int MAX_ROOT_ID = 7;
 	
 }

@@ -5,9 +5,10 @@ import java.util.Vector;
 
 import searchAlgorithms.GameAtpProblem;
 import searchAlgorithms.GeneralSearch;
+import searchAlgorithms.MaxiMax;
 import searchAlgorithms.MiniMax;
 import searchAlgorithms.MiniMaxAlphaPruning;
-import searchAlgorithms.NewMiniMaxAlphaPruning;
+import searchAlgorithms.MiniMaxAlphaPruning;
 import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import searchAlgorithms.DecisionNodes.GameDecisionNode;
 import searchAlgorithms.DecisionNodes.SumZeroGameDecisionNode;
@@ -82,15 +83,17 @@ public class GTSAgent  extends Agent{
 		Problem problem = new GameAtpProblem(env, _vertex, _goalPosition, _car,this);
 				
 		//_actions.add(MiniMaxAlphaPruning.MiniMaxDecision(env,this, problem, getInitNode()));
-		_actions.add(NewMiniMaxAlphaPruning.MiniMaxDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
+		if(_typeGame==1){
+			_actions.add(MiniMaxAlphaPruning.MiniMaxDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
+		}
+		if(_typeGame==2){
+			_actions.add(MaxiMax.MaxiMaxDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
+		}
 	}
 	
 	@Override
 	public void search(Environment env, Vertex initPos,Vertex goalPosition,Car initCar )
 	{		
-		Problem problem = new GameAtpProblem(env, _vertex, _goalPosition, _car,this);
-		//Vector<DecisionNode> vec = GeneralSearch.search(problem,true,_expend_steps);
-		
-		_actions.add(MiniMaxAlphaPruning.MiniMaxDecision(env,this, problem, getInitNode()));
+	
 	}	
 }
