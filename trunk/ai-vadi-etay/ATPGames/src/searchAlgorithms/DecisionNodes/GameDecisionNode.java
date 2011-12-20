@@ -30,6 +30,7 @@ import simulator.Interfaces.Action;
 public class GameDecisionNode implements DecisionNode {
 
 	private DecisionNodeInfo _dni;
+	public int _id;
 	public  Vector<DecisionNode> _children;
 	public double _value;
 	public Vertex _compVertex;
@@ -49,6 +50,7 @@ public class GameDecisionNode implements DecisionNode {
 			AtpDecisionNode parent, int nestingLevel,Vertex opponentVertex, Car opponentCar) {
 		_children = new Vector<DecisionNode>();
 		_value=0.0;
+		_id = 0;
 		//super(myVertex, myCar, road, parent, nestingLevel);
 		//_opponentVertex=opponentVertex;
 		//_opponentCar=opponentCar;		
@@ -68,6 +70,7 @@ public class GameDecisionNode implements DecisionNode {
 								GameDecisionNode parent) {
 		_children = new Vector<DecisionNode>();
 		_value=0.0;
+		_id=0;
 		_compVertex=compVertex;
 		_humanVertex=humanVertex;
 		_compGoal=compGoal;
@@ -85,6 +88,7 @@ public class GameDecisionNode implements DecisionNode {
 	public GameDecisionNode(GameDecisionNode other){
 		_children = new Vector<DecisionNode>();
 		_value=0.0;
+		_id=0;
 		_compVertex=other._compVertex;
 		_humanVertex=other._humanVertex;
 		_compGoal=other._compGoal;
@@ -128,11 +132,12 @@ public class GameDecisionNode implements DecisionNode {
 	public void expand(Problem problem, Agent a, Agent human,int turn){
 		_children = new Vector<DecisionNode>();
 		// computer's turn
-		if(turn%2==0){
+		if(turn%2==1){
 			if(_compGoal.equals(_compVertex)){
-				System.out.println("Computer has reached goal");
+				System.out.println("Computer has reached goal");				
 				GameDecisionNode newNode = new GameDecisionNode(this);
 				newNode._parent = this;
+				System.out.println(newNode);
 				_children.add(newNode);
 				return;
 			}
@@ -158,13 +163,38 @@ public class GameDecisionNode implements DecisionNode {
 				System.out.println("ComputerNode:\n"+newNode);
 				//System.out.println(newNode.get_dni());
 				_children.add(newNode);		
-			}			
+			}
+			
+			for (Car c : _compVertex.get_cars().values()){
+				for(Vertex v : _compVertex.get_neighbours().keySet()){					
+					GameDecisionNode _grandParent=null;
+					if(_parent!=null){
+						_grandParent = _parent._parent; 
+					} 
+					if((_grandParent !=null) && (_grandParent._compVertex.equals(v)) && (_grandParent._compCar.equals(c))){
+						continue;							// don't calc parent
+					}
+					Road r = _compVertex.get_neighbours().get(v);
+					if (r.is_flooded() && c.get_coff()==0) continue;	// don't calc flooded road with regular car					
+					
+					// create a GameDecisionNode with each my_ parameter is replaced with opponent_
+					GameDecisionNode newNode = new GameDecisionNode(this);				
+					newNode._compVertex=v;
+					newNode._compCar=c;					
+					newNode._compRoad=r;
+					newNode._parent=this;
+					newNode._compTime = _compTime+calcWeight(r, c);
+					newNode._action = new SwitchCarAndMoveAction(null,c.get_name(),v);													
+					_children.add(newNode);
+				}
+			}
 		}
 		else{
 			if(_humanGoal.equals(_humanVertex)){
 				System.out.println("Human has reached goal");
 				GameDecisionNode newNode = new GameDecisionNode(this);
 				newNode._parent = this;
+				System.out.println(newNode);
 				_children.add(newNode);				
 				return;
 			}
@@ -191,10 +221,30 @@ public class GameDecisionNode implements DecisionNode {
 				//System.out.println(newNode.get_dni());
 				_children.add(newNode);		
 			}			
-			
-		}						
-		
-		
+			for (Car c : _humanVertex.get_cars().values()){
+				for(Vertex v : _humanVertex.get_neighbours().keySet()){					
+					GameDecisionNode _grandParent=null;
+					if(_parent!=null){
+						_grandParent = _parent._parent; 
+					} 
+					if((_grandParent !=null) && (_grandParent._humanVertex.equals(v)) && (_grandParent._humanCar.equals(c))){
+						continue;							// don't calc parent
+					}
+					Road r = _humanVertex.get_neighbours().get(v);
+					if (r.is_flooded() && c.get_coff()==0) continue;	// don't calc flooded road with regular car					
+					
+					// create a GameDecisionNode with each my_ parameter is replaced with opponent_
+					GameDecisionNode newNode = new GameDecisionNode(this);				
+					newNode._humanVertex=v;
+					newNode._humanCar=c;					
+					newNode._humanRoad=r;
+					newNode._parent=this;
+					newNode._humanTime = _humanTime+calcWeight(r, c);
+					newNode._action = new SwitchCarAndMoveAction(null,c.get_name(),v);													
+					_children.add(newNode);
+				}
+			}
+		}										
 	}
 	
 	@Override
@@ -261,6 +311,13 @@ public class GameDecisionNode implements DecisionNode {
 		}	
 	}
 
+	public GameDecisionNode getRootGrandParent(){
+		if(_parent!=null){
+			return _parent._parent; 			
+		}
+		return null;
+	}
+	
 	public GameDecisionNode getRootParent(String agent){
 		if(_parent!=null){
 			if(_parent._parent!=null){
@@ -439,6 +496,15 @@ public class GameDecisionNode implements DecisionNode {
 				"\n==============================================\n";
 		
 		
+	}
+
+	public GameDecisionNode getMaxNode(GameDecisionNode root, GameDecisionNode ans) {
+		if(ans._parent==null) return null;	// impossible..
+		if(ans._parent._id==Defs.MAX_ROOT_ID){	// found the one!
+			return ans;			
+		}
+		
+		else return getMaxNode(root,ans._parent);		
 	}
 }
 
