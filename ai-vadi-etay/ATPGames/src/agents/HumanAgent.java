@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import searchAlgorithms.DecisionNodes.GameDecisionNode;
-import searchAlgorithms.DecisionNodes.SumZeroGameDecisionNode;
 import simulator.Car;
 import simulator.Environment;
 import simulator.MoveAction;
@@ -94,7 +92,7 @@ public class HumanAgent extends Agent {
 	}
 
 	@Override
-	public SumZeroGameDecisionNode getInitNode() {
+	public GameDecisionNode getInitNode() {
 		return null;
 	}
 

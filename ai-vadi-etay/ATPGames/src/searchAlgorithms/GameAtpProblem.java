@@ -2,7 +2,6 @@ package searchAlgorithms;
 
 import agents.Agent;
 import searchAlgorithms.DecisionNodes.GameDecisionNode;
-import searchAlgorithms.DecisionNodes.SumZeroGameDecisionNode;
 import searchAlgorithms.Interfaces.DecisionNode;
 import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;

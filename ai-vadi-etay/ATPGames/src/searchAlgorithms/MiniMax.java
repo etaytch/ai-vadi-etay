@@ -1,14 +1,5 @@
 package searchAlgorithms;
 
-import agents.Agent;
-import searchAlgorithms.DecisionNodes.*;
-import searchAlgorithms.Interfaces.DecisionNode;
-import searchAlgorithms.Interfaces.Problem;
-import simulator.Defs;
-import simulator.MoveAction;
-import simulator.SwitchCarAndMoveAction;
-import simulator.Interfaces.Action;
-
 public class MiniMax {
 	/*
 	public static Action MiniMaxDecision(Agent a,Problem problem, DecisionNode gdn){

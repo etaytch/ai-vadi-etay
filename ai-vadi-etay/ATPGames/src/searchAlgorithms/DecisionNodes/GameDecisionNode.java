@@ -9,11 +9,9 @@ import generalAlgorithms.Dijkstra;
 import generalAlgorithms.Edge;
 import generalAlgorithms.Graph;
 import generalAlgorithms.Node;
-import searchAlgorithms.GameAtpProblem;
 import searchAlgorithms.Interfaces.DecisionNode;
 import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;
-import simulator.DecisionNodeInfo;
 import simulator.Defs;
 import simulator.Environment;
 import simulator.MoveAction;
@@ -29,7 +27,6 @@ import simulator.Interfaces.Action;
  */
 public class GameDecisionNode implements DecisionNode {
 
-	private DecisionNodeInfo _dni;
 	public int _id;
 	public  Vector<DecisionNode> _children;
 	public double _value;
@@ -85,6 +82,9 @@ public class GameDecisionNode implements DecisionNode {
 		_parent=parent;				
 	}		
 	
+	
+	
+	
 	public GameDecisionNode(GameDecisionNode other){
 		_children = new Vector<DecisionNode>();
 		_value=0.0;
@@ -103,19 +103,7 @@ public class GameDecisionNode implements DecisionNode {
 		_parent=other._parent;				
 	}
 	
-	public DecisionNodeInfo get_dni() {
-		return _dni;
-	}
 
-	public void set_dni(DecisionNodeInfo _dni) {
-		this._dni = _dni;
-	}
-
-	public GameDecisionNode(DecisionNodeInfo dni){
-		//super(dni.getMyVertex(),dni.getMyCar(),dni.getMyRoad(),(AtpDecisionNode)dni.getMyParent(),dni.getNestingLevel());
-		_dni=dni;
-	}
-	
 
 	@Override
 	public int compareTo(DecisionNode o) {
@@ -125,8 +113,7 @@ public class GameDecisionNode implements DecisionNode {
 	}
 	
 	protected int get_H() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (int) _value;
 	}
 
 	public void expand(Problem problem, Agent a, Agent human,int turn){
@@ -249,66 +236,7 @@ public class GameDecisionNode implements DecisionNode {
 	
 	@Override
 	public void expand(Problem problem){
-		_children = new Vector<DecisionNode>();
-		//if (_nestingLevel==Defs.NESTING_LEVEL) return;	
-		if(_dni.getMyVertex().get_number()==_dni.getMyGoal()){			
-			GameDecisionNode newNode = new GameDecisionNode(new DecisionNodeInfo(_dni));
-			newNode.get_dni().setOpponentParent(this);			
-			_children.add(newNode);
-			System.out.println(newNode.get_dni());
-			return;
-		}
-				
-		for(Vertex v : _dni.getMyVertex().get_neighbours().keySet()){			
-			GameDecisionNode par = (GameDecisionNode)_dni.getMyParent();			
-			if((par!=null) && (par.get_dni().getMyVertex().equals(v)) && (par.get_dni().getMyCar().equals(_dni.getMyCar()))){
-				continue;							// don't calc parent
-			}
-			
-			if (_dni.getMyVertex().get_neighbours().get(v).is_flooded() && _dni.getMyCar().get_coff()==0) continue;	// don't calc flooded road with regular car
-			Road r = _dni.getMyVertex().get_neighbours().get(v);
-			Car c = _dni.getMyCar();
-			// create a GameDecisionNode with each my_ parameter is replaced with opponent_
-			GameDecisionNode newNode = new GameDecisionNode(new DecisionNodeInfo(_dni));
-			newNode.get_dni().setOpponentVertex(v);					
-			newNode.get_dni().setOpponentRoad(r);
-			newNode.get_dni().setOpponentParent(this);			
-			newNode.get_dni().setOpponentTime(get_dni().getMyTime()+calcWeight(r, c));
-			get_dni().setMyAction(new MoveAction(null,v));			
-			
-			/*						
-			newNode._H = clacHuristic(_dni.getMyCar(),((GameAtpProblem) problem).get_env(), 
-										v, 
-										((GameAtpProblem)problem).get_goal(),_vertex.get_neighbours().get(v));
-			 */
-			System.out.println(newNode.get_dni());
-			_children.add(newNode);
-		}
-		for (Car c : _dni.getMyVertex().get_cars().values()){
-			for(Vertex v : _dni.getMyVertex().get_neighbours().keySet()){
-//				if((_parent!=null)&&(_parent._vertex.equals(v))&&(_car.equals(_parent.get_car()))) continue;							// don't calc parent				
-				if (_dni.getMyVertex().get_neighbours().get(v).is_flooded() && c.get_coff()==0) continue;	// don't calc flooded road with regular car
-
-				Road r = _dni.getMyVertex().get_neighbours().get(v);
-				
-				// create a GameDecisionNode with each my_ parameter is replaced with opponent_
-				GameDecisionNode newNode = new GameDecisionNode(_dni);				
-				newNode.get_dni().setOpponentVertex(v);
-				newNode.get_dni().setOpponentCar(c);
-				newNode.get_dni().setOpponentRoad(r);
-				newNode.get_dni().setOpponentParent(this);
-				newNode.get_dni().setOpponentTime(Defs.TSWITCH+calcWeight(r, c));
-				newNode.get_dni().setOpponentAction(new SwitchCarAndMoveAction(null,c.get_name(),v));				
-				//newNode.get_dni().getOpponentVertex().ge
-				
-				/*
-				newNode._H = clacHuristic(c,((GameAtpProblem) problem).get_env(), 
-											v, 
-											((GameAtpProblem)problem).get_goal(),_vertex.get_neighbours().get(v));
-				*/										
-				_children.add(newNode);
-			}
-		}	
+	//????
 	}
 
 	public GameDecisionNode getRootGrandParent(){
@@ -330,21 +258,7 @@ public class GameDecisionNode implements DecisionNode {
 		return _parent.getRootParent(agent);			
 	}
 	
-	public GameDecisionNode getRootParent2(String agent){
-		if(get_dni().getMyName().equals(agent)){
-			if(get_dni().getMyParent()!=null){
-				return ((GameDecisionNode)(get_dni().getMyParent())).getRootParent(agent);
-			}			
-			else return this;
-		}
-		if(get_dni().getOpponentName().equals(agent)){
-			if(get_dni().getOpponentParent()!=null){
-				return ((GameDecisionNode)(get_dni().getOpponentParent())).getRootParent(agent);
-			}			
-			else return this;
-		}
-		return null;
-	}
+
 	
 	public double clacHuristic(Car c , Environment env, Vertex vFrom, Vertex vTo, Road road) {
 		Graph g = getDijkstraHuristicGraph(constractBestCar(env),env);
@@ -432,19 +346,16 @@ public class GameDecisionNode implements DecisionNode {
 
 	@Override
 	public DecisionNode get_parent() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._parent;
 	}
 
 	@Override
-	public Vector<DecisionNode> get_children() {
-		// TODO Auto-generated method stub		
+	public Vector<DecisionNode> get_children() {		
 		return this._children;
 	}
 
 	@Override
 	public int get_goal_evaluation() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
