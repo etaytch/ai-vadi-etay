@@ -1,25 +1,18 @@
 package agents;
 
-import java.util.Map;
-import java.util.Vector;
+
 
 import searchAlgorithms.GameAtpProblem;
-import searchAlgorithms.GeneralSearch;
 import searchAlgorithms.MaxiMax;
-import searchAlgorithms.MiniMax;
+import searchAlgorithms.MaxiMaxGameDecisionNode;
+import searchAlgorithms.MutualMax;
 import searchAlgorithms.MiniMaxAlphaPruning;
-import searchAlgorithms.MiniMaxAlphaPruning;
-import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import searchAlgorithms.DecisionNodes.GameDecisionNode;
-import searchAlgorithms.DecisionNodes.SumZeroGameDecisionNode;
-import searchAlgorithms.Interfaces.DecisionNode;
 import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;
-import simulator.Chart;
-import simulator.DecisionNodeInfo;
 import simulator.Environment;
 import simulator.Vertex;
-import simulator.Interfaces.Action;
+
 
 /**
  * this is the A* Agent it uses the greedy agent huristic,
@@ -37,29 +30,6 @@ public class GTSAgent  extends Agent{
 	}
 	
 	
-	public SumZeroGameDecisionNode getInitNode1() {
-		Agent human = _env.getHumanAgent();
-		DecisionNodeInfo dni = new DecisionNodeInfo(_name,
-																_vertex,
-																_car,
-																null,
-																null,
-																this._goalPosition.get_number(),
-																0.0,
-																null,
-																human._name,
-																human._vertex,
-																human._car,
-																null,
-																null,
-																human._goalPosition.get_number(),
-																0.0,
-																null,
-																0); 
-		return new SumZeroGameDecisionNode(dni);
-		//return new SumZeroGameDecisionNode(_initPosition, _car, null, null,0,human._vertex,human._car);
-	}
-
 	@Override
 	public GameDecisionNode getInitNode() {
 		Agent human = _env.getHumanAgent();		
@@ -75,7 +45,22 @@ public class GTSAgent  extends Agent{
 										0.0,
 										null,																																															
 										null);
-		//return new SumZeroGameDecisionNode(_initPosition, _car, null, null,0,human._vertex,human._car);
+	}
+	
+	public MaxiMaxGameDecisionNode getMaxiMaxInitNode() {
+		Agent human = _env.getHumanAgent();		
+		return new MaxiMaxGameDecisionNode(_vertex,
+										human._vertex,
+										this._goalPosition,
+										human._goalPosition,
+										_car,
+										human._car,
+										null,
+										null,
+										0.0,
+										0.0,
+										null,																																															
+										null);
 	}
 	
 	@Override
@@ -86,8 +71,13 @@ public class GTSAgent  extends Agent{
 		if(_typeGame==1){
 			_actions.add(MiniMaxAlphaPruning.MiniMaxDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
 		}
+		
 		if(_typeGame==2){
-			_actions.add(MaxiMax.MaxiMaxDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
+			_actions.add(MaxiMax.MaxiMaxDecision(env,this,_env.getHumanAgent(), problem, getMaxiMaxInitNode()));
+		}
+		
+		if(_typeGame==3){
+			_actions.add(MutualMax.MutualDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
 		}
 	}
 	

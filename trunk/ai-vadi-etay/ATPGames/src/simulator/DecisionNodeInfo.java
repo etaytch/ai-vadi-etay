@@ -1,6 +1,5 @@
 package simulator;
 
-import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import searchAlgorithms.Interfaces.DecisionNode;
 import simulator.Interfaces.Action;
 

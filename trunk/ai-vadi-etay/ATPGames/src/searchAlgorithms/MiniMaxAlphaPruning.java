@@ -6,8 +6,6 @@ import searchAlgorithms.Interfaces.DecisionNode;
 import searchAlgorithms.Interfaces.Problem;
 import simulator.Defs;
 import simulator.Environment;
-import simulator.MoveAction;
-import simulator.SwitchCarAndMoveAction;
 import simulator.Interfaces.Action;
 
 public class MiniMaxAlphaPruning {
@@ -41,7 +39,7 @@ public class MiniMaxAlphaPruning {
 		if(steps>Defs.CUTOFF) {
 			//gdn.setPenalty(Defs.F_UNITS);
 			//TODO:
-			// calc huristic in gdn and set it to the _value field 
+			gdn._value = calcHuristic(gdn); 
 			return gdn; 
 		}
 		
@@ -66,17 +64,24 @@ public class MiniMaxAlphaPruning {
 		return maxDecisionNode;
 	} 
 
+	public static double calcHuristic(GameDecisionNode gdn)
+	{
+		return (gdn._humanTime-gdn._compTime);
+	}
+	
 	public static GameDecisionNode MinValue(Environment env,Agent a,Agent human,Problem problem, GameDecisionNode gdn, int steps,double alpha,double beta,int turn){
 		turn++;
 		if(TerminalTest(env,a,gdn)) {
 			return gdn;
 		}
+		
 		if(steps>Defs.CUTOFF) {
 			//gdn.setPenalty(Defs.F_UNITS);
 			//TODO:
-			// calc huristic in gdn and set it to the _value field 
+			gdn._value = calcHuristic(gdn); 
 			return gdn; 
 		}
+		
 		steps++;
 		double v=Double.POSITIVE_INFINITY;
 		gdn.expand(problem,a,human,turn);

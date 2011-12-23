@@ -1,4 +1,6 @@
+
 package searchAlgorithms;
+
 
 import agents.Agent;
 import searchAlgorithms.DecisionNodes.*;
@@ -6,24 +8,22 @@ import searchAlgorithms.Interfaces.DecisionNode;
 import searchAlgorithms.Interfaces.Problem;
 import simulator.Defs;
 import simulator.Environment;
-import simulator.MoveAction;
-import simulator.SwitchCarAndMoveAction;
 import simulator.Interfaces.Action;
 
 public class MaxiMax {
-	public static Action MaxiMaxDecision(Environment env,Agent a, Agent human,Problem problem, GameDecisionNode gdn){
-		GameDecisionNode root = gdn;
+	public static Action MaxiMaxDecision(Environment env,Agent a, Agent human,Problem problem, MaxiMaxGameDecisionNode gdn){
+		MaxiMaxGameDecisionNode root = gdn;
 		root._id = Defs.MAX_ROOT_ID;
 		System.out.println("Starting point:");
 		System.out.println(root);
 		int steps=0;
 		int turn=0;
-		GameDecisionNode ans = MaxValue(env,a,human,problem,root,steps,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,turn);		
+		MaxiMaxGameDecisionNode ans = MaxValue(env,a,human,problem,root,steps,turn);		
 		if (ans == null) {
 			System.out.println("ans is null!");
 			return null;
 		}
-		GameDecisionNode maxNode = ans.getMaxNode(root,ans);
+		MaxiMaxGameDecisionNode maxNode = ans.getMaxNode(root,ans);
 		if(maxNode==null) {
 			System.out.println("maxNode is null!");
 			return null;
@@ -33,73 +33,47 @@ public class MaxiMax {
 		System.out.println(action);
 		return action;
 	}
-	public static GameDecisionNode MaxValue(Environment env,Agent a,Agent human,Problem problem, GameDecisionNode gdn, int steps,double alpha,double beta,int turn){
+	public static MaxiMaxGameDecisionNode MaxValue(Environment env,Agent a,Agent human,Problem problem, MaxiMaxGameDecisionNode gdn, int steps,int turn){
 		turn++;
-		if(TerminalTest(env,a,gdn)) {
+		if(TerminalTest(env,a,gdn,turn)) {
 			return gdn;
 		}
 		if(steps>Defs.CUTOFF) {
-			//gdn.setPenalty(Defs.F_UNITS);
-			//TODO:
-			// calc huristic in gdn and set it to the _value field 
+			gdn._value = calcHuristic(gdn,turn); 
 			return gdn; 
 		}
 		
 		steps++;
 		double v=Double.NEGATIVE_INFINITY;
 		gdn.expand(problem,a,human,turn);
-		GameDecisionNode maxDecisionNode=null;
+		MaxiMaxGameDecisionNode maxDecisionNode=null;
 		for(DecisionNode child : gdn.get_children()){
-			GameDecisionNode tmpDN = MaxValue(env,a,human,problem, (GameDecisionNode)child,steps,alpha,beta,turn);
-			//System.out.println("tmpDN.getValue(): "+tmpDN.getValue()+", v: "+v);
-			if (tmpDN.getValue()>v){
+			MaxiMaxGameDecisionNode tmpDN = MaxValue(env,a,human,problem, (MaxiMaxGameDecisionNode)child,steps,turn);
+			if (tmpDN._mutualValue[turn%2]>v){
 				System.out.println("MAX_VAL: Updateing max val from "+v+" to: "+tmpDN.getValue());
-				v = tmpDN.getValue();
-				maxDecisionNode = (GameDecisionNode)tmpDN;
-			}
-			if (v>=beta){
-				System.out.println("beta pruning");
-				return maxDecisionNode;				
-			}
-			alpha = Math.max(alpha, v);
-		}
-		return maxDecisionNode;
-	} 
-
-	public static GameDecisionNode MinValue(Environment env,Agent a,Agent human,Problem problem, GameDecisionNode gdn, int steps,double alpha,double beta,int turn){
-		turn++;
-		if(TerminalTest(env,a,gdn)) {
-			return gdn;
-		}
-		if(steps>Defs.CUTOFF) {
-			//gdn.setPenalty(Defs.F_UNITS);
-			//TODO:
-			// calc huristic in gdn and set it to the _value field 
-			return gdn; 
-		}
-		steps++;
-		double v=Double.POSITIVE_INFINITY;
-		gdn.expand(problem,a,human,turn);
-		GameDecisionNode maxDecisionNode=null;
-		int childCounter=0;
-		for(DecisionNode child : gdn.get_children()){
-			childCounter++;
-			GameDecisionNode tmpDN = MaxValue(env,a,human,problem, (GameDecisionNode)child, steps, alpha, beta,turn);
-			if (tmpDN.getValue()<v){
-				System.out.println("MIN_VAL: Updateing min val from "+v+" to: "+tmpDN.getValue());
-				v = tmpDN.getValue();
+				v = tmpDN._mutualValue[turn%2];
 				maxDecisionNode = tmpDN;
 			}
-			if(v<=alpha){				
-				System.out.println("alpha pruning with v="+v+", alpha="+alpha+", children killed: "+(gdn.get_children().size()-childCounter));
-				return maxDecisionNode;				
-			}
-			beta = Math.min(beta, v);		
-		} 
+		}
 		return maxDecisionNode;
 	} 
 
-	private static boolean TerminalTest(Environment env,Agent a,GameDecisionNode gdn) {
+	public static double calcHuristic(GameDecisionNode gdn, int turn )
+	{
+ 
+		if (turn%2==1) //comp
+		{
+			return gdn._humanTime - gdn._compTime;
+		}
+		else //human
+		{
+			return gdn._compTime - gdn._humanTime;
+
+		}
+	}
+	
+
+	private static boolean TerminalTest(Environment env,Agent a,MaxiMaxGameDecisionNode gdn,int turn) {
 		if (gdn==null) return false;		
 
 		// Max agent has not reached his goal
@@ -110,9 +84,21 @@ public class MaxiMax {
 		if(!gdn._humanGoal.equals(gdn._humanVertex)){		
 			return false;
 		}
-		double score = gdn._humanTime - gdn._compTime;
-		System.out.println("reached a leaf with score = "+score);
-		gdn.setValue(score);					
+		double score = 0; 
+		if (turn%2==1) //comp
+		{
+			score = gdn._humanTime - gdn._compTime;
+			gdn._mutualValue[Defs.GTS-1] = score;
+			System.out.println("reached a computr leaf with scores = "+score);
+		}
+		else //human
+		{
+			score = gdn._compTime - gdn._humanTime;
+			gdn._mutualValue[Defs.HUMAN-1] = score;
+			System.out.println("reached a human leaf with scores = "+score);
+		}
+		
+		
 		return true;
 	}	
 }
