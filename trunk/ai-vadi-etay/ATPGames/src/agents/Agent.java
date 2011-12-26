@@ -3,6 +3,7 @@ package agents;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -147,6 +148,12 @@ public abstract class Agent {
 	 */
 	public void search(Environment env, Vertex initPos, Vertex goalPosition,
 			Car initCar) {
+	}
+
+	public GameDecisionNode getInitNode(Map<Vertex, List<Car>> removedCars,
+			Map<Vertex, List<Car>> addedCars) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

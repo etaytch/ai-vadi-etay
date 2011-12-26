@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -22,6 +23,7 @@ public class Environment {
 	private Vector<Road> _edges;
 	private Map<Agent,Chart> _agents;
 	private Map<Agent,Chart> _finishedAgents;
+
 	private Vector<Car> _cars;
 	private int _typeGame;
 	
@@ -264,5 +266,4 @@ public class Environment {
 	public int get_typeGame() {
 		return _typeGame;
 	}
-
 }

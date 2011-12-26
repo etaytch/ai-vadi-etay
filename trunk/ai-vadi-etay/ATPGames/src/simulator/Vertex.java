@@ -119,4 +119,8 @@ public class Vertex implements Comparable<Vertex> {
 		return 0;
 	}
 		
+	public boolean equals(Vertex other){
+		return this.get_number()==other.get_number();
+	}
+	
 }

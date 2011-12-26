@@ -2,6 +2,11 @@ package agents;
 
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import searchAlgorithms.GameAtpProblem;
 import searchAlgorithms.MaxiMax;
 import searchAlgorithms.MaxiMaxGameDecisionNode;
@@ -12,6 +17,7 @@ import searchAlgorithms.Interfaces.Problem;
 import simulator.Car;
 import simulator.Environment;
 import simulator.Vertex;
+import simulator.Interfaces.Action;
 
 
 /**
@@ -31,7 +37,7 @@ public class GTSAgent  extends Agent{
 	
 	
 	@Override
-	public GameDecisionNode getInitNode() {
+	public GameDecisionNode getInitNode(Map<Vertex,List<Car>> removedCars, Map<Vertex,List<Car>> addedCars) {
 		Agent human = _env.getHumanAgent();		
 		return new GameDecisionNode(_vertex,
 										human._vertex,
@@ -44,10 +50,12 @@ public class GTSAgent  extends Agent{
 										0.0,
 										0.0,
 										null,																																															
-										null);
+										null,
+										removedCars,
+										addedCars);
 	}
 	
-	public MaxiMaxGameDecisionNode getMaxiMaxInitNode() {
+	public MaxiMaxGameDecisionNode getMaxiMaxInitNode(Map<Vertex,List<Car>> removedCars, Map<Vertex,List<Car>> addedCars) {
 		Agent human = _env.getHumanAgent();		
 		return new MaxiMaxGameDecisionNode(_vertex,
 										human._vertex,
@@ -60,24 +68,50 @@ public class GTSAgent  extends Agent{
 										0.0,
 										0.0,
 										null,																																															
-										null);
+										null,
+										removedCars,
+										addedCars);
+	}
+	
+	public Map<Vertex,List<Car>> generateVertexCarsList(Environment env){
+		Map<Vertex,List<Car>> ans = new HashMap<Vertex,List<Car>>();
+		for(Vertex v : env.get_vertexes().values()){
+			ans.put(v, new ArrayList<Car>());			
+		}		
+		return ans;		
 	}
 	
 	@Override
 	public void chooseBestAction(Environment env) {
 		Problem problem = new GameAtpProblem(env, _vertex, _goalPosition, _car,this);
-				
+		
+		Map<Vertex,List<Car>> _removedCars = generateVertexCarsList(env);
+		Map<Vertex,List<Car>> _addedCars = generateVertexCarsList(env);
+		
+		
 		//_actions.add(MiniMaxAlphaPruning.MiniMaxDecision(env,this, problem, getInitNode()));
 		if(_typeGame==1){
-			_actions.add(MiniMaxAlphaPruning.MiniMaxDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
+			Action a = MiniMaxAlphaPruning.MiniMaxDecision(env,this,_env.getHumanAgent(), problem, getInitNode(_removedCars,_addedCars));
+			if(a==null){
+				set_state("stuck", "empty tree search");
+			}
+			_actions.add(a);
 		}
 		
 		if(_typeGame==2){
-			_actions.add(MaxiMax.MaxiMaxDecision(env,this,_env.getHumanAgent(), problem, getMaxiMaxInitNode()));
+			Action a = MaxiMax.MaxiMaxDecision(env,this,_env.getHumanAgent(), problem, getMaxiMaxInitNode(_removedCars,_addedCars));
+			if(a==null){
+				set_state("stuck", "empty tree search");
+			}
+			_actions.add(a);
 		}
 		
 		if(_typeGame==3){
-			_actions.add(MutualMax.MutualDecision(env,this,_env.getHumanAgent(), problem, getInitNode()));
+			Action a = MutualMax.MutualDecision(env,this,_env.getHumanAgent(), problem, getInitNode(_removedCars,_addedCars));
+			if(a==null){
+				set_state("stuck", "empty tree search");
+			}
+			_actions.add(a);
 		}
 	}
 	
@@ -85,5 +119,12 @@ public class GTSAgent  extends Agent{
 	public void search(Environment env, Vertex initPos,Vertex goalPosition,Car initCar )
 	{		
 	
+	}
+
+
+	@Override
+	public GameDecisionNode getInitNode() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }
