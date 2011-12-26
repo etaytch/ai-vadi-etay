@@ -75,14 +75,14 @@ public class Simulator {
 		}
 		
 		//Calculating turnTime in flooded road
-		else if(old_vertex.get_neighbours().get(agent.get_vertex()).is_flooded()){
-				turnTime +=	(old_vertex.get_neighbours().get(agent.get_vertex()).get_weight())/
+		else if(old_vertex.get_neighbours().get(new_vertex/*agent.get_vertex()*/).is_flooded()){
+				turnTime +=	(old_vertex.get_neighbours().get(new_vertex/*agent.get_vertex()*/).get_weight())/
 							(agent.get_car().get_speed()*agent.get_car().get_coff());
 		}
 		
 		//Calculating turnTime in clear road
 		else{
-			turnTime +=	(double)(old_vertex.get_neighbours().get(agent.get_vertex()).get_weight())/
+			turnTime +=	(double)(old_vertex.get_neighbours().get(new_vertex/*agent.get_vertex()*/).get_weight())/
 						(agent.get_car().get_speed());
 		}	
 		ATPLogger.log("Agent "+agent.get_name()+" spent "+turnTime+" time moving to vertex #"+new_vertex.get_number());
@@ -186,7 +186,7 @@ public class Simulator {
 
 
 	public void startSimulation() {
-		int round=1;
+		int round=0;
 		ATPLogger.log("Starting Simulation:");
 		/*
 		for (Agent agent: _env.get_agents().keySet()){
@@ -195,7 +195,22 @@ public class Simulator {
 		}
 		 */	
 		while (!finished()){
-			ATPLogger.log("\n<<<<<<<< Start of Round #"+(round++)+" >>>>>>>>");
+			ATPLogger.log("\n<<<<<<<< Start of Round #"+(++round)+" >>>>>>>>");
+			if(round > Defs.HORIZON){
+				Vector<Agent> toBeRemoved = new Vector<Agent>();
+				System.out.println("Reached Horizon ("+Defs.HORIZON+")!");
+				for (Agent agent: _env.get_agents().keySet()){
+					Chart chart = _env.get_agents().get(agent);
+					double currentTime = chart.get_totalTime();
+					chart.set_totalTime(currentTime+Defs.F_UNITS);
+					toBeRemoved.add(agent);
+				}
+				for(Agent agent:toBeRemoved){					
+					_env.get_finishedAgents().put(agent, _env.get_agents().get(agent));
+					_env.get_agents().remove(agent);					
+				}
+				break;
+			}
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));			
 			try {
 				br.readLine();
@@ -207,24 +222,20 @@ public class Simulator {
 				ATPLogger.log("\n"+agent.get_name()+"'s turn:");
 				agent.chooseBestAction(_env);
 				Action a = agent.get_actions().poll();
-				if(a!=null)	// currently null when SpeedNut gets 3 time to the same vertex
+				if(a!=null)	{
 					a.performAction(this);
+				}
+				else{
+					
+				}
 				ATPLogger.log(_env.get_agents().get(agent).toString());
 			}			
-		}
-		ATPLogger.log("\nF_env.inal Stats:");
+		}		
+		ATPLogger.log("\nFinal Stats:");
 		for (Agent agent: _env.get_finishedAgents().keySet()){
 			Chart c = _env.get_finishedAgents().get(agent);
 			c.set_totalTime((double)Math.round(c.get_totalTime() * 100) / 100);
-			ATPLogger.log("\nAgent: "+agent.get_name()+": "+c);
-			ATPLogger.log("For f="+Defs.F1_LEVEL+":       P = f * S + T =    "+Defs.F1_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F1_LEVEL*c._totalTime + c._expend_steps));
-			ATPLogger.log("For f="+Defs.F100_LEVEL+":     P = f * S + T =    "+Defs.F100_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F100_LEVEL*c._totalTime + c._expend_steps));
-			ATPLogger.log("For f="+Defs.F10000_LEVEL+":   P = f * S + T =    "+Defs.F10000_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F10000_LEVEL*c._totalTime + c._expend_steps));
-			
-			//ATPLogger.log("For f="+Defs.F1_LEVEL+":       P = f * T + S = "+Defs.F1_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F1_LEVEL*c._expend_steps + c._totalTime));
-			//ATPLogger.log("For f="+Defs.F100_LEVEL+":     P = f * T + S = "+Defs.F100_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F100_LEVEL*c._expend_steps + c._totalTime));
-			//ATPLogger.log("For f="+Defs.F10000_LEVEL+":   P = f * T + S = "+Defs.F10000_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F10000_LEVEL*c._expend_steps + c._totalTime));
-
+			ATPLogger.log("\nAgent: "+agent.get_name()+": "+c);			
 		}
 	}
 }

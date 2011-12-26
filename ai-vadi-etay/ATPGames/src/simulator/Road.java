@@ -59,5 +59,14 @@ public class Road {
 		_flooded = flooded;
 	}
 
+	public boolean equals(Road other){		
+		boolean ans = true;
+		if (other==null) return false;
+		ans = ans && (this._flooded==other.is_flooded());		
+		ans = ans && (this._from.get_number()==other._from.get_number());
+		ans = ans && (this._to.get_number()==other._to.get_number());
+		ans = ans && (this._weight==other.get_weight());		
+		return ans;
+	}
 	
 }
