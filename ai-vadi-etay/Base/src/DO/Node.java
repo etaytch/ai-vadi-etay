@@ -1,5 +1,7 @@
 package DO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,14 @@ public abstract class Node {
 		this.setParents(parents);
 		this.setTitles(titles);
 		this.setTable(table);
+		value = 0.0;
+	}
+	
+	public Node(String name){
+		this.name = name;
+		this.setParents(new ArrayList<Node>());
+		this.setTitles(new ArrayList<String>());
+		this.setTable(new HashMap<List<String>, Double>());
 		value = 0.0;
 	}
 	
