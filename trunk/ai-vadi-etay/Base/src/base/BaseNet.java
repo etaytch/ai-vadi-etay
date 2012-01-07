@@ -10,7 +10,7 @@ public interface BaseNet {
 
 	void setLables(String nodeName, List<String> labels); //labels = List of nodes labels (TRUE,FALSE mostly )
 
-	void addNodeDistTableRow(String string, List<String> pdist, double dist); //pdist = List of node's parents labels, dist = distribution over set of labels   
+	void addNodeDistTableRow(String nodeName, List<String> pdist, double dist); //pdist = List of node's parents labels, dist = distribution over set of labels   
 
 	
 }

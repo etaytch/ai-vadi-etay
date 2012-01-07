@@ -11,5 +11,9 @@ public class NoisyOrNode extends Node {
 		// TODO Auto-generated constructor stub
 	}
 
+	public NoisyOrNode(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
 
 }

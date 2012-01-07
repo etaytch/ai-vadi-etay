@@ -1,5 +1,6 @@
 package base;
 
+import java.util.HashMap;
 import java.util.List;
 
 import DO.Node;
@@ -8,7 +9,7 @@ import DO.NormalNode;
 
 public class BaseNetImpl implements BaseNet {
 
-	List<Node> _nodes;
+	HashMap<String,Node> _nodes;
 	@Override
 	public void addNode(String nodeName, String nodeType) {
 		Node node = null;
@@ -20,18 +21,20 @@ public class BaseNetImpl implements BaseNet {
 		
 		if (node==null)
 		{
-			throw new Exception("Wrong Node type!!");
+			System.out.println("Wrong Node type!!  (Wrong input- "+"\'"+nodeType+"\')");
+		}else{
+			_nodes.put(nodeName,node);	
 		}
-		
-		_nodes.add(node);
-
 	}
 
 	@Override
-	public void addNodeDistTableRow(String string, List<String> pdist,
+	public void addNodeDistTableRow(String nodeName, List<String> pdist,
 			double dist) {
-		// TODO Auto-generated method stub
-
+		Node n = _nodes.get(nodeName);
+		if (n!=null){
+			//n.getTable().
+		}
+		
 	}
 
 	@Override
