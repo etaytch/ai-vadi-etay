@@ -1,0 +1,4 @@
+N	n1	norm
+L	n1	true	false
+D	n1	0.9	0.1 
+

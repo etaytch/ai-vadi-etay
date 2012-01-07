@@ -68,5 +68,7 @@ public abstract class Node {
 	public void addParent(Node nParent) {
 		parents.add(nParent);
 		
-	}	
+	}
+	
+	
 }
