@@ -78,4 +78,8 @@ public class BaseNetImpl implements BaseNet {
 		}
 		return ret;
 	}
+	
+	public void print(){
+		
+	}
 }

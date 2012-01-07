@@ -16,5 +16,6 @@ public interface BaseNet {
 
 	int getLablesCount(String nodeName);
 
+	public void print();
 	
 }
