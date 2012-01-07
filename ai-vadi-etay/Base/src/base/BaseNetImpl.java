@@ -9,7 +9,7 @@ import DO.NormalNode;
 
 public class BaseNetImpl implements BaseNet {
 
-	HashMap<String,Node> _nodes;
+	HashMap<String,Node> nodes;
 	@Override
 	public void addNode(String nodeName, String nodeType) {
 		Node node = null;
@@ -23,24 +23,24 @@ public class BaseNetImpl implements BaseNet {
 		{
 			System.out.println("Wrong Node type!!  (Wrong input- "+"\'"+nodeType+"\')");
 		}else{
-			_nodes.put(nodeName,node);	
+			nodes.put(nodeName,node);	
 		}
 	}
 
 	@Override
 	public void addNodeDistTableRow(String nodeName, List<String> pdist,
-			double dist) {
+			List<Double> ndist) {
 		
-		Node node = _nodes.get(nodeName);
+		Node node = nodes.get(nodeName);
 		if (node!=null){
-			node.getTable().put(pdist, dist);
+			node.getTable().put(pdist, ndist);
 		}
 	}
 
 	@Override
 	public void setLables(String nodeName, List<String> lables) {
 
-		Node node = _nodes.get(nodeName);
+		Node node = nodes.get(nodeName);
 		if (node!=null){
 			node.setLables(lables);
 		}
@@ -49,14 +49,33 @@ public class BaseNetImpl implements BaseNet {
 	@Override
 	public void setParents(String nodeName, List<String> parents) {
 		
-		Node node = _nodes.get(nodeName);
+		Node node = nodes.get(nodeName);
 		if (node!=null){
 			for(String parent : parents){
-				Node nParent = _nodes.get(parent);
+				Node nParent = nodes.get(parent);
 				nParent.addParent(nParent);
 			}
 		}
 
 	}
 
+	@Override
+	public int getLablesCount(String nodeName) {
+		int ret = 0;
+		Node node = nodes.get(nodeName);
+		if (node!=null){
+			ret = node.getLables().size();
+		}
+		return ret;
+	}
+
+	@Override
+	public int getParentsCount(String nodeName) {
+		int ret = 0;
+		Node node = nodes.get(nodeName);
+		if (node!=null){
+			ret = node.getParents().size();
+		}
+		return ret;
+	}
 }
