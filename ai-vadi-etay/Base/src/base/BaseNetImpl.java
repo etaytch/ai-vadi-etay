@@ -30,22 +30,32 @@ public class BaseNetImpl implements BaseNet {
 	@Override
 	public void addNodeDistTableRow(String nodeName, List<String> pdist,
 			double dist) {
-		Node n = _nodes.get(nodeName);
-		if (n!=null){
-			//n.getTable().
-		}
 		
+		Node node = _nodes.get(nodeName);
+		if (node!=null){
+			node.getTable().put(pdist, dist);
+		}
 	}
 
 	@Override
-	public void setLables(String nodeName, List<String> labels) {
-		// TODO Auto-generated method stub
+	public void setLables(String nodeName, List<String> lables) {
 
+		Node node = _nodes.get(nodeName);
+		if (node!=null){
+			node.setLables(lables);
+		}
 	}
 
 	@Override
 	public void setParents(String nodeName, List<String> parents) {
-		// TODO Auto-generated method stub
+		
+		Node node = _nodes.get(nodeName);
+		if (node!=null){
+			for(String parent : parents){
+				Node nParent = _nodes.get(parent);
+				nParent.addParent(nParent);
+			}
+		}
 
 	}
 
