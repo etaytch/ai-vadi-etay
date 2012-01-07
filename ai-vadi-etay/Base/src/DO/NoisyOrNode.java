@@ -3,14 +3,13 @@ package DO;
 import java.util.List;
 import java.util.Map;
 
-public class NormalNode extends Node{
+public class NoisyOrNode extends Node {
 
-	public NormalNode(String name, List<String> titles, List<Node> parents,
+	public NoisyOrNode(String name, List<String> titles, List<Node> parents,
 			Map<List<String>, Double> table) {
 		super(name, titles, parents, table);
 		// TODO Auto-generated constructor stub
 	}
-
 
 
 }

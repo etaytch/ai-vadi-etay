@@ -3,6 +3,8 @@ package fileParsing;
 import java.util.ArrayList;
 import java.util.List;
 
+import base.BaseNet;
+
 
 /**
  * Line parser for the ATP problem input file
