@@ -69,6 +69,28 @@ public abstract class Node {
 		parents.add(nParent);
 		
 	}
-	
-	
+
+	public double getDistribution(List<String> dlables, String y) {
+		for(List<String>  dlist : table.keySet()){
+			
+			if (dlables.size()!=dlist.size()){
+				continue;
+			}
+			
+			Boolean found = true;
+			for(int i=0;i<dlables.size();i++){
+				if(!dlables.get(i).equals(dlist.get(i))){
+					found = false;
+				}
+			}
+			if (found){
+				return table.get(dlist).get(lables.indexOf(y)); 	
+			}
+		}
+		System.out.println("SOMTHING HORRIBLE HAPPEND IN getDistribution METHOD IN node CLASS!!!!!!\n " +
+						   "Couldn't find the row needed eow in the distribution table!\n" +
+						   "will now exit!");	
+		System.exit(-1);
+		return 0.0;
+	}	
 }
