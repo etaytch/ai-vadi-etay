@@ -3,13 +3,27 @@ package base;
 import java.util.List;
 
 import DO.Node;
+import DO.NoisyOrNode;
+import DO.NormalNode;
 
 public class BaseNetImpl implements BaseNet {
 
-	List<Node> _nodes; 
+	List<Node> _nodes;
 	@Override
 	public void addNode(String nodeName, String nodeType) {
-		// TODO Auto-generated method stub
+		Node node = null;
+		if (nodeType.equals("nois")){
+			node = new NoisyOrNode(nodeName);
+		}else if (nodeType.equals("norm")){
+			node = new NormalNode(nodeName);
+		}
+		
+		if (node==null)
+		{
+			throw new Exception("Wrong Node type!!");
+		}
+		
+		_nodes.add(node);
 
 	}
 
