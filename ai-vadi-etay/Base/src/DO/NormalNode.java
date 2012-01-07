@@ -11,6 +11,10 @@ public class NormalNode extends Node{
 		// TODO Auto-generated constructor stub
 	}
 
+	public NormalNode(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
 
 
 }
