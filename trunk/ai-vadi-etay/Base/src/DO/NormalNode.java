@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class NormalNode extends Node{
 
-	public NormalNode(String name, List<String> titles, List<Node> parents,
+	public NormalNode(String name, List<String> lables, List<Node> parents,
 			Map<List<String>, Double> table) {
-		super(name, titles, parents, table);
+		super(name, lables, parents, table);
 		// TODO Auto-generated constructor stub
 	}
 

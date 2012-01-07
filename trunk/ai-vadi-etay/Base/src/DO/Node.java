@@ -7,15 +7,15 @@ import java.util.Map;
 
 public abstract class Node {
 	private String name;
-	private List<String> titles;
+	private List<String> lables;
 	private Map<List<String>,Double> table;
 	private List<Node> parents;
 	public double value;
 	
-	public Node(String name,List<String> titles,List<Node> parents,Map<List<String>,Double> table){
+	public Node(String name,List<String> lables,List<Node> parents,Map<List<String>,Double> table){
 		this.name = name;
 		this.setParents(parents);
-		this.setTitles(titles);
+		this.setLables(lables);
 		this.setTable(table);
 		value = 0.0;
 	}
@@ -23,7 +23,7 @@ public abstract class Node {
 	public Node(String name){
 		this.name = name;
 		this.setParents(new ArrayList<Node>());
-		this.setTitles(new ArrayList<String>());
+		this.setLables(new ArrayList<String>());
 		this.setTable(new HashMap<List<String>, Double>());
 		value = 0.0;
 	}
@@ -41,12 +41,12 @@ public abstract class Node {
 		this.value = value;
 	}
 
-	public void setTitles(List<String> titles) {
-		this.titles = titles;
+	public void setLables(List<String> lables) {
+		this.lables = lables;
 	}
 
 	public List<String> getTitles() {
-		return titles;
+		return lables;
 	}
 
 	public void setTable(Map<List<String>,Double> table) {
@@ -63,5 +63,10 @@ public abstract class Node {
 
 	public List<Node> getParents() {
 		return parents;
+	}
+
+	public void addParent(Node nParent) {
+		parents.add(nParent);
+		
 	}
 }
