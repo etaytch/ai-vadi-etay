@@ -10,7 +10,12 @@ import DO.NormalNode;
 
 public class BaseNetImpl implements BaseNet {
 
-	HashMap<String,Node> nodes;
+	Map<String,Node> nodes;
+	
+	public BaseNetImpl(){
+		nodes = new HashMap<String,Node>();
+	}
+	
 	
 	
 	@Override
@@ -88,6 +93,8 @@ public class BaseNetImpl implements BaseNet {
 	}
 	
 	public void print(){
-		
+		for (int i=0;i<nodes.size();i++){
+			nodes.get(i).print();			
+		}
 	}
 }
