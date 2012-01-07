@@ -88,7 +88,7 @@ public abstract class Node {
 			}
 		}
 		System.out.println("SOMTHING HORRIBLE HAPPEND IN getDistribution METHOD IN node CLASS!!!!!!\n " +
-						   "Couldn't find the row needed eow in the distribution table!\n" +
+						   "Couldn't find the row needed in the distribution table!\n" +
 						   "will now exit!");	
 		System.exit(-1);
 		return 0.0;
