@@ -6,7 +6,7 @@ import java.util.Map;
 public class NoisyOrNode extends Node {
 
 	public NoisyOrNode(String name, List<String> lables, List<Node> parents,
-			Map<List<String>, Double> table) {
+			Map<List<String>,List<Double>> table) {
 		super(name, lables, parents, table);
 		// TODO Auto-generated constructor stub
 	}

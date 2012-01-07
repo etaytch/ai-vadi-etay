@@ -3,6 +3,7 @@ package fileParsing;
 import java.util.ArrayList;
 import java.util.List;
 
+import DO.Node;
 import base.BaseNet;
 
 
@@ -13,17 +14,17 @@ import base.BaseNet;
  */
 public class BaseLineAnalyzer implements LineAnalyzerInterface {
 
-	private BaseNet _bn;
+	private BaseNet bn;
 	
 	public BaseLineAnalyzer (BaseNet bn) {
 		super();
-		_bn = bn;
+		this.bn = bn;
 	}
 
 	/*
 	 * N	name	type(norm/nois)		perent_1...perent_n 
 	 * L	name	label1		label2
-	 * D  	name    distribution  parent_label_1...parent_label_n 
+	 * D  	name    parent_label_1...parent_label_n  dist1... distN 
 	 */
 	
 
@@ -46,21 +47,18 @@ public class BaseLineAnalyzer implements LineAnalyzerInterface {
 		if (line[0].equalsIgnoreCase("D")){
 			parseDist(line);
 		}
-		
-		
-		
 		return;	
 	}
 
 	private void parseNode(String[] line) {
 		List<String> parents = new ArrayList<String>();
-		_bn.addNode(line[1],line[2]);
+		bn.addNode(line[1],line[2]);
 		
 		for(int i=3; i<line.length; i++){
 			parents.add(line[i]);
 		}
 		
-		_bn.setParents(line[1],parents);
+		bn.setParents(line[1],parents);
 	}
 
 	private void parseLables(String[] line) {
@@ -70,22 +68,34 @@ public class BaseLineAnalyzer implements LineAnalyzerInterface {
 			labels .add(line[i]);
 		}
 		
-		_bn.setLables(line[1],labels);
+		bn.setLables(line[1],labels);
 	}
 
 	
 	private void parseDist(String[] line) {
 		List<String> pdist = new ArrayList<String>();
-		for(int i=3; i<line.length; i++){
+		List<Double> ndist = new ArrayList<Double>();
+		int parents = bn.getParentsCount(line[1]);
+		int lables = bn.getLablesCount(line[1]);
+		
+		int i=2;
+		for(; i<parents+2; i++){
 			pdist.add(line[i]);
 		}
-		_bn.addNodeDistTableRow(line[1],pdist,Double.parseDouble(line[2]));
+		
+		for(; i<parents+lables+2; i++){
+			ndist.add(Double.parseDouble(line[i]));
+		}
+
+		bn.addNodeDistTableRow(line[1],pdist,ndist);
+		
+		
 		
 	}
 
 	@Override
 	public Object getParsedObject() {
-		return _bn;
+		return bn;
 	}
 
 }
