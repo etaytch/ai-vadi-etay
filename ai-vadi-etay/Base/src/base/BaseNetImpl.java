@@ -2,6 +2,7 @@ package base;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import DO.Node;
 import DO.NoisyOrNode;
@@ -10,6 +11,13 @@ import DO.NormalNode;
 public class BaseNetImpl implements BaseNet {
 
 	HashMap<String,Node> nodes;
+	
+	
+	@Override
+	public Map<String,Node> getNodes(){
+		return nodes;
+	}
+	
 	@Override
 	public void addNode(String nodeName, String nodeType) {
 		Node node = null;
