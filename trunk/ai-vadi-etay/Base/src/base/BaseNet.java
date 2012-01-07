@@ -1,6 +1,9 @@
 package base;
 
 import java.util.List;
+import java.util.Map;
+
+import DO.Node;
 
 public interface BaseNet {
 
@@ -16,6 +19,8 @@ public interface BaseNet {
 
 	int getLablesCount(String nodeName);
 
-	public void print();
+	void print();
+
+	Map<String,Node> getNodes();
 	
 }
