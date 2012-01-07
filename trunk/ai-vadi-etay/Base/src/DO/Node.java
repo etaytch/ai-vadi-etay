@@ -7,11 +7,12 @@ public abstract class Node {
 	private String name;
 	private List<String> titles;
 	private Map<List<String>,Double> table;
-
+	private List<Node> parents;
 	public double value;
 	
-	public Node(String name,List<String> titles,Map<List<String>,Double> table){
+	public Node(String name,List<String> titles,List<Node> parents,Map<List<String>,Double> table){
 		this.name = name;
+		this.setParents(parents);
 		this.setTitles(titles);
 		this.setTable(table);
 		value = 0.0;
@@ -44,5 +45,13 @@ public abstract class Node {
 
 	public Map<List<String>,Double> getTable() {
 		return table;
+	}
+
+	public void setParents(List<Node> parents) {
+		this.parents = parents;
+	}
+
+	public List<Node> getParents() {
+		return parents;
 	}
 }
