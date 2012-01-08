@@ -1,6 +1,7 @@
 package fileParsing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import DO.Node;
@@ -47,7 +48,21 @@ public class BaseLineAnalyzer implements LineAnalyzerInterface {
 		if (line[0].equalsIgnoreCase("D")){
 			parseDist(line);
 		}
+		if (line[0].equalsIgnoreCase("Q")){
+			parseQuery(line);
+		}
+		if (line[0].equalsIgnoreCase("E")){
+			parseEvidence(line);
+		}
 		return;	
+	}
+
+	private void parseEvidence(String[] line) {		
+		bn.addEvidance(line[1],line[2]);
+	}
+
+	private void parseQuery(String[] line) {
+		bn.addQuery(line[2]);
 	}
 
 	private void parseNode(String[] line) {
