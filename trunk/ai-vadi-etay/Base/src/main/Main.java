@@ -3,6 +3,7 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 import Algorithms.Algorithms;
 import base.BaseNet;
@@ -12,7 +13,7 @@ import fileParsing.BaseLineAnalyzer;
 import fileParsing.FileParser;
 import fileParsing.LineAnalyzerInterface;
 
-public class main {
+public class Main {
 
 	/**
 	 * @param args
@@ -27,6 +28,7 @@ public class main {
 		System.out.println("	********************************\n\n\n");
 		System.out.println("Loading Bayes network from file..\n");
 		BaseNet bn = new BaseNetImpl();
+		
 		LineAnalyzerInterface la = new BaseLineAnalyzer(bn);
 		FileParser.parseEnv("conf.txt", la);
 		bn = (BaseNet)la.getParsedObject();
@@ -47,32 +49,39 @@ public class main {
 			System.out.println("5 - Run algorithm.");
 			System.out.println("6 - Quit.");
 			
-			input = br.readLine();
-			try{
-				num = Integer.valueOf(input);
-				switch(num){
-				case 1: env.getBn().print();
-				case 2: addEvidence();
-				case 3: addEvidence();
-				case 4: setQueryNode();
-				case 5: runAlgorithm(env);
-				case 6: {
-					System.out.println("Bye Bye...");
-					System.exit(0);
+			while(true){
+				input = br.readLine();
+				try{
+					num = Integer.valueOf(input);
+					switch(num){
+					case 1: env.getBn().print();
+							break;
+					case 2: addEvidence();
+							break;
+					case 3: addEvidence();
+							break;
+					case 4: setQueryNode();
+							break;
+					case 5: runAlgorithm(env);
+							break;
+					case 6: {
+						System.out.println("Bye Bye...");
+						System.exit(0);
+					}
+					default: System.out.println("Illegal input.. Try againg"); 
+					}
 				}
-				default: System.out.println("Illegal input.. Try againg"); 
+				
+				catch(NumberFormatException e){
+					System.out.println("Illegal input.. Try againg");
 				}
 			}
-			catch(NumberFormatException e){
-				System.out.println("Illegal input.. Try againg");
-			}
-			
 		}
 	}
 
 	private static void runAlgorithm(Environment env) {
-		Algorithms.EnumerationAsk(env.getQuery(), env.getEvidence(), env.getBn());
-		
+		Map<String,Double> ans = Algorithms.EnumerationAsk(env.getQuery(), env.getEvidence(), env.getBn());
+		System.out.println(ans);
 	}
 
 	private static void loadBayes() {
@@ -94,5 +103,4 @@ public class main {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

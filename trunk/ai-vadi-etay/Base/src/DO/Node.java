@@ -1,8 +1,8 @@
 package DO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +28,7 @@ public abstract class Node {
 		this.name = name;
 		this.setParents(new ArrayList<Node>());
 		this.setLables(new ArrayList<String>());
-		this.setTable(new HashMap<List<String>,List<Double>>());
+		this.setTable(new LinkedHashMap<List<String>,List<Double>>());
 		value = 0.0;
 	}
 	
@@ -75,6 +75,7 @@ public abstract class Node {
 	}
 	
 	public double getDistribution(List<String> dlables, String y) {
+		
 		for(List<String>  dlist : table.keySet()){
 			
 			if (dlables.size()!=dlist.size()){
@@ -87,15 +88,14 @@ public abstract class Node {
 					found = false;
 				}
 			}
+			
 			if (found){
 				return table.get(dlist).get(lables.indexOf(y)); 	
 			}
 		}
 		System.out.println("SOMTHING HORRIBLE HAPPEND IN getDistribution METHOD IN node CLASS!!!!!!\n " +
-						   "Couldn't find the row needed in the distribution table!\n" +
-						   "will now exit!");	
-		System.exit(-1);
-		return 0.0;
+						   "Couldn't find the row needed in the distribution table!");	
+		return 1.0;
 	}
 
 	public String getBorder(int weigth, String str){
@@ -118,7 +118,6 @@ public abstract class Node {
 	}
 	
 	public String getTableStr(){
-		String ans="";
 		
 		Set<List<String>> keys = getTable().keySet();
 		Iterator<List<String>> itr = keys.iterator(); 
@@ -159,6 +158,9 @@ public abstract class Node {
 			ans.add(getParents().get(i).getName());			
 		}
 		return ans;
+	}
+	public String toString(){
+		return name;
 	}
 	
 	private String getTitle() {
