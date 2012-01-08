@@ -22,5 +22,9 @@ public interface BaseNet {
 	void print();
 
 	Map<String,Node> getNodes();
+
+	void addQuery(String nodeName);
+
+	void addEvidance(String nodeName, String lable);
 	
 }
