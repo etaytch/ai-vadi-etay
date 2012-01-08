@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.print.attribute.standard.QueuedJobCount;
+
 import DO.Node;
 import DO.NoisyOrNode;
 import DO.NormalNode;
@@ -13,9 +15,14 @@ import DO.NormalNode;
 public class BaseNetImpl implements BaseNet {
 
 	Map<String,Node> nodes;
+	Node query; 
+	Map<Node,String> evidance;
 	
 	public BaseNetImpl(){
 		nodes = new HashMap<String,Node>();
+		Node query = null; 
+		Map<Node,String> evidance = new HashMap<Node, String>();
+		
 	}
 	
 	
@@ -101,5 +108,33 @@ public class BaseNetImpl implements BaseNet {
 		    Node tmpNode = nodes.get(itr.next()); 
 			tmpNode.print();		
 		} 
+	}
+
+
+
+	@Override
+	public void addEvidance(String nodeName, String lable) {
+		Node eNode = getNodes().get(nodeName);
+		if (eNode  == null){
+			System.out.println("ILLEGAL QUERY!! ("+nodeName+") will now exit");
+			System.exit(-1);
+		}
+		
+		if (!eNode.getLables().contains(lable)){
+			System.out.println("ILLEGAL EVIDANCE!! ("+lable+") will now exit");
+			System.exit(-1);
+		}
+		evidance.put(eNode, lable);
+	}
+
+
+
+	@Override
+	public void addQuery(String nodeName) {
+		query = getNodes().get(nodeName);
+		if (query == null){
+			System.out.println("ILLEGAL QUERY!! ("+nodeName+") will now exit");
+			System.exit(-1);
+		}
 	}
 }
