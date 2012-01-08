@@ -25,6 +25,17 @@ public class BaseNetImpl implements BaseNet {
 	
 	
 	
+	public Node getQuery() {
+		return query;
+	}
+
+
+	public Map<Node, String> getEvidance() {
+		return evidance;
+	}
+
+
+
 	@Override
 	public Map<String,Node> getNodes(){
 		return nodes;

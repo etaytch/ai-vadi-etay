@@ -26,5 +26,9 @@ public interface BaseNet {
 	void addQuery(String nodeName);
 
 	void addEvidance(String nodeName, String lable);
-	
+
+	Node getQuery();
+
+	Map<Node, String> getEvidance();
+
 }
