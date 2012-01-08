@@ -1,11 +1,13 @@
 package main;
+import java.util.Map;
+
+import DO.Node;
 import base.BaseNet;
 
 
 public class Environment {
+	
 	private BaseNet bn;
-	private String evidence;
-	private String query;
 	
 	public Environment(BaseNet bn){
 		this.bn = bn;
@@ -17,17 +19,17 @@ public class Environment {
 	public void setBn(BaseNet bn) {
 		this.bn = bn;
 	}
-	public String getEvidence() {
-		return evidence;
+	public Map<Node, String> getEvidence() {
+		return bn.getEvidance();
 	}
-	public void setEvidence(String evidence) {
-		this.evidence = evidence;
+	public void addEvidence(String nodeName,String lable) {
+		bn.addEvidance(nodeName, lable);
 	}
-	public String getQuery() {
-		return query;
+	public Node getQuery() {
+		return bn.getQuery();
 	}
-	public void setQuery(String query) {
-		this.query = query;
+	public void setQuery(String nodeName) {
+		bn.addQuery(nodeName);
 	}
 	
 }

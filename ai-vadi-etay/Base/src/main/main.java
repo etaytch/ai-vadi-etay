@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import Algorithms.Algorithms;
 import base.BaseNet;
 import base.BaseNetImpl;
 
@@ -43,7 +44,9 @@ public class main {
 			System.out.println("2 - Add evidence");
 			System.out.println("3 - Reset the evidence to null.");
 			System.out.println("4 - Set a query node, upon which the program computes and prints out the posterior distribution of the query node given the current evidence.");
-			System.out.println("5 - Quit.");			
+			System.out.println("5 - Run algorithm.");
+			System.out.println("6 - Quit.");
+			
 			input = br.readLine();
 			try{
 				num = Integer.valueOf(input);
@@ -52,7 +55,8 @@ public class main {
 				case 2: addEvidence();
 				case 3: addEvidence();
 				case 4: setQueryNode();
-				case 5: {
+				case 5: runAlgorithm(env);
+				case 6: {
 					System.out.println("Bye Bye...");
 					System.exit(0);
 				}
@@ -64,6 +68,11 @@ public class main {
 			}
 			
 		}
+	}
+
+	private static void runAlgorithm(Environment env) {
+		Algorithms.EnumerationAsk(env.getQuery(), env.getEvidence(), env.getBn());
+		
 	}
 
 	private static void loadBayes() {
