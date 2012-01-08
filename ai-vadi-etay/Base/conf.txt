@@ -22,3 +22,8 @@ N	M	norm	A
 L	M	t	f
 D	M	t	0.7	0.3
 D	M	f	0.01	0.99
+
+Q	B
+
+E	J	t
+E	M	f
