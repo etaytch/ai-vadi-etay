@@ -2,3 +2,15 @@ N	n1	norm
 L	n1	true	false
 D	n1	0.9	0.1 
 
+N	n2	norm
+L	n2	true	false
+D	n2	0.9	0.1
+
+N	n3	norm n1 n2
+L	n3	true	false
+D	n3	true true 0.1	0.9
+D	n3	true false 0.2	0.8
+D	n3	false true 0.3	0.7
+D	n3	false false 0.4	0.6
+
+

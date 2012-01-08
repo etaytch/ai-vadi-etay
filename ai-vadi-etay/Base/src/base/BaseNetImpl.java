@@ -1,8 +1,10 @@
 package base;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import DO.Node;
 import DO.NoisyOrNode;
@@ -66,7 +68,7 @@ public class BaseNetImpl implements BaseNet {
 		if (node!=null){
 			for(String parent : parents){
 				Node nParent = nodes.get(parent);
-				nParent.addParent(nParent);
+				node.addParent(nParent);
 			}
 		}
 
@@ -93,8 +95,11 @@ public class BaseNetImpl implements BaseNet {
 	}
 	
 	public void print(){
-		for (int i=0;i<nodes.size();i++){
-			nodes.get(i).print();			
-		}
+		Set<String> keys = nodes.keySet();
+		Iterator<String> itr = keys.iterator(); 
+		while(itr.hasNext()) { 
+		    Node tmpNode = nodes.get(itr.next()); 
+			tmpNode.print();		
+		} 
 	}
 }
