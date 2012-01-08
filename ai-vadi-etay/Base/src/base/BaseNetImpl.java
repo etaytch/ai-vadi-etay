@@ -1,7 +1,7 @@
 package base;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,15 +12,15 @@ import DO.NormalNode;
 
 public class BaseNetImpl implements BaseNet {
 
-	Map<String,Node> nodes;
-	Node query; 
-	Map<Node,String> evidance;
+	private Map<String,Node> nodes;
+	private Node query; 
+	private Map<Node,String> evidance;
+	
 	
 	public BaseNetImpl(){
-		nodes = new HashMap<String,Node>();
+		nodes = new LinkedHashMap<String,Node>();
 		query = null; 
-		evidance = new HashMap<Node, String>();
-
+		evidance = new LinkedHashMap<Node, String>();
 	}
 	
 	
@@ -63,6 +63,7 @@ public class BaseNetImpl implements BaseNet {
 			List<Double> ndist) {
 		
 		Node node = nodes.get(nodeName);
+		
 		if (node!=null){
 			node.getTable().put(pdist, ndist);
 		}
@@ -111,6 +112,9 @@ public class BaseNetImpl implements BaseNet {
 	}
 	
 	public void print(){
+		System.out.println(query);
+		System.out.println(evidance);
+		
 		Set<String> keys = nodes.keySet();
 		Iterator<String> itr = keys.iterator(); 
 		while(itr.hasNext()) { 
@@ -133,6 +137,7 @@ public class BaseNetImpl implements BaseNet {
 			System.out.println("ILLEGAL EVIDANCE!! ("+lable+") will now exit");
 			System.exit(-1);
 		}
+		
 		evidance.put(eNode, lable);
 	}
 

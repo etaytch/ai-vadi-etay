@@ -1,10 +1,7 @@
 package fileParsing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import DO.Node;
 import base.BaseNet;
 
 
@@ -62,7 +59,7 @@ public class BaseLineAnalyzer implements LineAnalyzerInterface {
 	}
 
 	private void parseQuery(String[] line) {
-		bn.addQuery(line[2]);
+		bn.addQuery(line[1]);
 	}
 
 	private void parseNode(String[] line) {
