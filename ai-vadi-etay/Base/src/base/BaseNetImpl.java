@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.print.attribute.standard.QueuedJobCount;
-
 import DO.Node;
 import DO.NoisyOrNode;
 import DO.NormalNode;
@@ -20,9 +18,9 @@ public class BaseNetImpl implements BaseNet {
 	
 	public BaseNetImpl(){
 		nodes = new HashMap<String,Node>();
-		Node query = null; 
-		Map<Node,String> evidance = new HashMap<Node, String>();
-		
+		query = null; 
+		evidance = new HashMap<Node, String>();
+
 	}
 	
 	
