@@ -35,6 +35,14 @@ public abstract class Node {
 	public String getName() {
 		return name;
 	}
+	
+//	public List<List<String>> producePermutations(){
+//		List<List<String>> ans = new ArrayList<List<String>>();
+//		
+//		
+//		
+//	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -74,29 +82,7 @@ public abstract class Node {
 		
 	}
 	
-	public double getDistribution(List<String> dlables, String y) {
-		
-		for(List<String>  dlist : table.keySet()){
-			
-			if (dlables.size()!=dlist.size()){
-				continue;
-			}
-			
-			Boolean found = true;
-			for(int i=0;i<dlables.size();i++){
-				if(!dlables.get(i).equals(dlist.get(i))){
-					found = false;
-				}
-			}
-			
-			if (found){
-				return table.get(dlist).get(lables.indexOf(y)); 	
-			}
-		}
-		System.out.println("SOMTHING HORRIBLE HAPPEND IN getDistribution METHOD IN node CLASS!!!!!!\n " +
-						   "Couldn't find the row needed in the distribution table!");	
-		return 1.0;
-	}
+	public abstract double getDistribution(List<String> dlables, String y);
 
 	public String getBorder(int weigth, String str){
 		String ans="";
@@ -107,8 +93,8 @@ public abstract class Node {
 	
 	public void print(){
 		String title = getTitle();
-		String border = getBorder(title.length(),"*");
-		String seperator = "*"+getBorder(title.length()-2,"-")+"*";
+		String border = getBorder(title.length(),StringUtil.STAR);
+		String seperator = StringUtil.STAR+getBorder(title.length()-2,"-")+StringUtil.STAR;
 		System.out.println(border);			
 		System.out.println(title);
 		System.out.println(seperator);	
@@ -132,7 +118,7 @@ public abstract class Node {
 					dbls+= StringUtil.Pad(""+dists.get(i))+"|";				
 				}
 				dbls+= StringUtil.Pad(""+dists.get(dists.size()-1));			
-				return "* "+dbls+" *";
+				return StringUtil.STAR +dbls+StringUtil.STAR;
 			}	
 			else{
 				for(int i=0;i<pars.size()-1;i++){
@@ -146,7 +132,7 @@ public abstract class Node {
 				}
 				dbls+= StringUtil.Pad(""+dists.get(dists.size()-1));
 				
-				rows +="* " + assigns +"||" + dbls+" *\n";				
+				rows +=StringUtil.STAR + assigns +"||" + dbls+StringUtil.STAR+"\n";				
 			} 				
 		} 					
 		return rows;
@@ -182,14 +168,14 @@ public abstract class Node {
 				Ps+= StringUtil.Pad("P("+getName()+"="+getLables().get(i)+"|"+parentsDivideByComma+")")+"|";				
 			}
 			Ps+= StringUtil.Pad("P("+getName()+"="+getLables().get(getLables().size()-1)+"|"+parentsDivideByComma+")");
-			return "* "+parentsDivideByTab + "||"+Ps+" *";
+			return StringUtil.STAR +parentsDivideByTab + "||"+Ps+ StringUtil.STAR;
 		}
 		else{
 			for(int i=0;i<getLables().size()-1;i++){
 				Ps+= StringUtil.Pad("P("+getName()+"="+getLables().get(i)+")")+ "|";				
 			}
 			Ps+= StringUtil.Pad("P("+getName()+"="+getLables().get(getLables().size()-1)+")");			
-			return "* "+Ps+" *";
+			return StringUtil.STAR +Ps+ StringUtil.STAR;
 		}				
 	}
 	

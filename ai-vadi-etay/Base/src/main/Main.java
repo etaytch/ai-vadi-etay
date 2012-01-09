@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Map;
 
 import Algorithms.Algorithms;
+import DO.Node;
 import base.BaseNet;
 import base.BaseNetImpl;
 
@@ -47,7 +48,8 @@ public class Main {
 			System.out.println("3 - Reset the evidence to null.");
 			System.out.println("4 - Set a query node, upon which the program computes and prints out the posterior distribution of the query node given the current evidence.");
 			System.out.println("5 - Run algorithm.");
-			System.out.println("6 - Quit.");
+			System.out.println("6 - Query All Diseases");			
+			System.out.println("7 - Quit.");
 			
 			while(true){
 				input = br.readLine();
@@ -64,7 +66,9 @@ public class Main {
 							break;
 					case 5: runAlgorithm(env);
 							break;
-					case 6: {
+					case 6: queryAllDiseases(env);
+							break;
+					case 7: {
 						System.out.println("Bye Bye...");
 						System.exit(0);
 					}
@@ -77,6 +81,22 @@ public class Main {
 				}
 			}
 		}
+	}
+
+	private static void queryAllDiseases(Environment env) {
+		Map<String,Node> nodes = env.getBn().getNodes();
+				
+		System.out.println("Runnig Queries for all Diseases:");
+		System.out.println("Evidence: "+env.getEvidence());
+		for(String node : nodes.keySet()){
+			if(node.startsWith("D")){
+				env.setQuery(node);
+				Map<String,Double> ans = Algorithms.EnumerationAsk(env.getQuery(), env.getEvidence(), env.getBn());
+				System.out.println("results for: "+node+" are: "+ans);
+			}
+			
+		}
+		
 	}
 
 	private static void runAlgorithm(Environment env) {

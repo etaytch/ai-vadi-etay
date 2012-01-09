@@ -31,4 +31,6 @@ public interface BaseNet {
 
 	Map<Node, String> getEvidance();
 
+	void addBackground(String string, List<String> labels);
+	Map<String,List<String>> getBackgrounds();
 }

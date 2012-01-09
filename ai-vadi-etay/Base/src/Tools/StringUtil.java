@@ -1,7 +1,16 @@
 package Tools;
 
 public class StringUtil {
-	public static final int PAD = 18;
+	public static final int PAD = 15;
+	public static final boolean DEBUG = true;
+	public static final String STAR = "*";
+	
+	public static void println(String str){
+		if(DEBUG){
+			System.out.println(str);			
+		}
+	}
+	
 	public static String Pad(String str){
 		int tmp = PAD-str.length();
 		int half = tmp/2;
