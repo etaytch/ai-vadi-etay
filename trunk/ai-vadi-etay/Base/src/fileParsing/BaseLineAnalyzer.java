@@ -36,6 +36,12 @@ public class BaseLineAnalyzer implements LineAnalyzerInterface {
 		if (line[0].charAt(0)==(';')){
 			return;
 		}
+		if (line[0].equalsIgnoreCase("BL")){
+			parseBackgroundLabels(line);
+		}
+		if (line[0].equalsIgnoreCase("B")){
+			parseBackground(line);
+		}
 		if (line[0].equalsIgnoreCase("N")){
 			parseNode(line);
 		}
@@ -54,6 +60,59 @@ public class BaseLineAnalyzer implements LineAnalyzerInterface {
 		return;	
 	}
 
+	private void parseBackground(String[] line) {
+		List<String> pdist = new ArrayList<String>();
+		List<Double> ndist = new ArrayList<Double>();
+		
+		bn.addNode(line[1],"norm");
+		List<String> labels = bn.getBackgrounds().get(line[1]);
+		bn.setLables(line[1], labels);
+		
+		for(int i=0;i<labels.size();i++){
+			if(labels.get(i).equals(line[2])){
+				ndist.add(1.0);
+			}
+			else{
+				ndist.add(0.0);
+			}			
+		}
+		bn.addNodeDistTableRow(line[1],pdist,ndist);
+	}
+
+	private void parseBackgroundLabels(String[] line) {
+		
+		/*List<String> labels = new ArrayList<String>();
+		
+		for(int i=2; i<line.length; i++){
+			labels.add(line[i]);
+		}
+		
+		bn.addBackground(line[1],labels);
+		*/
+		
+		List<String> pdist = new ArrayList<String>();
+		List<Double> ndist = new ArrayList<Double>();
+		
+		bn.addNode(line[1],"norm");
+		//List<String> labels = bn.getBackgrounds().get(line[1]);
+		List<String> labels = new ArrayList<String>();
+		for(int i=2; i<line.length; i++){
+			labels.add(line[i]);
+		}
+		
+		bn.setLables(line[1], labels);
+		
+		for(int i=0;i<labels.size();i++){
+			if(labels.get(i).equals(line[2])){
+				ndist.add(0.5);
+			}
+			else{
+				ndist.add(0.5);
+			}			
+		}
+		bn.addNodeDistTableRow(line[1],pdist,ndist);
+	}
+
 	private void parseEvidence(String[] line) {		
 		bn.addEvidance(line[1],line[2]);
 	}
@@ -61,7 +120,8 @@ public class BaseLineAnalyzer implements LineAnalyzerInterface {
 	private void parseQuery(String[] line) {
 		bn.addQuery(line[1]);
 	}
-
+	
+	
 	private void parseNode(String[] line) {
 		List<String> parents = new ArrayList<String>();
 		bn.addNode(line[1],line[2]);

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import DO.Node;
+import Tools.StringUtil;
 import base.BaseNet;
 
 
@@ -39,7 +40,7 @@ public class Algorithms {
 	private static double EnumerateAll(Map<String,Node> vars, Map<Node,String> E){
 				
 		if (vars.isEmpty()){ 
-			System.out.println("++++++++++++++++++++++++++++++++++");
+			StringUtil.println("++++++++++++++++++++++++++++++++++");
 			return 1.0;
 		}
 		
@@ -67,11 +68,12 @@ public class Algorithms {
 		if (contains){
 			dlables = getDistributionRow(E, Y);
 			if ((dlables.size()==0)&&(Y.getParents().size()!=0)){
-				System.out.println("++++++++++++++++++++++++++++++++++");
+				StringUtil.println("++++++++++++++++++++++++++++++++++");
 				return 1.0;
 			}
-			System.out.println("calculating: P("+Y.getName()+"="+y+"|"+printLables(Y,dlables)+")");
+			
 			ans = Y.getDistribution(dlables, y);
+			StringUtil.println("calculating: P("+Y.getName()+"="+y+"|"+printLables(Y,dlables)+") = "+ans);
 			return ans*EnumerateAll(restVars,E);
 		}else{
 			
@@ -80,15 +82,16 @@ public class Algorithms {
 				y = lable ;
 				
 				if ((dlables.size()==0)&&(Y.getParents().size()!=0)){
-					System.out.println("++++++++++++++++++++++++++++++++++");
+					StringUtil.println("++++++++++++++++++++++++++++++++++");
 					return 1.0;
 				}
 				
 				Map<Node,String> EE = new LinkedHashMap<Node, String>(E);
 				EE.put(Y, y);
 				List<String> distRow = getDistributionRow(E, Y);
-				System.out.println("calculating: P("+Y.getName()+"="+y+"|"+printLables(Y,dlables)+")");
 				double sans = Y.getDistribution( distRow , y);
+				StringUtil.println("calculating: P("+Y.getName()+"="+y+"|"+printLables(Y,dlables)+") = "+sans);
+				
 				ans= ans+(sans*EnumerateAll(restVars,EE));
 			}
 			return ans;

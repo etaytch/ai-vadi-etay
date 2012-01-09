@@ -15,26 +15,22 @@ public class BaseNetImpl implements BaseNet {
 	private Map<String,Node> nodes;
 	private Node query; 
 	private Map<Node,String> evidance;
-	
+	private Map<String,List<String>> backgrounds;
 	
 	public BaseNetImpl(){
 		nodes = new LinkedHashMap<String,Node>();
 		query = null; 
 		evidance = new LinkedHashMap<Node, String>();
+		backgrounds = new LinkedHashMap<String,List<String>>();
 	}
-	
-	
 	
 	public Node getQuery() {
 		return query;
 	}
 
-
 	public Map<Node, String> getEvidance() {
 		return evidance;
 	}
-
-
 
 	@Override
 	public Map<String,Node> getNodes(){
@@ -150,5 +146,16 @@ public class BaseNetImpl implements BaseNet {
 			System.out.println("ILLEGAL QUERY!! ("+nodeName+") will now exit");
 			System.exit(-1);
 		}
+	}
+
+
+
+	@Override
+	public void addBackground(String back, List<String> labels) {
+		this.backgrounds.put(back, labels);		
+	}
+	@Override
+	public Map<String,List<String>> getBackgrounds() {
+		return backgrounds;
 	}
 }
