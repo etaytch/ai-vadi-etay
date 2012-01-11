@@ -2,7 +2,7 @@ package Tools;
 
 public class StringUtil {
 	public static final int PAD = 15;
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final String STAR = "*";
 	
 	public static void println(String str){
