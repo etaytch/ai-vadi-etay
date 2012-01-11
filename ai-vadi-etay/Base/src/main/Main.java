@@ -40,7 +40,7 @@ public class Main {
 		String input=".";
 		int num;
 		//!input.equals("") && !input.equals("\n")
-		while (!input.equals(null) && !input.equals("5")){
+		while (!input.equals(null) && !input.equals("7")){
 			System.out.println("Please choose one of the following:");
 			
 			System.out.println("1 - Print out the network");
@@ -50,19 +50,18 @@ public class Main {
 			System.out.println("5 - Run algorithm.");
 			System.out.println("6 - Query All Diseases");			
 			System.out.println("7 - Quit.");
-			
-			while(true){
 				input = br.readLine();
+				String inputArgs[] = input.split("\\s+"); 
 				try{
-					num = Integer.valueOf(input);
+					num = Integer.valueOf(inputArgs[0]);
 					switch(num){
 					case 1: env.getBn().print();
 							break;
-					case 2: addEvidence();
+					case 2: env.addEvidence(inputArgs[1], inputArgs[2]);
 							break;
-					case 3: addEvidence();
+					case 3: env.cleanEvidence();
 							break;
-					case 4: setQueryNode();
+					case 4: env.setQuery(inputArgs[1]);
 							break;
 					case 5: runAlgorithm(env);
 							break;
@@ -80,7 +79,7 @@ public class Main {
 					System.out.println("Illegal input.. Try againg");
 				}
 			}
-		}
+		
 	}
 
 	private static void queryAllDiseases(Environment env) {
@@ -102,16 +101,5 @@ public class Main {
 	private static void runAlgorithm(Environment env) {
 		Map<String,Double> ans = Algorithms.EnumerationAsk(env.getQuery(), env.getEvidence(), env.getBn());
 		System.out.println(ans);
-	}
-
-
-	private static void setQueryNode() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void addEvidence() {
-		// TODO Auto-generated method stub
-		
 	}
 }
