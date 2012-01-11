@@ -33,4 +33,6 @@ public interface BaseNet {
 
 	void addBackground(String string, List<String> labels);
 	Map<String,List<String>> getBackgrounds();
+
+	void cleanEvidence();
 }

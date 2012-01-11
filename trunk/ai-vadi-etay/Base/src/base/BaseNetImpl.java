@@ -158,4 +158,10 @@ public class BaseNetImpl implements BaseNet {
 	public Map<String,List<String>> getBackgrounds() {
 		return backgrounds;
 	}
+
+	@Override
+	public void cleanEvidence() {
+		evidance.clear();
+		
+	}
 }

@@ -31,5 +31,10 @@ public class Environment {
 	public void setQuery(String nodeName) {
 		bn.addQuery(nodeName);
 	}
+
+	public void cleanEvidence() {
+		bn.cleanEvidence();
+		
+	}
 	
 }
