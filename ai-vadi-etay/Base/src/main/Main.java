@@ -104,10 +104,6 @@ public class Main {
 		System.out.println(ans);
 	}
 
-	private static void loadBayes() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private static void setQueryNode() {
 		// TODO Auto-generated method stub
@@ -115,11 +111,6 @@ public class Main {
 	}
 
 	private static void addEvidence() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void printNetwork() {
 		// TODO Auto-generated method stub
 		
 	}

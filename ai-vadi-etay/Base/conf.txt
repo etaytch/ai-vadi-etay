@@ -51,36 +51,24 @@ N	S1	nois	D1	D4
 L	S1	t	f
 D	S1	t	f	0.89	0.11
 D	S1	f	t	0.78	0.22
-;D	S1	f	f	0.0	1.0
-;D	S1	t	t	0.9758	0.0242
 
 N	S2	nois	D2	D3 	
 L	S2	t	f
 D	S2	t	f	0.24	0.76
 D	S2	f	t	0.11	0.89
-;D	S2	f	f	0.0	1.0
-;D	S2	t	t	0.3236	0.6764
 
 N	S3	nois	D2	D4 	
 L	S3	t	f
 D	S3	t	f	0.47	0.53
 D	S3	f	t	0.57	0.43
-;D	S3	f	f	0.0	1.0
-;D	S3	t	t	0.7721	0.2279
 
 N	S4	nois	D1	D4 	
 L	S4	t	f
 D	S4	t	f	0.67	0.33
 D	S4	f	t	0.12	0.88
-;D	S4	f	f	0.0	1.0
-;D	S4	t	t	0.7096	0.2904
 
 Q	D1
 E sex male
 E age old
 
 ;E	S4	t
-
-;N	Age	norm
-;L	Age	young	old
-;D	Age	1.0	0.0
