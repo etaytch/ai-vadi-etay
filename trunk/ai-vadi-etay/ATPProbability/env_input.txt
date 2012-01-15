@@ -1,0 +1,45 @@
+;Env input file
+;
+; = comment
+
+
+;Agents Dictionary
+;
+;1 = Human
+;2 = Speed nut
+;3 = Simple Greedy
+;4 = Greedy (With huristic) 
+;5 = A* 
+;6 = RT A*
+;7 = A* with speed nut
+
+
+;EDGES
+;headv tailv weight flooded (c-clear,f-flooded)
+
+e 0 1 1 c
+e 0 2 1 c
+e 1 3 1 f
+e 2 3 1 f
+
+
+
+;CARS
+;vertex name speed coff
+V 0 Honda0  1 0
+v 1 Polo1   10 0.5
+
+
+;AGENTS
+;type name initPos destPos car
+
+;a 5 Etay 0 3 Honda0
+;a 2 Vadi 1 5 Polo1
+;a 6 Niv 0 2 Honda0
+;a 5 Niv 0 5 Honda0
+a 2 Diana 1 3 Polo1
+a 7 Vadi 0 3 Honda0 Diana
+;a 2 Niv 3 7 Polo3
+;a 7 Etay 6 3 Honda6 Niv
+;a 2 Nigi 0 3 Bimba0
+;a 7 Liz 2 7 Honda2 Nigi
