@@ -9,6 +9,7 @@ public class Road {
 	
 	private int _weight;
 	private boolean _flooded;
+	private double  _floodedProb;	
 	private Vertex _from;
 	public Vertex get_from() {
 		return _from;
@@ -28,12 +29,17 @@ public class Road {
 
 	private Vertex _to;
 	
-	public Road(Vertex from, Vertex to, int weight, boolean flooded) {
+	public Road(Vertex from, Vertex to, int weight, double floodedProb) {
 		super();
 		_weight = weight;
-		_flooded = flooded;
+		_floodedProb = floodedProb;
 		_from = from;
 		_to = to;
+		
+		if (Math.random()<=_floodedProb)
+			_flooded = true;
+		else
+			_flooded = false;
 		
 	}
 
@@ -55,8 +61,8 @@ public class Road {
 		return _flooded;
 	}
 
-	public void set_flooded(boolean flooded) {
-		_flooded = flooded;
+	public void set_floodedProb(double flooded) {
+		_floodedProb = flooded;
 	}
 
 	

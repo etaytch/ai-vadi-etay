@@ -1,12 +1,7 @@
 package fileParsing;
 
-import agents.AstarAgent;
-import agents.GreedyAgent;
-import agents.RealTimeAstarAgent;
-import agents.SimpleGreedyAgent;
-import agents.HumanAgent;
-import agents.SpeedNutAutomationAgent;
-import agents.SpeedNutPredictionAgent;
+
+import agents.PropabilityAgent;
 import simulator.Environment;
 import simulator.Simulator;
 
@@ -69,72 +64,18 @@ public class EnvLineAnalyzer implements LineAnalyzerInterface {
 	 */
 	private void parseAgent(String[] line) {
 		
-		switch (Integer.parseInt(line[1])) {
-		case 1:
-			_env.addAgent(new HumanAgent(line[2], 
-					_env.getVertex(Integer.parseInt(line[3])),
-					_env.getVertex(Integer.parseInt(line[4])),
-					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
-			break;
-		case 2:
-			_env.addAgent(new SpeedNutAutomationAgent(line[2], 
-					_env.getVertex(Integer.parseInt(line[3])),
-					_env.getVertex(Integer.parseInt(line[4])),
-					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
-			break;
-			
-		case 3:
-			_env.addAgent(new SimpleGreedyAgent(line[2], 
-					_env.getVertex(Integer.parseInt(line[3])),
-					_env.getVertex(Integer.parseInt(line[4])),
-					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
-			break;
-		case 4:
-			_env.addAgent(new GreedyAgent(line[2], 
-					_env.getVertex(Integer.parseInt(line[3])),
-					_env.getVertex(Integer.parseInt(line[4])),
-					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
-			break;
-		case 5:
-			_env.addAgent(new AstarAgent(line[2], 
-					_env.getVertex(Integer.parseInt(line[3])),
-					_env.getVertex(Integer.parseInt(line[4])),
-					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
-			break;
-		case 6:
-			_env.addAgent(new RealTimeAstarAgent(line[2], 
-					_env.getVertex(Integer.parseInt(line[3])),
-					_env.getVertex(Integer.parseInt(line[4])),
-					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5]))));
-			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
-			break;
-		case 7:
-			_env.addAgent(new SpeedNutPredictionAgent(line[2], 
-					_env.getVertex(Integer.parseInt(line[3])),
-					_env.getVertex(Integer.parseInt(line[4])),
-					_env.getCarOfVertex(Integer.parseInt(line[3]), (line[5])),
-					(SpeedNutAutomationAgent)_env.getAgentByName(line[6])));
-			_env.removeCarOfVertex(Integer.parseInt(line[3]),line[5]);
-			break;	
-		default:
-			break;
-		}
+		
+		_env.addAgent(new PropabilityAgent(line[1], 
+		_env.getVertex(Integer.parseInt(line[2])),
+		_env.getVertex(Integer.parseInt(line[3])),
+		_env.getCarOfVertex(Integer.parseInt(line[2]), (line[4]))));
+		_env.removeCarOfVertex(Integer.parseInt(line[2]),line[4]);
+	
 	}
 	
 	private void parseEdge(String[] line) {
 		_env.addEdge(Integer.parseInt(line[1]), Integer.parseInt(line[2]),
-					Integer.parseInt(line[3]), isFlooded(line[4]));
-	}
-
-	private Boolean isFlooded(String flooded) {
-		 if (flooded.equalsIgnoreCase("F")) return true;
-		 if (flooded.equalsIgnoreCase("C")) return false;
-		 return null;
+					Integer.parseInt(line[3]), Double.parseDouble(line[4]));
 	}
 
 	@Override
