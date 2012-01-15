@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-
-import searchAlgorithms.DecisionNodes.AtpDecisionNode;
 import simulator.Car;
 import simulator.Environment;
 import simulator.Vertex;
@@ -82,11 +80,6 @@ public abstract class Agent {
 		_vertex = vertex;
 	}
 
-	@Override
-	public String toString() {
-		return "Agent: _name=" + _name + ", _car=" + _car+ ", _vertex=" + _vertex.get_number();
-	}
-
 	public void set_initPosition(Vertex _initPosition) {
 		this._initPosition = _initPosition;
 	}
@@ -107,31 +100,16 @@ public abstract class Agent {
 		return get_actions().poll();
 	}
 	
-	/**
-	 * this method should be overridden by  all the child agents
-	 */
-	public abstract void chooseBestAction(Environment env);	// place an action in the queue 
 	
-
-	/**
-	 * this method  is mainly for creating the first DecisionNode of this agent - used by "AtpProblem"
-	 */
-	public abstract AtpDecisionNode getInitNode();
-	
-
-	
-	/**
-	 * 
-	 * this is the Search algorithm of this agent, it is empty method in simple agents  
-	 *
-	 * @param env
-	 * @param initPos
-	 * @param goalPosition
-	 * @param initCar
-	 */
-	public void search(Environment env, Vertex initPos, Vertex goalPosition,
-			Car initCar) {
+	@Override
+	public String toString() {
+		return "Agent: _name=" + _name + ", _car=" + _car+ ", _vertex=" + _vertex.get_number();
 	}
+	
+	public abstract void chooseBestAction(Environment env);	// place an action in the queue 
+
+	public abstract void search(Environment env, Vertex initPos, Vertex goalPosition,
+								Car initCar); 
 }
 
 

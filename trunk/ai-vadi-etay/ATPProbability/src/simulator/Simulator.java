@@ -39,6 +39,40 @@ public class Simulator {
 		_finishedAgents = new HashMap<Agent,Chart>();
 	}
 	
+	public void startSimulation() {
+		int round=1;
+		ATPLogger.log("Starting Simulation:");
+		
+		for (Agent agent: _env.get_agents().keySet()){
+			ATPLogger.log("Agent: "+agent.get_name()+", start node: "+agent.get_initPosition().get_number()+", goal node: "+agent.get_goalPosition().get_number());
+			agent.search(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car());
+		}
+				
+		while (!finished()){
+			ATPLogger.log("\n<<<<<<<< Start of Round #"+(round++)+" >>>>>>>>");
+			for (Agent agent: _env.get_agents().keySet()){
+				ATPLogger.log("\n"+agent.get_name()+"'s turn:");
+				agent.chooseBestAction(_env);
+				Action a = agent.getAction();
+				if(a!=null)	// currently null when SpeedNut gets 3 time to the same vertex
+					a.performAction(this);
+				ATPLogger.log(_env.get_agents().get(agent).toString());
+				if (a==null){
+					agent.search(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car()); 
+				}
+			}			
+		}
+		ATPLogger.log("\nFinal Stats:");
+		for (Agent agent: get_finishedAgents().keySet()){
+			Chart c = get_finishedAgents().get(agent);
+			c.set_totalTime((double)Math.round(c.get_totalTime() * 100) / 100);
+			ATPLogger.log("\nAgent: "+agent.get_name()+": "+c);
+			ATPLogger.log("For f="+Defs.F1_LEVEL+":       P = f * S + T =    "+Defs.F1_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F1_LEVEL*c._totalTime + c._expend_steps));
+			ATPLogger.log("For f="+Defs.F100_LEVEL+":     P = f * S + T =    "+Defs.F100_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F100_LEVEL*c._totalTime + c._expend_steps));
+			ATPLogger.log("For f="+Defs.F10000_LEVEL+":   P = f * S + T =    "+Defs.F10000_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F10000_LEVEL*c._totalTime + c._expend_steps));
+		}
+	}
+	
 	public Environment get_env() {
 		return _env;
 	}
@@ -191,42 +225,5 @@ public class Simulator {
 			ATPLogger.log("All agents Finished!");
 		}
 		return answer;
-	}
-
-
-	public void startSimulation() {
-		int round=1;
-		ATPLogger.log("Starting Simulation:");
-		
-		for (Agent agent: _env.get_agents().keySet()){
-			ATPLogger.log("Agent: "+agent.get_name()+", start node: "+agent.get_initPosition().get_number()+", goal node: "+agent.get_goalPosition().get_number());
-			agent.search(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car());
-		}
-				
-		while (!finished()){
-			ATPLogger.log("\n<<<<<<<< Start of Round #"+(round++)+" >>>>>>>>");
-			for (Agent agent: _env.get_agents().keySet()){
-				ATPLogger.log("\n"+agent.get_name()+"'s turn:");
-				agent.chooseBestAction(_env);
-				Action a = agent.getAction();
-				if(a!=null)	// currently null when SpeedNut gets 3 time to the same vertex
-					a.performAction(this);
-				ATPLogger.log(_env.get_agents().get(agent).toString());
-			}			
-		}
-		ATPLogger.log("\nFinal Stats:");
-		for (Agent agent: get_finishedAgents().keySet()){
-			Chart c = get_finishedAgents().get(agent);
-			c.set_totalTime((double)Math.round(c.get_totalTime() * 100) / 100);
-			ATPLogger.log("\nAgent: "+agent.get_name()+": "+c);
-			ATPLogger.log("For f="+Defs.F1_LEVEL+":       P = f * S + T =    "+Defs.F1_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F1_LEVEL*c._totalTime + c._expend_steps));
-			ATPLogger.log("For f="+Defs.F100_LEVEL+":     P = f * S + T =    "+Defs.F100_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F100_LEVEL*c._totalTime + c._expend_steps));
-			ATPLogger.log("For f="+Defs.F10000_LEVEL+":   P = f * S + T =    "+Defs.F10000_LEVEL+" * "+c._totalTime+" + "+c._expend_steps+" =     "+(Defs.F10000_LEVEL*c._totalTime + c._expend_steps));
-			
-			//ATPLogger.log("For f="+Defs.F1_LEVEL+":       P = f * T + S = "+Defs.F1_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F1_LEVEL*c._expend_steps + c._totalTime));
-			//ATPLogger.log("For f="+Defs.F100_LEVEL+":     P = f * T + S = "+Defs.F100_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F100_LEVEL*c._expend_steps + c._totalTime));
-			//ATPLogger.log("For f="+Defs.F10000_LEVEL+":   P = f * T + S = "+Defs.F10000_LEVEL+" * "+c._expend_steps+" + "+c._totalTime+" = "+(Defs.F10000_LEVEL*c._expend_steps + c._totalTime));
-
-		}
 	}
 }

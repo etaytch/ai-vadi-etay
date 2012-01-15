@@ -10,9 +10,7 @@ import java.util.Set;
 import java.util.Vector;
 import tools.ATPLogger;
 import agents.Agent;
-import agents.HumanAgent;
-import agents.SimpleGreedyAgent;
-import agents.SpeedNutAutomationAgent;
+import agents.PropabilityAgent;
 
 /**
  * Data object of the  ATP world graph, and agents in this world
@@ -89,7 +87,7 @@ public class Environment {
 		return get_vertexes().get(vnumber);
 	}
 	
-	public void addEdge(int v1number,int v2number,int weight, Boolean flooded){
+	public void addEdge(int v1number,int v2number,int weight, double flooded){
 		Vertex v1 = addVertex(v1number);
 		Vertex v2 = addVertex(v2number);
 		Road e_v1v2 =  new Road(v1, v2, weight, flooded);
@@ -173,50 +171,29 @@ public class Environment {
 		
 	}		
 	
-	public void addAgent(int typeAsNum,String agentName,int fromVertex, int toVertex) throws IOException {		
-		while (fromVertex==toVertex){
-			toVertex = (int)(this._vertexes.size()*Math.random())+1;
-		}
-		// what if car is null?
+	public void addAgent(String agentName,int fromVertex, int toVertex) throws IOException {		
+
 		Car car;						
 
-		if(typeAsNum==1){
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			ATPLogger.log("Please select a car:");
-			Set<String> carNames = get_vertexes().get(fromVertex).get_cars().keySet();
-			String selectedCar;
-			int i=1;
-			if((selectedCar = carNames.iterator().next()) != null){
-				ATPLogger.log("	Car #"+i+": "+selectedCar);
-			}	
-			ATPLogger.log("Enter car's name:");
-			selectedCar = br.readLine();
-			car = getCarOfVertex(fromVertex, selectedCar);		
-			
-			addAgent(new HumanAgent(agentName, 
-					getVertex(fromVertex),
-					getVertex(toVertex),
-					car));
-			removeCarOfVertex(fromVertex, car.get_name());						
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		ATPLogger.log("Please select a car:");
+		Set<String> carNames = get_vertexes().get(fromVertex).get_cars().keySet();
+		String selectedCar;
+		int i=1;
+		if((selectedCar = carNames.iterator().next()) != null){
+			ATPLogger.log("	Car #"+i+": "+selectedCar);
+		}	
+		ATPLogger.log("Enter car's name:");
+		selectedCar = br.readLine();
+		car = getCarOfVertex(fromVertex, selectedCar);
+		
+		addAgent(new PropabilityAgent(agentName, 
+				getVertex(fromVertex),
+				getVertex(toVertex),
+				car));
+		removeCarOfVertex(fromVertex, car.get_name());
+		
 		}
-		else if(typeAsNum==2) {		
-			car = getFirstCarOfVertex(fromVertex);
-			addAgent(new SpeedNutAutomationAgent(agentName, 
-					getVertex(fromVertex),
-					getVertex(toVertex),
-					car));
-			removeCarOfVertex(fromVertex, car.get_name());
-		}
-		else if(typeAsNum==3) {
-			car = getFirstCarOfVertex(fromVertex);
-			addAgent(new SimpleGreedyAgent(agentName, 
-					getVertex(fromVertex),
-					getVertex(toVertex),
-					car));
-			removeCarOfVertex(fromVertex, car.get_name());
-		}
-		else return;				
-	}
 
 
 	public Agent getAgentByName(String name) {
