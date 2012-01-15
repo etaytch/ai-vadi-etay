@@ -1,0 +1,90 @@
+;Env input file
+;
+; = comment
+
+
+;Agents Dictionary
+;
+;1 = Human
+;2 = Speed nut
+;3 = Simple Greedy
+;4 = Greedy (With huristic) 
+;5 = A* 
+;6 = RT A*
+;7 = A* with speed nut
+
+
+;EDGES
+;headv tailv weight flooded (c-clear,f-flooded)
+
+
+e 0 3 9000 f
+e 2 3 30000 f
+e 3 4 10000 f
+e 4 5 30000 f
+e 5 6 30000 f
+e 6 7 30000 f
+e 7 0 10000 c
+e 2 4 100 f
+e 0 1 300 c
+e 1 2 300 c
+e 0 6 100 c
+e 1 5 100 c
+e 1 6 100 c
+e 2 5 100 c
+
+;                 9000,f
+;----------------------------------------
+;|            |            |            |
+;|   300,c    |   300,c    |   30000,f  |
+;0------------1------------2------------3
+;|\           |\           |\           |
+;| \          | \          | \          |
+;|  \         |  \         |  \         |
+;|   \        |   \        |   \        |
+;|    \100,c  |    \100,c  |    \100,f  |
+;|     \      |     \      |     \      |
+;|      \     |      \     |      \     |
+;|       \    |       \    |       \    |
+;|        \   |        \   |        \   |
+;|10000,c  \  |100,c    \  |100,c    \  | 10000,f
+;|          \ |          \ |          \ |
+;|           \|           \|           \|
+;7------------6------------5------------4
+;    30000,f      30000,f      30000,f
+
+;CARS
+;vertex name speed coff
+V 0 Honda0  100 0.2
+v 0 Polo0   70 0.1
+v 0 Bimba0  20 0
+V 1 Honda1  100 0
+v 1 Polo1   80 0
+v 1	BMW1    140 0.4
+V 2 Honda2  100 0.1
+v 2 Polo2   80 0.5
+V 3 Honda3  100 0.1
+v 3 Polo3   80 0.5
+V 4 Honda4  90 0.1
+v 4 Polo4   80 0.5
+V 5 Honda5  90 0.1
+v 5 Polo5   80 0.5
+V 6 Honda6  90 0.1
+v 6 Polo6   80 0.5
+V 7 Honda7  90 0.1
+v 7 Polo7   80 0.5
+
+
+;AGENTS
+;type name initPos destPos car
+
+a 5 BOBO 1 4 Honda1
+;a 2 Vadi 1 5 Polo1
+a 3 GAGA 3 7 Honda3
+;a 5 Niv 0 5 Honda0
+a 2 Diana 0 4 Polo0
+a 7 Vadi 0 4 Honda0 Diana
+a 2 Niv 3 7 Polo3
+a 7 Etay 6 3 Honda6 Niv
+a 2 Nigi 0 3 Bimba0
+a 7 Liz 2 7 Honda2 Nigi
