@@ -4,7 +4,7 @@ package simulator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -33,14 +33,14 @@ public class Environment {
 		super();
 		_vertexes = vertexes;
 		_edges = edges;
-		_agents = new HashMap<Agent, Chart>();
+		_agents = new LinkedHashMap<Agent, Chart>();
 	}
 	
 	public Environment() {
 		super();
-		_vertexes = new HashMap<Integer,Vertex>();
+		_vertexes = new LinkedHashMap<Integer,Vertex>();
 		_edges = new Vector<Road>();
-		_agents = new HashMap<Agent, Chart>();
+		_agents = new LinkedHashMap<Agent, Chart>();
 		_cars = new Vector<Car>();
 	}
 	
@@ -87,11 +87,17 @@ public class Environment {
 		return get_vertexes().get(vnumber);
 	}
 	
-	public void addEdge(int v1number,int v2number,int weight, double flooded){
+	public void addEdge(int v1number,int v2number,int weight, double floodedProb){
 		Vertex v1 = addVertex(v1number);
 		Vertex v2 = addVertex(v2number);
-		Road e_v1v2 =  new Road(v1, v2, weight, flooded);
-		Road e_v2v1 =  new Road(v2, v1, weight, flooded);
+		
+		Boolean flooded = false; 
+		if (Math.random()<= floodedProb)
+			flooded = true;
+		
+		Road e_v1v2 =  new Road(v1, v2, weight, flooded,floodedProb);
+		Road e_v2v1 =  new Road(v2, v1, weight, flooded,floodedProb);
+		
 		addEdge(e_v1v2);
 		addEdge(e_v2v1);
 		v1.addNeighbour(v2, e_v1v2);
@@ -213,4 +219,9 @@ public class Environment {
 		return _cars;
 	}	
 
+	public Agent getFirstAgent(){
+		return (Agent)(this._agents.keySet().toArray())[0];
+		
+	}
+	
 }
