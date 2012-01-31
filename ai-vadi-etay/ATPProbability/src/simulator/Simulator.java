@@ -1,6 +1,6 @@
 package simulator;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -18,25 +18,25 @@ public class Simulator {
 	public Simulator(Map<Integer,Vertex> vertexes, Map<Agent, Chart> agents, Vector<Road> edges) {
 		super();
 		_env = new Environment(vertexes,agents,edges);
-		_finishedAgents = new HashMap<Agent,Chart>();
+		_finishedAgents = new LinkedHashMap<Agent,Chart>();
 	}
 		
 	public Simulator(Map<Integer,Vertex> vertexes, Vector<Road> edges ) {
 		super();
 		_env = new Environment(vertexes,edges);
-		_finishedAgents = new HashMap<Agent,Chart>();
+		_finishedAgents = new LinkedHashMap<Agent,Chart>();
 	}
 	
 	public Simulator(Environment env) {
 		super();
 		_env = env;
-		_finishedAgents = new HashMap<Agent,Chart>();
+		_finishedAgents = new LinkedHashMap<Agent,Chart>();
 	}
 	
 	public Simulator() {
 		super();
 		_env = new Environment();
-		_finishedAgents = new HashMap<Agent,Chart>();
+		_finishedAgents = new LinkedHashMap<Agent,Chart>();
 	}
 	
 	public void startSimulation() {

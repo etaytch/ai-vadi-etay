@@ -1,0 +1,37 @@
+
+            20/0          80/0        30/0
+(s)    0-------------1-------------2----------3 (t)
+	   |             |             |
+	   |             |             |
+       |10/0         |30/0         |5/0.8
+	   |             |             |
+	   |             |             |
+	   4-------------5-------------6
+	       10/0.1         20/0
+
+
+;EDGES
+;headv tailv weight flooded (c-clear,f-flooded)
+
+e 0 1 20 0				
+e 1 2 80 0
+e 2 3 30 0
+e 0 4 10 0
+e 4 5 10 0.1
+e 5 1 30 0
+e 5 6 20 0
+e 6 2 5  0.8
+
+
+
+;CARS
+;vertex name speed coff
+v 0 Honda0  50 0.1
+v 6 Polo1   40 0.5
+
+
+;AGENTS
+;type name initPos destPos car
+
+a Etay 0 3 Honda0
+
