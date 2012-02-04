@@ -103,16 +103,8 @@ public class Simulator {
 		Chart chart  = _env.get_agents().get(agent);
 		
 		//the agent succeed and made the move
-		//if (agent.get_vertex()==new_vertex){
-			chart.incrementAction();
-		//}
-		//i'm not sure this is possible to get to this situation
-		/*
-		if (agent.get_vertex()==old_vertex){
-			ATPLogger.log("agent tried to move from given vertex to it's self!");
-			//return;
-		}
-		*/
+		chart.incrementAction();
+
 		if (!old_vertex.get_neighbours().containsKey(new_vertex)){
 			ATPLogger.log("agent tried to move from vertex to ileagal vertex!");
 		}
@@ -147,10 +139,12 @@ public class Simulator {
 			agent.set_car(new_car);
 			
 			//add the old car to the vertex car list
-			agent.get_vertex().get_cars().put(old_car.get_name(),old_car);
-			
+			agent.get_vertex().get_cars().put(old_car.get_name(),old_car);			
 			ATPLogger.log("agent "+agent.get_name()+" switched car to: coff"+
 								agent.get_car().get_coff()+", speed "+agent.get_car().get_speed()+".");
+			Chart chart  = _env.get_agents().get(agent);
+			chart.addTime(Defs.TSWITCH);
+			chart.incrementAction();
 		}
 		else{
 			ATPLogger.log("agent "+agent.get_name()+" failed to switche cars!\n");

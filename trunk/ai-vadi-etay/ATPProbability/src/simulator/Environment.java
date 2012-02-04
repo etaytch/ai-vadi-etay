@@ -92,11 +92,19 @@ public class Environment {
 		Vertex v2 = addVertex(v2number);
 		
 		Boolean flooded = false; 
-		if (Math.random()<= floodedProb)
+		if (Math.random()<= floodedProb){
 			flooded = true;
+		}
 		
 		Road e_v1v2 =  new Road(v1, v2, weight, flooded,floodedProb);
 		Road e_v2v1 =  new Road(v2, v1, weight, flooded,floodedProb);
+		
+		if (flooded)
+		{
+			System.out.println("//////////////////////");
+			System.out.println(e_v1v2+" is flooded!!!");
+			System.out.println("//////////////////////");
+		}
 		
 		addEdge(e_v1v2);
 		addEdge(e_v2v1);
@@ -222,6 +230,15 @@ public class Environment {
 	public Agent getFirstAgent(){
 		return (Agent)(this._agents.keySet().toArray())[0];
 		
+	}
+	
+	public String getOtherCar(Car car){
+		for(Car c : _cars){
+			if(!c.equals(car)){
+				return c.get_name();
+			}			
+		}		
+		return null;
 	}
 	
 }

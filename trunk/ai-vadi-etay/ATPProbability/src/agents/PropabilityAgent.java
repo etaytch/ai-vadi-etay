@@ -1,12 +1,12 @@
 package agents;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Vector;
 import simulator.Car;
 import simulator.Environment;
 import simulator.MoveAction;
 import simulator.Road;
+import simulator.SwitchCarAction;
 import simulator.Vertex;
 import simulator.Interfaces.Action;
 
@@ -27,7 +27,7 @@ public class PropabilityAgent extends Agent {
 	 */
 	@Override
 	public void search(Environment env, Vertex initPos,Vertex goalPosition,Car initCar ){		
-		 _beliefStates = uncertentySearch(env,this);
+		 _beliefStates = buildStates(env);
 		 //clearStates(env);
 		 setGoals(env);
 		 createLinks(env);
@@ -55,37 +55,50 @@ public class PropabilityAgent extends Agent {
 	}
 
 	private void createLinks(Environment env) {
+		int i = 0;
 		for(BeliefStateNode bf : _beliefStates)
 		{
+			i++;
 			bf.calcChildren(_beliefStates, env);
-			System.out.println("finished calculating "+ bf._srcVertex );
+			//System.out.println(bf);
+			//System.out.println("finished calculating "+ bf._srcVertex );
 		}
+		//System.out.println("****************** "+i+" *******************");
 	}
+
+	
 
 	private Vector<Action> VALUE_ITERATION(Vector<BeliefStateNode> beliefStates, double epsilon,Environment env) {
 		
-		int maxIterations = 100;
+		int maxIterations = 1000;
 		int i = 0;
-		double gamma = 1;
-		double delta = 0;
-		while ((delta < Math.pow(epsilon, (1-delta)/delta)) && (i++<maxIterations))
+		double gamma = 1.0;
+		double minDelta = epsilon * (1 - gamma) / gamma;
+		double delta;
+		
+		do 
 		{
+			delta = 0;
 			for (BeliefStateNode bsn : beliefStates)
 			{
-				Double Uvalue = bsn._utility;
-				Double UtagValue = Uvalue;
-				Action ac = null;
-				Double maximizedActionUtil = calcMaximumActionUtil(bsn,ac,env);	
-				bsn._action = ac; 
-				Double reward = (-1)*calcReward(ac);
-				UtagValue = reward+(gamma*maximizedActionUtil);
+				//if(bsn._utility==0.0){
+				//	continue;					
+				//}
+				double Uvalue = bsn._utility;
+				double UtagValue = Uvalue;
+				Vector<Action> acVec = new Vector<Action>();
+				double maximizedActionUtil = calcMaximumActionUtil(bsn,acVec,env,gamma);				
+				bsn._action = acVec.get(0); 
+				//Double reward = (-1)*calcReward(bsn);
+				//UtagValue = reward+(gamma*maximizedActionUtil);
+				UtagValue = maximizedActionUtil;
 				bsn._utility = UtagValue; 
 				double newDelta = Math.abs(UtagValue-Uvalue);
 				if (newDelta>delta){
 					delta = newDelta; 
 				}
 			}
-		}
+		}while ((delta > minDelta) && ((i++)<maxIterations));
 		
 		BeliefStateNode start_bf = null;
 		
@@ -104,6 +117,14 @@ public class PropabilityAgent extends Agent {
 			if(!bf._agentCar.equals(this._car)){
 				continue;
 			}
+			
+			if (env.getCarOfVertex(bf._otherCarVertex.get_number(),bf._otherCar.get_name())==null)
+			{
+				continue;
+			}
+			
+
+			
 			boolean flag = true;
 			
 			for(Road r : bf._probRoads.keySet()){
@@ -126,51 +147,57 @@ public class PropabilityAgent extends Agent {
 		}
 		
 		//find action list
-		Vector<Action> actions = calcActions(start_bf); 
+		Vector<Action> actions = new Vector<Action>();
+		calcActions(start_bf,actions); 
+		System.out.println("finished calculating actions!");
 		return actions;
 	}
 
-	private Vector<Action> calcActions(BeliefStateNode startBf) {
+
+	
+	private void calcActions(BeliefStateNode startBf, Vector<Action> vec) {
 		
-		Vector<Action> actions = new Vector<Action>();
-		
-		if (startBf._utility == 0.0) return actions;
-		
-		BeliefStateNode child = findMaxChild(startBf._childeren);
-		actions.add(child._action);
-		actions.addAll(calcActions(child));
-		
-		return actions;
+		if (startBf._utility == 0.0) return;
+		vec.add(startBf._action);
+		BeliefStateNode child = findMaxChild(startBf._childeren,startBf._action);		
+		calcActions(child,vec);
 	}
 
 	private BeliefStateNode findMaxChild(
-			LinkedHashMap<Action, Vector<BeliefStateNode>> childeren) {			
-			double maxVal = Double.MIN_VALUE;
-			BeliefStateNode maxChild = null;
-			for(Vector<BeliefStateNode> chVec: childeren.values()){
-				for (BeliefStateNode ch: chVec){
-					if (ch._utility>=maxVal){
-						maxChild = ch;
-						maxVal = ch._utility; 
-					}
-				}
+		LinkedHashMap<Action, Vector<BeliefStateNode>> childeren,Action ac) 
+	{			
+	
+		double maxVal = Double.NEGATIVE_INFINITY;
+		BeliefStateNode maxChild = null;
+		
+			
+		for (BeliefStateNode ch: childeren.get(ac)){
+			if ((ch._utility+calcReward(ch,ac))>=maxVal){
+				maxChild = ch;
+				maxVal = ch._utility+calcReward(ch,ac); 
 			}
+		}
 			
 		return maxChild;
 	}
-
-	private Double calcMaximumActionUtil(BeliefStateNode bsn, Action ac,Environment env) {
-		double max = Double.MIN_VALUE;		
+	
+	
+	private Double calcMaximumActionUtil(BeliefStateNode bsn, Vector<Action> acVec, Environment env, double gamma) {
+		Action ac = bsn._action;
+		double finalreward = bsn._reward; 
+		double max = bsn._utility;
+		
 		for(Action a: bsn._childeren.keySet()){
 			double tmp  = 0;
 			Vector<BeliefStateNode> childBSNs = bsn._childeren.get(a);
+			
 			for(BeliefStateNode childBSN : childBSNs){
 				if (a instanceof MoveAction){
 					Road r1 = bsn._srcVertex.get_neighbours().get(childBSN._srcVertex);
 					Road r2 = childBSN._srcVertex.get_neighbours().get(bsn._srcVertex);
 					if(bsn._probRoads.containsKey(r1)){
 						if((bsn._probRoads.get(r1) > 0) && (bsn._probRoads.get(r1)<1)){
-							tmp += r1.get_floodedProb()*childBSN._utility; 
+							tmp += r1.get_floodedProb()*childBSN._utility;
 						}
 						else {
 							tmp += childBSN._utility;
@@ -184,26 +211,35 @@ public class PropabilityAgent extends Agent {
 						else {
 							tmp += childBSN._utility;
 						}
+					}else{
+						tmp += childBSN._utility;
 					}
-				}
+				}else if (a instanceof SwitchCarAction){ 
+					tmp = childBSN._utility;
+				}			
 			}
 			
-			if (tmp>max){
+			Double reward = (-1)*calcReward(bsn,a);
+			tmp = (reward+gamma*tmp);
+			
+			if (tmp>max){				
 				ac=a;
+				finalreward = reward;
 				max=tmp;
-			}
-			
+			}	
 		}
-		System.out.println("max: "+max+", Action: "+ac);
+		acVec.add(ac);
+		bsn._reward = finalreward;
+	//	System.out.println("max: "+max+", src vertex: "+bsn._srcVertex.get_number()+", Action: "+ac);
 		return max;
 	}
 
-	private Double calcReward(Action ac) {
-		return ac.getReward();
+	private Double calcReward(BeliefStateNode bsn,Action a) {			
+		return a.getReward(bsn._srcVertex,bsn._agentCar);
 	}
 
-	private Vector<BeliefStateNode> uncertentySearch(
-			Environment env, PropabilityAgent propabilityAgent) {
+	private Vector<BeliefStateNode> buildStates(
+			Environment env) {
 		 
 		Vector<BeliefStateNode> beliefNodes = new Vector<BeliefStateNode>();
 		for(Vertex vs: env.get_vertexes().values()){
@@ -222,6 +258,9 @@ public class PropabilityAgent extends Agent {
 						Vector<LinkedHashMap<Road,Double>> permVer = generateProbRoads(frv);
 						for(LinkedHashMap<Road,Double> d : permVer){
 							beliefNodes.add(new BeliefStateNode(bn,d));
+						}
+						if (permVer.isEmpty()){
+							beliefNodes.add(bn);
 						}
 				}
 			}
@@ -307,4 +346,25 @@ public class PropabilityAgent extends Agent {
 			get_actions().offer(action);		//offer it to be the next performed action
 		}		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
