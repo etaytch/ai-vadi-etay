@@ -1,7 +1,10 @@
 package simulator.Interfaces;
 
 import agents.BeliefStateNode;
+import simulator.Car;
+import simulator.Road;
 import simulator.Simulator;
+import simulator.Vertex;
 /**
  * 
  * Action interface
@@ -13,6 +16,5 @@ public interface Action {
 	 * @param sim the simulator
 	 */
 	void performAction(Simulator sim);
-    double getReward();
-    double getReward(BeliefStateNode bn);
+    double getReward(Vertex fromVertex, Car car);   
 }

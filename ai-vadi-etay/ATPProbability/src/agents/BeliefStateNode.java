@@ -20,14 +20,17 @@ public class BeliefStateNode {
 	public Vertex _otherCarVertex;
 	public Car _otherCar;
 	public Car _agentCar;
-	public double _utility = Double.MIN_VALUE;
+	public double _utility;
 	public Action _action;
+	public double _reward;
+	
 	
 	
 	
 	public BeliefStateNode(Vertex srcVertex,Car agentCar,Car otherCar,Vertex carVertex){		
 		_probRoads = new LinkedHashMap<Road,Double>() ;
 		_agentCar = agentCar;
+		_utility = Defs.NEG_INFINITY;
 		_otherCar = otherCar;
 		_otherCarVertex = carVertex;
 		_srcVertex = srcVertex;	
@@ -38,6 +41,7 @@ public class BeliefStateNode {
 	public BeliefStateNode(BeliefStateNode bn, LinkedHashMap<Road, Double> d) {
 		_probRoads = d;
 		_srcVertex = bn._srcVertex;
+		_utility = Defs.NEG_INFINITY;
 		_otherCarVertex = bn._otherCarVertex;
 		_agentCar = bn._agentCar;
 		_otherCar = bn._otherCar;
@@ -81,7 +85,7 @@ public class BeliefStateNode {
 				if(!found){
 					Vector<BeliefStateNode> v = new Vector<BeliefStateNode>();
 					v.add(bsn);
-					_childeren.put(new SwitchCarAction(env.getFirstAgent(), _otherCar.get_name(), Defs.TSWITCH),v);
+					_childeren.put(new SwitchCarAction(env.getFirstAgent(), _otherCar.get_name()),v);
 				}								
 			}//for bsn
 		}
@@ -126,30 +130,34 @@ public class BeliefStateNode {
 						
 					}	
 					boolean flag = true;
-					for (Road r:bsn._probRoads.keySet()){
-//						if((bsn._probRoads.get(r).equals(0.0) && ! _probRoads.get(r).equals(0.0))){							
-//							flag=false;
-//							break;
-//						}
-//						if((bsn._probRoads.get(r).equals(1.0)&& ! _probRoads.get(r).equals(1.0))){
-//							flag=false;
-//							break;
-//						}
-//						
-						
-						if(!(bsn._probRoads.get(r).equals(_probRoads.get(r))&& (_probRoads.get(r).equals(1.0)||_probRoads.get(r).equals(0.0)))){
-							flag=false;
-							break;
+					for (Road r:bsn._probRoads.keySet()){			
+						if(predRoadsExpt.get(r).equals(false)){
+							// child and parent should see the same world (the child is not connected to an unknown edge)
+							if(!bsn._probRoads.get(r).equals(_probRoads.get(r))){
+								flag=false;
+								break;								
+							}
 						}
-						
-						if(((_probRoads.get(r)).doubleValue()>0) && ((_probRoads.get(r)).doubleValue()<1)){
-							if((bsn._probRoads.get(r).equals(0.0) || bsn._probRoads.get(r).equals(1.0))){
-								if(predRoadsExpt.get(r).equals(false)){
+						else{
+							// if this node knows the world, then so is the child
+							if((_probRoads.get(r).equals(0.0))||(_probRoads.get(r).equals(1.0))){								
+								if(_probRoads.get(r).equals(bsn._probRoads.get(r))){
+									// Suitable child. 
+								}
+								else{
 									flag=false;
-									break;									
-								}								
-							}							
-						}						
+									break;
+								}
+							}			
+							else{
+								if((!bsn._probRoads.get(r).equals(0.0))&&(!_probRoads.get(r).equals(1.0))){
+									flag=false;
+									break;
+								}
+								// Suitable child.								
+							}
+							
+						}														
 					}					
 					
 					if(!flag){
@@ -159,7 +167,7 @@ public class BeliefStateNode {
 					double reward = theRoad.is_flooded() ? 
 										(_agentCar.get_coff()>0 ? 
 											((double)(theRoad.get_weight())/(_agentCar.get_speed()*_agentCar.get_coff()))
-											:Double.MIN_VALUE) 
+											:(Defs.NEG_INFINITY)) 
 										:((double)(theRoad.get_weight())/_agentCar.get_speed());
 
 																
@@ -191,9 +199,7 @@ public class BeliefStateNode {
 	}
 
 
-	public void getReward(Action a){
-		a.getReward(this);
-	}
+	
 
 	public boolean isLegal(Environment env) {
 		for(Road r: _probRoads.keySet()){
@@ -203,4 +209,33 @@ public class BeliefStateNode {
 		}
 		return true;
 	}	
+	
+	public String toString(){
+		String ans="";
+		ans+="************************************************************\n";
+		ans += "agentV: "+_srcVertex.get_number() +", otherV: "+_otherCarVertex.get_number()+"\n";
+		ans += "agentC: "+_agentCar.get_name() +", otherCar: "+_otherCar.get_name()+"\n";
+		int i=1;
+		ans+="-------\n";
+		for(Road r : _probRoads.keySet()){
+			ans+="R"+(i++)+": "+r+", value: "+_probRoads.get(r)+"\n";			
+		}
+		ans+="-------\n";
+		for(Action a : _childeren.keySet()){
+			ans+="+++++\n";
+			ans+="Action:"+a+"\n";
+			i=1;
+			for(BeliefStateNode child : _childeren.get(a)){			
+				ans+="Child"+(i++)+": Vertex: "+child._srcVertex.get_number()+", Car: "+child._agentCar.get_name()+"\n";
+				ans+="Chilld utility: "+child._utility+"\n";
+				int j=1;
+				for(Road r : child._probRoads.keySet()){
+					ans+="ChildR"+(j++)+": "+r+", value: "+child._probRoads.get(r)+"\n";			
+				}
+			}
+		}			
+		ans += "\nmy utility: "+_utility +", action: "+(_action==null ? "null" : _action)+"\n";
+		ans+="************************************************************\n";
+		return ans;
+	}
 }

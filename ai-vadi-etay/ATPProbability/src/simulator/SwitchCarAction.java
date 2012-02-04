@@ -2,25 +2,14 @@ package simulator;
 
 import simulator.Interfaces.Action;
 import agents.Agent;
-import agents.BeliefStateNode;
 
 public class SwitchCarAction implements Action {
 
 	public Agent _agent;
 	public String _carName;	
-	public double _reward;
-	
 	
 	public SwitchCarAction(Agent agent, String carName) {
 		super();
-		_reward = Double.MIN_VALUE;
-		_agent = agent;
-		_carName = carName;
-	}
-	
-	public SwitchCarAction(Agent agent, String carName, double reward) {
-		super();
-		_reward = reward;
 		_agent = agent;
 		_carName = carName;
 	}
@@ -32,13 +21,10 @@ public class SwitchCarAction implements Action {
 	}
 
 	@Override
-	public double getReward() {
-		return _reward;
+	public double getReward(Vertex fromVertex, Car car) {
+		return Defs.TSWITCH;
 	}
-
-	@Override
-	public double getReward(BeliefStateNode bn) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String toString(){								
+		return "SwitchAction: To:"+_carName+"\n";		
 	}
 }
