@@ -16,5 +16,5 @@ public interface Action {
 	 * @param sim the simulator
 	 */
 	void performAction(Simulator sim);
-    double getReward(Vertex fromVertex, Car car);   
+    double getReward(Vertex fromVertex, BeliefStateNode bsn);   
 }

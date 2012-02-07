@@ -8,18 +8,15 @@ public class MoveAction implements Action {
 
 	public Agent _agent;
 	public Vertex _newVertex;
-	//public double _reward;
 	
 	public MoveAction(Agent agent, Vertex newVertex) {
 		super();
-		//_reward = -1*Double.MAX_VALUE;
 		_agent = agent;
 		_newVertex = newVertex;
 	}
 	
 	public MoveAction(Agent agent, Vertex newVertex, double reward) {
 		super();
-		//_reward = reward;
 		_agent = agent;
 		_newVertex = newVertex;
 	}
@@ -28,14 +25,28 @@ public class MoveAction implements Action {
 		sim.moveAgent(_agent, _newVertex);
 	}
 
-	public double getReward(Vertex fromVertex, Car car) {
+	public double getReward(Vertex fromVertex, BeliefStateNode bsn) {
 		Road theRoad = fromVertex.get_neighbours().get(_newVertex);
+		Road r1 = fromVertex.get_neighbours().get(_newVertex);
+		Road r2 = _newVertex.get_neighbours().get(fromVertex);
+		 
+		Double flooded =  0.0;
+		if (bsn._probRoads.containsKey(r1)){
+			 flooded = bsn._probRoads.get(r1);
+		}else if (bsn._probRoads.containsKey(r2)){
+			 flooded = bsn._probRoads.get(r2);
+		}
+			
 		if (theRoad==null) return Defs.NEG_INFINITY;
-		double reward = theRoad.is_flooded() ? 
-							(car.get_coff()>0 ? 
-								((double)(theRoad.get_weight())/(car.get_speed()*car.get_coff()))
-								:(Defs.NEG_INFINITY)) 
-							:((double)(theRoad.get_weight())/car.get_speed());
+		double reward = (flooded>0.0)? 
+							(bsn._agentCar.get_coff()>0 ? 
+								((double)(theRoad.get_weight())/(bsn._agentCar.get_speed()*bsn._agentCar.get_coff()))
+								:Double.NEGATIVE_INFINITY)  
+							:((double)(theRoad.get_weight())/bsn._agentCar.get_speed());
+		if (reward>0)
+		{
+			reward = (-1)*reward; 
+		}
 		return reward;
 	}	
 	

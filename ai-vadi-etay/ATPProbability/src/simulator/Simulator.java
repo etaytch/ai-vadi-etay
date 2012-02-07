@@ -58,7 +58,7 @@ public class Simulator {
 					a.performAction(this);
 				ATPLogger.log(_env.get_agents().get(agent).toString());
 				if (a==null){
-					agent.search(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car()); 
+					agent.search_again(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car()); 
 				}
 			}			
 		}

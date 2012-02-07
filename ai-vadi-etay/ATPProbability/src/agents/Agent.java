@@ -109,7 +109,12 @@ public abstract class Agent {
 	public abstract void chooseBestAction(Environment env);	// place an action in the queue 
 
 	public abstract void search(Environment env, Vertex initPos, Vertex goalPosition,
-								Car initCar); 
+								Car initCar);
+
+	public void search_again(Environment env, Vertex getVertex,
+			Vertex getGoalPosition, Car getCar) {
+		
+	} 
 }
 
 
