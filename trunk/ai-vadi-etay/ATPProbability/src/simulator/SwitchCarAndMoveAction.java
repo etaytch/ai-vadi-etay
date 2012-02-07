@@ -26,7 +26,7 @@ public class SwitchCarAndMoveAction implements Action {
 	}
 		
 	@Override
-	public double getReward(Vertex fromVertex, Car car) {	
+	public double getReward(Vertex fromVertex, BeliefStateNode bsn) {	
 		return -6666666;
 	}
 

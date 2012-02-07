@@ -32,8 +32,13 @@ public class PropabilityAgent extends Agent {
 		 setGoals(env);
 		 createLinks(env);
 		 _actions = VALUE_ITERATION(_beliefStates,0.001,env);
+		 System.out.println("finished searching!");
 		 
-		 
+	}
+	
+	public void search_again(Environment env, Vertex initPos,Vertex goalPosition,Car initCar ){		
+		 _actions = VALUE_ITERATION(_beliefStates,0.001,env);
+		 System.out.println("finished searching again!");
 	}
 
 	private void setGoals(Environment env) {
@@ -81,16 +86,14 @@ public class PropabilityAgent extends Agent {
 			delta = 0;
 			for (BeliefStateNode bsn : beliefStates)
 			{
-				//if(bsn._utility==0.0){
-				//	continue;					
-				//}
+				if(bsn._utility==0.0){
+					continue;					
+				}
 				double Uvalue = bsn._utility;
 				double UtagValue = Uvalue;
 				Vector<Action> acVec = new Vector<Action>();
 				double maximizedActionUtil = calcMaximumActionUtil(bsn,acVec,env,gamma);				
 				bsn._action = acVec.get(0); 
-				//Double reward = (-1)*calcReward(bsn);
-				//UtagValue = reward+(gamma*maximizedActionUtil);
 				UtagValue = maximizedActionUtil;
 				bsn._utility = UtagValue; 
 				double newDelta = Math.abs(UtagValue-Uvalue);
@@ -122,9 +125,6 @@ public class PropabilityAgent extends Agent {
 			{
 				continue;
 			}
-			
-
-			
 			boolean flag = true;
 			
 			for(Road r : bf._probRoads.keySet()){
@@ -190,14 +190,13 @@ public class PropabilityAgent extends Agent {
 		for(Action a: bsn._childeren.keySet()){
 			double tmp  = 0;
 			Vector<BeliefStateNode> childBSNs = bsn._childeren.get(a);
-			
 			for(BeliefStateNode childBSN : childBSNs){
-				if (a instanceof MoveAction){
+					if (a instanceof MoveAction){
 					Road r1 = bsn._srcVertex.get_neighbours().get(childBSN._srcVertex);
 					Road r2 = childBSN._srcVertex.get_neighbours().get(bsn._srcVertex);
 					if(bsn._probRoads.containsKey(r1)){
 						if((bsn._probRoads.get(r1) > 0) && (bsn._probRoads.get(r1)<1)){
-							tmp += r1.get_floodedProb()*childBSN._utility;
+							tmp += childBSN._probRoads.get(r1).doubleValue()*childBSN._utility;
 						}
 						else {
 							tmp += childBSN._utility;
@@ -206,7 +205,7 @@ public class PropabilityAgent extends Agent {
 					}
 					else if(bsn._probRoads.containsKey(r2)){
 						if((bsn._probRoads.get(r2) > 0) && (bsn._probRoads.get(r2)<1)){
-							tmp += r2.get_floodedProb()*childBSN._utility; 
+							tmp += (childBSN._probRoads.get(r2).doubleValue())*childBSN._utility; 
 						}
 						else {
 							tmp += childBSN._utility;
@@ -219,8 +218,8 @@ public class PropabilityAgent extends Agent {
 				}			
 			}
 			
-			Double reward = (-1)*calcReward(bsn,a);
-			tmp = (reward+gamma*tmp);
+			Double reward = calcReward(bsn,a);
+			tmp = (reward+(gamma*tmp));
 			
 			if (tmp>max){				
 				ac=a;
@@ -235,7 +234,7 @@ public class PropabilityAgent extends Agent {
 	}
 
 	private Double calcReward(BeliefStateNode bsn,Action a) {			
-		return a.getReward(bsn._srcVertex,bsn._agentCar);
+		return a.getReward(bsn._srcVertex,bsn);
 	}
 
 	private Vector<BeliefStateNode> buildStates(

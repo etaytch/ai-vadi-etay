@@ -2,6 +2,7 @@ package simulator;
 
 import simulator.Interfaces.Action;
 import agents.Agent;
+import agents.BeliefStateNode;
 
 public class SwitchCarAction implements Action {
 
@@ -21,8 +22,8 @@ public class SwitchCarAction implements Action {
 	}
 
 	@Override
-	public double getReward(Vertex fromVertex, Car car) {
-		return Defs.TSWITCH;
+	public double getReward(Vertex fromVertex, BeliefStateNode bsn) {
+		return (-1)*Defs.TSWITCH;
 	}
 	public String toString(){								
 		return "SwitchAction: To:"+_carName+"\n";		
