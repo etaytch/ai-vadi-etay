@@ -28,7 +28,7 @@ public class PropabilityAgent extends Agent {
 	@Override
 	public void search(Environment env, Vertex initPos,Vertex goalPosition,Car initCar ){		
 		 _beliefStates = buildStates(env);
-		 //clearStates(env);
+		 clearStates(env);
 		 setGoals(env);
 		 createLinks(env);
 		 _actions = VALUE_ITERATION(_beliefStates,0.001,env);
@@ -36,9 +36,14 @@ public class PropabilityAgent extends Agent {
 		 
 	}
 	
-	public void search_again(Environment env, Vertex initPos,Vertex goalPosition,Car initCar ){		
+	public void search_again(Environment env, Vertex initPos,Vertex goalPosition,Car initCar ){
+		 _actions.clear();
+		 _beliefStates = buildStates(env);
+		 clearStates(env);
+		 setGoals(env);
+		 createLinks(env);
 		 _actions = VALUE_ITERATION(_beliefStates,0.001,env);
-		 System.out.println("finished searching again!");
+		 System.out.println("finished searching!");
 	}
 
 	private void setGoals(Environment env) {
@@ -191,28 +196,15 @@ public class PropabilityAgent extends Agent {
 			double tmp  = 0;
 			Vector<BeliefStateNode> childBSNs = bsn._childeren.get(a);
 			for(BeliefStateNode childBSN : childBSNs){
-					if (a instanceof MoveAction){
-					Road r1 = bsn._srcVertex.get_neighbours().get(childBSN._srcVertex);
-					Road r2 = childBSN._srcVertex.get_neighbours().get(bsn._srcVertex);
-					if(bsn._probRoads.containsKey(r1)){
-						if((bsn._probRoads.get(r1) > 0) && (bsn._probRoads.get(r1)<1)){
-							tmp += childBSN._probRoads.get(r1).doubleValue()*childBSN._utility;
+				if (a instanceof MoveAction){
+					double probVal = 1.0;
+					for(Road r: childBSN._probRoads.keySet())
+					{
+						if ((childBSN._probRoads.get(r)>0.0) && (childBSN._probRoads.get(r)<1.0)){ 
+							probVal*= childBSN._probRoads.get(r);
 						}
-						else {
-							tmp += childBSN._utility;
-						}
-							
 					}
-					else if(bsn._probRoads.containsKey(r2)){
-						if((bsn._probRoads.get(r2) > 0) && (bsn._probRoads.get(r2)<1)){
-							tmp += (childBSN._probRoads.get(r2).doubleValue())*childBSN._utility; 
-						}
-						else {
-							tmp += childBSN._utility;
-						}
-					}else{
-						tmp += childBSN._utility;
-					}
+					tmp += probVal*childBSN._utility;
 				}else if (a instanceof SwitchCarAction){ 
 					tmp = childBSN._utility;
 				}			
@@ -249,7 +241,7 @@ public class PropabilityAgent extends Agent {
 						Vector<Road> frv = new Vector<Road>();
 						for(int i = 0; i<env.get_edges().size();i++){
 							Road r =  env.get_edges().get(i);
-							if (r.get_floodedProb()>0){
+							if (r.get_floodedProb()>0.0 && r.get_floodedProb()<1.0){
 								frv.add(r);
 							}
 							i++;
@@ -265,7 +257,7 @@ public class PropabilityAgent extends Agent {
 			}
 		}
 		
-		System.out.print(beliefNodes.size());
+		System.out.println("number of states: "+beliefNodes.size());
 		return beliefNodes;
 	}
 
