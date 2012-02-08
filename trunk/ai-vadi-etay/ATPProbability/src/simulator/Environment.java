@@ -96,6 +96,11 @@ public class Environment {
 			flooded = true;
 		}
 		
+		if (floodedProb==1.0){
+			flooded = true;
+		}
+		
+		
 		Road e_v1v2 =  new Road(v1, v2, weight, flooded,floodedProb);
 		Road e_v2v1 =  new Road(v2, v1, weight, flooded,floodedProb);
 		

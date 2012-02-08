@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import org.omg.CosNaming.IstringHelper;
+
 import simulator.Interfaces.Action;
 import tools.ATPLogger;
 import agents.Agent;
@@ -39,12 +41,40 @@ public class Simulator {
 		_finishedAgents = new LinkedHashMap<Agent,Chart>();
 	}
 	
+	public boolean validAction(Agent agent, Action action){		
+		Vertex currentVertex = agent.get_vertex();
+		Car currentCar = agent.get_car();
+		if (action instanceof MoveAction){
+			Vertex destVertex = ((MoveAction)action)._newVertex;
+			Road r = currentVertex.get_neighbours().get(destVertex);
+			// no such road exists
+			if(r==null){				
+				return false;				
+			}
+			if(r.is_flooded()){
+				// cannot drive with current car
+				if(currentCar.get_coff()==0.0){
+					return false;
+				}								
+			}			
+		}
+		else if (action instanceof SwitchCarAction){
+			String otherCar = ((SwitchCarAction)action)._carName;
+			// no such car in vertex
+			if(currentVertex.get_cars().get(otherCar)==null){
+				return false;
+			}			
+		}
+		return true;		
+	}
+	
 	public void startSimulation() {
 		int round=1;
 		ATPLogger.log("Starting Simulation:");
 		
 		for (Agent agent: _env.get_agents().keySet()){
 			ATPLogger.log("Agent: "+agent.get_name()+", start node: "+agent.get_initPosition().get_number()+", goal node: "+agent.get_goalPosition().get_number());
+			updateKnowladge(agent.get_vertex());
 			agent.search(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car());
 		}
 				
@@ -54,12 +84,23 @@ public class Simulator {
 				ATPLogger.log("\n"+agent.get_name()+"'s turn:");
 				agent.chooseBestAction(_env);
 				Action a = agent.getAction();
-				if(a!=null)	// currently null when SpeedNut gets 3 time to the same vertex
-					a.performAction(this);
-				ATPLogger.log(_env.get_agents().get(agent).toString());
-				if (a==null){
-					agent.search_again(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car()); 
+				updateKnowladge(agent.get_vertex());
+				//update env to *know* ejustent roads!				
+				if (a==null || !validAction(agent,a)){
+					System.out.println("\naction is null or invalid. Searching again..");
+					agent.search_again(_env,agent.get_vertex(),agent.get_goalPosition(),agent.get_car());
+					agent.chooseBestAction(_env);
+					a = agent.getAction();
 				}
+				if (a==null || !validAction(agent,a)){
+					agent.set_state("stuck","couldn't find path to goal");
+				}
+				else{
+					a.performAction(this);
+				}
+
+				ATPLogger.log(_env.get_agents().get(agent).toString());
+				
 			}			
 		}
 		ATPLogger.log("\nFinal Stats:");
@@ -73,6 +114,18 @@ public class Simulator {
 		}
 	}
 	
+	//update the knowledge about the uncertainty of roads the agent is adjustment to.
+	private void updateKnowladge(Vertex s) {
+		for(Vertex v: s.get_neighbours().keySet()){
+			for(Road r: _env.get_edges()){
+				if (((r.get_from().equals(v)) && (r.get_to().equals(s)))||
+				    ((r.get_to().equals(v)) && (r.get_from().equals(s)))){
+						r.set_floodedProb(r.is_flooded()? 1.0 : 0.0);
+				}
+			}
+		}
+	}
+
 	public Environment get_env() {
 		return _env;
 	}
