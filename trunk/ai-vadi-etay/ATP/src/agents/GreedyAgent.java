@@ -47,7 +47,12 @@ public class GreedyAgent extends Agent {
 	 * @return Vector  of actions
 	 */
 	private Vector<Action> translateNodeToAction(Vector<DecisionNode> vec) {
+		
 		Vector<Action> res = new Vector<Action>(); 
+		if (vec==null)
+		{
+		   return res;
+		}
 		//remove the root - start position
 		vec.removeElementAt(0);
 		for(DecisionNode atpdn : vec){
