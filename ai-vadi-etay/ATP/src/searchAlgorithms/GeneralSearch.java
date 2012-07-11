@@ -21,7 +21,14 @@ public class GeneralSearch {
 		queue.add(problem.getInitNode());
 		
 		while(true){
-			DecisionNode currentNode = queue.remove();
+			DecisionNode currentNode = queue.poll();
+		
+			if (currentNode==null)
+			{
+			   System.out.println("STUCK!");
+			   break;
+			}
+			
 			expend_steps[0]++;
 			if (currentNode==null){
 				return null;	
@@ -47,6 +54,7 @@ public class GeneralSearch {
 				}
 			}
 		}
+		return null;
 	}
 
 	/**
